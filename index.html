@@ -2,10 +2,33 @@
 <html lang="en">
     <head>
         <title></title>
-        <link rel="stylesheet" href="style.css">
+
+        <!-- Tailwind css-->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://cdn.tailwindcss.com"></script>
+
+        <!-- ionicon-->
+        <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     </head>
 
+
     <body>
-        
+        <header class="bg-[#BC3535] ">
+            <navbar-component></navbar-component>
+        </header>
+
+
+        <script src="./js/navbar.js"></script>
+        <script>
+            const navLinks = document.querySelector('.nav-links')
+            function onToggleMenu(e) {
+                console.log(e.name) //.name like to the name of name="menu"
+                e.name = (e.name === 'menu' ? 'close' : 'menu') //Change icon from menu to close by use if condition
+                navLinks.classList.toggle('top-[16%]')
+            }
+        </script>
     </body>
+
 </html>
