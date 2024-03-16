@@ -15,14 +15,21 @@ class NavBar extends HTMLElement {
                 <li>
                     <a class="text-white hover:text-gray-500" href="./Index.html">Home</a>
                 </li>
-                <li>
+                <li class="relative">
                     <a class="text-white hover:text-gray-500" href="#">Restaurant</a>
+                    <!-- Dropdown Menu -->
+                    <ul class="absolute top-full left-0 bg-[#BC3535] w-32 rounded-lg shadow-md hidden">
+                        <li><a class="block px-4 py-2 text-white hover:bg-[#8B1010]" href="./TopPick.html">Top pick</a></li>
+                        <li><a class="block px-4 py-2 text-white hover:bg-[#8B1010]" href="./CloseToYou.html">Close To You</a></li>
+                    </ul>
                 </li>
+                
+                
                 <li>
                     <a class="text-white hover:text-gray-500" href="./Category.html">Category</a>
                 </li>
                 <li>
-                    <a class="text-white hover:text-gray-500" href="#">About</a>
+                    <a class="text-white hover:text-gray-500" href="./About.html">About</a>
                 </li>
             </ul>
         </div>
@@ -58,7 +65,7 @@ class NavBar extends HTMLElement {
 
         <div class="flex items-center gap-6">
             <ion-icon name="notifications" class="text-3xl"></ion-icon>
-            <button class="bg-white text-black px-5 py-2 rounded-full hover:bg-[#87acec]">Sign Up / Login</button>
+            <a href="./Login.html" class="bg-white text-black px-5 py-2 rounded-full hover:bg-[#87acec]">Sign Up / Login</a>
             <ion-icon onclick="onToggleMenu(this)" name="menu" class="text-3xl cursor-pointer md:hidden"></ion-icon>
         </div>
     </nav>
@@ -67,3 +74,31 @@ class NavBar extends HTMLElement {
 }
 
 customElements.define('navbar-component', NavBar);
+
+
+const navLinks = document.querySelector('.nav-links')
+const locationIconContainer = document.querySelector('location_icon');
+
+function onToggleMenu(e) {
+    console.log(e.name) //.name like to the name of name="menu"
+    e.name = (e.name === 'menu' ? 'close' : 'menu') //Change icon from menu to close by use if condition
+    navLinks.classList.toggle('top-[10%]')
+    locationIconContainer.classList.toggle('visible'); // Toggle visibility of location icon container
+
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    var restaurantLink = document.querySelector('.relative > a'); // Get the "Restaurant" link
+    var dropdownMenu = restaurantLink.nextElementSibling; // Get the dropdown menu
+
+    // Function to toggle the dropdown menu
+    function toggleDropdown() {
+        dropdownMenu.classList.toggle('hidden'); // Toggle the "hidden" class
+    }
+
+    // Event listener to toggle the dropdown menu when the link is clicked
+    restaurantLink.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent the link from being followed
+        toggleDropdown(); // Call the toggleDropdown function
+    });
+});
