@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+
+        <!-- Tailwind css-->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="./css/index.css">
+
+        <!-- ionicon-->
+        <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    </head>
+
+
+    <body>
+        <header class="bg-[#BC3535] fixed w-full z-50"> <!--fixed = fixed position | w-full = The full width of the viewport | z-50 = Stays on top of other elements-->
+            <navbar-component></navbar-component>
+        </header>
+
+        <main class="grid place-items-center gap-11 px-9 pb-9 pt-32"> <!--place-items-center = Set the gird in to the center | gap-9 = 36 px| p-9 = padding all 36px-->
+            <article class="Box_section bg-white px-12 pt-6 pb-3 ">
+
+                <section class="flex flex-col items-center px-6 py-8 mx-auto lg:py-0">
+                    <div class="bg-white rounded-lg shadow md:mt-0 sm:max-w-4xl xl:p-0 place-items-center">
+
+                        <h1 class="text-3xl text-center font-medium tracking-tight text-gray-900">THANK YOU FOR RESERVE</h1>
+                        <h1 class="mb-9 text-3xl text-center font-medium tracking-tight text-gray-900">PLEASE GIVE THE RATE BELOW</h1>    
+
+                        <div class="relative overflow-x-auto m-5">
+                            <table class="w-full text-sm text-left rtl:text-right text-gray-500 border border-2 border-gray-300">
+                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700">
+                                    <tr>
+                                        <th scope="col" class="w-56 px-6 py-3 border border-2 border-gray-300">Resteurant Name</th>
+                                        <th scope="col" class="w-40 px-6 py-3 border border-2 border-gray-300">Date</th>
+                                        <th scope="col" class="w-40 px-6 py-3 border border-2 border-gray-300">Time</th>
+                                        <th scope="col" class="w-52 px-6 py-3 border border-2 border-gray-300">Amount of person</th>
+                                        <th scope="col" class="w-72 px-6 py-3 border border-2 border-gray-300">Reservation data and time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="bg-white border-b">
+                                        <th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap border border-2 border-gray-300">Apple MacBook Pro 17"</th>
+                                        <td class="px-6 py-4 border border-2 border-gray-300">25/02/2024</td>
+                                        <td class="px-6 py-4 border border-2 border-gray-300">15:00 - 17:00</td>
+                                        <td class="px-6 py-4 border border-2 border-gray-300">10</td>
+                                        <td class="px-6 py-4 border border-2 border-gray-300">24/02/2024 ; 11:20:30</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <section class="flex flex-col items-center justify-center px-6 py-4 m-4">
+                            <div class="w-9/12 bg-white rounded-lg shadow md:mt-0 sm:max-w-4xl xl:p-0 place-items-center border border-2 border-gray-300">
+        
+                                <h1 class="text-2xl text-center font-medium tracking-tight text-gray-900 mt-5">Rate Our Service</h1>
+                                <div class="p-2 m-2 text-center  text-yellow-500 text-3xl">
+                                    <ion-icon name="star"></ion-icon>
+                                    <ion-icon name="star"></ion-icon>
+                                    <ion-icon name="star"></ion-icon>
+                                    <ion-icon name="star-half"></ion-icon>
+                                    <ion-icon name="star-outline"></ion-icon>
+                                </div>
+
+                                <div class="flex justify-center items-center">
+                                    <div class="w-10/12 py-2 px-4 mx-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 text-center ">
+                                        <label for="comment" class="sr-only">Your comment</label>
+                                        <textarea id="comment" rows="6"
+                                            class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white "placeholder="Write a comment..."></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="p-2 m-2 text-center flex justify-center items-center">
+                                    <button type="submit" class="w-11/12 text-white bg-red-500 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-md px-5 py-2.5 text-center">Submit Rating</button>
+                                </div>
+
+                                <a class="block px-4 pb-2 text-gray-500 text-center hover:bg-[#8B1010]" href="./TopPick.html">Skip</a>
+
+                                
+        
+        
+                            </div>
+                        </section>
+
+                    </div>
+                </section>
+
+                  
+
+            </article>
+        </main>
+
+        <script src="./js/navbar.js"></script>
+    </body>
+
+</html>
