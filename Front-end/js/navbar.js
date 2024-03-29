@@ -13,23 +13,23 @@ class NavBar extends HTMLElement {
         <div class="nav-links duration-500 md:static absolute bg-[#BC3535] md:min-h-fit min-h-[60vh] left-0 top-[-100%] mid:w-auto-full flex items-center px-5"> <!--this line use for responsive-->
             <ul class="flex md:flex-row flex-col md:items-center mid:gap-[4vw] gap-12">
                 <li>
-                    <a class="text-white hover:text-gray-500" href="./Index.html">Home</a>
+                    <a class="text-white hover:text-gray-500" href="./home">Home</a>
                 </li>
                 <li class="relative">
                     <a class="text-white hover:text-gray-500" href="#">Restaurant</a>
                     <!-- Dropdown Menu -->
                     <ul class="absolute top-full left-0 bg-[#BC3535] w-32 rounded-lg shadow-md hidden">
-                        <li><a class="block px-4 py-2 text-white hover:bg-[#8B1010]" href="./TopPick.html">Top pick</a></li>
-                        <li><a class="block px-4 py-2 text-white hover:bg-[#8B1010]" href="./CloseToYou.html">Close To You</a></li>
+                        <li><a class="block px-4 py-2 text-white hover:bg-[#8B1010]" href="./TopPick">Top pick</a></li>
+                        <li><a class="block px-4 py-2 text-white hover:bg-[#8B1010]" href="./Close-to-you">Close To You</a></li>
                     </ul>
                 </li>
                 
                 
                 <li>
-                    <a class="text-white hover:text-gray-500" href="./Category.html">Category</a>
+                    <a class="text-white hover:text-gray-500" href="./Category">Category</a>
                 </li>
                 <li>
-                    <a class="text-white hover:text-gray-500" href="./About.html">About</a>
+                    <a class="text-white hover:text-gray-500" href="./About">About</a>
                 </li>
             </ul>
         </div>
@@ -74,7 +74,9 @@ class NavBar extends HTMLElement {
 }
 
 customElements.define('navbar-component', NavBar);
-
+// document.addEventListener("DOMContentLoaded", function () {
+//     customElements.define('navbar-component', NavBar);
+// });
 
 const navLinks = document.querySelector('.nav-links')
 const locationIconContainer = document.querySelector('location_icon');
@@ -87,7 +89,7 @@ function onToggleMenu(e) {
 
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     var restaurantLink = document.querySelector('.relative > a'); // Get the "Restaurant" link
     var dropdownMenu = restaurantLink.nextElementSibling; // Get the dropdown menu
 
@@ -97,7 +99,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Event listener to toggle the dropdown menu when the link is clicked
-    restaurantLink.addEventListener('click', function(event) {
+    restaurantLink.addEventListener('click', function (event) {
         event.preventDefault(); // Prevent the link from being followed
         toggleDropdown(); // Call the toggleDropdown function
     });
