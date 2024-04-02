@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+
+    <!-- Tailwind css-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./css/index.css">
+
+    <!-- ionicon-->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+
+<body>
+    <header class="bg-[#BC3535] fixed w-full z-50">
+        <!--fixed = fixed position | w-full = The full width of the viewport | z-50 = Stays on top of other elements-->
+        <navbar-component></navbar-component>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex items-center justify-center min-h-screen px-4">
+        <div class="bg-white rounded-lg shadow-xl max-w-4xl mx-auto overflow-hidden">
+            <h1 class="text-3xl font-bold my-6 text-center">REQUEST</h1>
+
+            <div class="px-6 py-4">
+                <table class="w-full table-auto">
+                    <thead>
+                        <tr class="text-center bg-gray-200 uppercase font-semibold">
+                            <th class="py-3 px-6">Customer Name</th>
+                            <th class="py-3 px-6">Date</th>
+                            <th class="py-3 px-6">Time</th>
+                            <th class="py-3 px-6">Amount of Customer</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-400">
+                        <tr class="border-b border-gray-200 hover:bg-gray-50">
+                            <td class="py-3 px-6 text-center">David</td>
+                            <td class="py-3 px-6 text-center">28/02/2024</td>
+                            <td class="py-3 px-6 text-center">12:00-14:00</td>
+                            <td class="py-3 px-6 text-center">2</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="px-6 py-4">
+                <label for="reason" class="block text-gray-700 text-sm font-bold mb-2">Reason</label>
+                <textarea id="reason" rows="4"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    placeholder="Your reason here"></textarea>
+            </div>
+
+            <div class="px-6 py-4 flex justify-end space-x-4">
+                <button
+                    class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out">Cancel
+                    Request</button>
+                <button
+                    class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out">Submit</button>
+            </div>
+        </div>
+        <script src="./js/navbar.js"></script>
+    </main>
+
+</body>
+
+</html>
