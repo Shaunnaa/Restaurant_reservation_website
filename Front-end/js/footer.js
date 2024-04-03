@@ -10,7 +10,7 @@ class Footer extends HTMLElement {
                     <div class="sm:flex sm:items-center sm:justify-between">
                         <a href="./home" class="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse">
                             <!-- <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" /> -->
-                            <img class="w-24" src="./image/Dine_ease_3.png">
+                            <img class="w-24" src="../image/Dine_ease_3.png">
                         </a>
                         <ul class="flex flex-wrap items-center mb-6 text-sm font-medium text-white sm:mb-0 dark:text-gray-400">
                             <li>
