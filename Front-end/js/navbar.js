@@ -7,13 +7,13 @@ class NavBar extends HTMLElement {
         this.innerHTML = `
         <nav class="navbar flex justify-between items-center w-[92%] mx-auto h-[84px]"> <!--Flex set to row | items-center set to the center of row-->
         <div>
-            <img class="w-24" src="./image/Dine_ease_3.png">
+            <img class="w-24" src="../image/Dine_ease_3.png">
         </div>
 
         <div class="nav-links duration-500 md:static absolute bg-[#BC3535] md:min-h-fit min-h-[60vh] left-0 top-[-100%] mid:w-auto-full flex items-center px-5"> <!--this line use for responsive-->
             <ul class="flex md:flex-row flex-col md:items-center mid:gap-[4vw] gap-12">
                 <li>
-                    <a class="text-white hover:text-gray-500" href="./home">Home</a>
+                    <a class="text-white hover:text-gray-500" href="./">Home</a>
                 </li>
                 <li class="relative">
                     <a class="text-white hover:text-gray-500" href="#">Restaurant</a>
@@ -65,7 +65,7 @@ class NavBar extends HTMLElement {
 
         <div class="flex items-center gap-6">
             <ion-icon name="notifications" class="text-3xl"></ion-icon>
-            <a href="./Login.html" class="bg-white text-black px-5 py-2 rounded-full hover:bg-[#87acec]">Sign Up / Login</a>
+            <a href="./login" class="bg-white text-black px-5 py-2 rounded-full hover:bg-[#87acec]">Sign Up / Login</a>
             <ion-icon onclick="onToggleMenu(this)" name="menu" class="text-3xl cursor-pointer md:hidden"></ion-icon>
         </div>
     </nav>
