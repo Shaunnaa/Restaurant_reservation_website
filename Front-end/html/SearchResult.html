@@ -44,9 +44,10 @@
         <footer-component></footer-component>
     </footer>
 
-    <script src="../js/navbar.js"></script>
+
+
     <script>// Fetch data from the API endpoint
-        fetch('/api/search')
+        fetch('http://localhost:3040/api/search')
             .then(response => response.json())
             .then(data => {
                 // Update HTML content dynamically with fetched data
@@ -55,7 +56,6 @@
                     const section = document.createElement('section');
                     section.className = 'max-w-64 bg-white border border-gray rounded-3xl shadow dark:bg-gray-800 dark:border-gray-700';
                     section.innerHTML = `
-                        <section  class="max-w-64 bg-white border border-gray rounded-3xl shadow dark:bg-gray-800 dark:border-gray-700">
                             <a href="#">
                                 <img class="rounded-3xl w-full h-auto" src="../image/Restaurant1.png" alt="" />
                                 <div class="p-5">
@@ -63,7 +63,6 @@
                                     <h5 class="mb-2 text-xl text-center font-medium  tracking-tight text-gray-900 dark:text-white">${item.Province}</h5>
                                 </div>
                             </a>
-                        </section>
                     `;
                     container.appendChild(section);
                 });
@@ -73,6 +72,8 @@
                 // Handle error
             });
     </script>
+
+    <script src="../js/navbar.js"></script>
     <script src="../js/footer.js"></script>
 </body>
 

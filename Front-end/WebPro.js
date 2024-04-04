@@ -12,26 +12,16 @@ app.use('/css', express.static(path.join(__dirname, '/css')));
 app.use('/js', express.static(path.join(__dirname, '/js')));
 app.use('/images', express.static(path.join(__dirname, '/images')));
 app.use('/reference', express.static(path.join(__dirname, '/reference')));
-let searchword = "";
+
 /* 1. Create a router object and register the router */
-const mysql = require('mysql2');
-var connection = mysql.createConnection
-    ({
-        host: process.env.MYSQL_HOST,
-        user: process.env.MYSQL_USERNAME,
-        password: process.env.MYSQL_PASSWORD,
-        database: process.env.MYSQL_DATABASE
-    });
-connection.connect(function (err) {
-    if (err) throw err;
-    console.log(`Connected DB: ${process.env.MYSQL_DATABASE}`);
-});
+
 
 const router = express.Router();
 app.use(router)
 
 router.use(express.json())
 router.use(express.urlencoded({ extended: true }))
+
 
 /* Login and sign in*/
 router.get('/login', (req, res) => {
@@ -78,25 +68,20 @@ router.get('/', (req, res) => {
     console.log('Retrieve a search page')
     res.status(200)
     res.sendFile(path.join(__dirname, '/html/index.html'))
-    // console.log(`Server listening on port: ${port}`)
 })
 
 /* -------------------- Toppick page -------------------- */
 router.get('/Toppick', (req, res) => {
     console.log('Requested at', req.url)
-    // console.log('Retrieve a form')
     res.status(200)
     res.sendFile(path.join(__dirname, '/html/TopPick.html'))
-    // console.log(`Server listening on port: ${port}`)
 })
 
 /* -------------------- Close to you' page -------------------- */
 router.get('/Close-to-you', (req, res) => {
     console.log('Requested at', req.url)
-    // console.log('Retrieve a form')
     res.status(200)
     res.sendFile(path.join(__dirname, '/html/CLoseToYou.html'))
-    // console.log(`Server listening on port: ${port}`)
 })
 
 /* -------------------- Category page -------------------- */
@@ -105,7 +90,6 @@ router.get('/Category', (req, res) => {
     console.log('Retrieve a form')
     res.status(200)
     res.sendFile(path.join(__dirname, '/html/Category.html'))
-    // console.log(`Server listening on port: ${port}`)
 })
 
 /* -------------------- About page -------------------- */
@@ -114,23 +98,22 @@ router.get('/About', (req, res) => {
     console.log('Retrieve a form')
     res.status(200)
     res.sendFile(path.join(__dirname, '/html/About.html'))
-    // console.log(`Server listening on port: ${port}`)
 })
+
 /* -------------------- Search page -------------------- */
 router.get('/search', (req, res) => {
     res.status(200)
     res.sendFile(path.join(`${__dirname}/html/SearchResult.html`))
-    // console.log(`Server listening on port: ${port}`)
 })
+
 router.post('/sign-in-summit', (req, res) => {
     console.log('Requested at', req.url)
     console.log('Form submitted by')
     console.log(req.body.email, 'at')
-    // console.log(req.body.email, 'at')
     console.log(Date.now())
     res.status(200)
     res.redirect(path.join(`/home`))
-    // console.log(`Server listening on port: ${port}`)
+
 })
 // router.get('/member', (req, res) => {
 //     console.log('Requested at', req.url)
@@ -143,41 +126,6 @@ router.post('/search-summit', (req, res) => {
     searchword = req.body.searchdropdown
     res.redirect(path.join(`/search`));
 })
-
-
-
-
-
-
-// Example API endpoint to fetch data from the database
-router.get('/api/toppicks', (req, res) => {
-    let sql = `SELECT Restaurant_name, Province
-               FROM Account_R
-               ORDER BY Reserve_count DESC`;
-    connection.query(sql, function (error, results) {
-        if (error) {
-            console.error('Error fetching data:', error);
-            res.status(500).json({ error: 'Error fetching data' });
-        } else {
-            res.status(200).json(results);
-        }
-    });
-});
-router.get('/api/search', (req, res) => {
-    let sql = `select Restaurant_name,Province from Account_R where Restaurant_name like "%${searchword}%";`;
-    connection.query(sql, function (error, results) {
-        if (error) {
-            console.error('Error fetching data:', error);
-            console.log("Error!!!!!!")
-            res.status(500).json({ error: 'Error fetching data' });
-        } else {
-            res.status(200).json(results);
-            console.log("Complete!!!!!!")
-        }
-    });
-})
-
-
 
 
 
