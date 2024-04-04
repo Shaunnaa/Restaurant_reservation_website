@@ -51,15 +51,13 @@
                         const section = document.createElement('section');
                         section.className = 'max-w-64 bg-white border border-gray rounded-3xl shadow dark:bg-gray-800 dark:border-gray-700';
                         section.innerHTML = `
-                            <section  class="max-w-64 bg-white border border-gray rounded-3xl shadow dark:bg-gray-800 dark:border-gray-700">
-                                <a href="#">
-                                    <img class="rounded-3xl w-full h-auto" src="./image/Restaurant1.png" alt="" />
-                                    <div class="p-5">
-                                        <h5 class="mb-2 text-2xl text-center font-bold tracking-tight text-gray-900 dark:text-white">${item.Restaurant_name}</h5>
-                                        <h5 class="mb-2 text-xl text-center font-medium  tracking-tight text-gray-900 dark:text-white">${item.Province}</h5>
-                                    </div>
-                                </a>
-                            </section>
+                            <a href="#">
+                                <img class="rounded-3xl w-full h-auto" src="${item.Restaurant_image}" alt="" />
+                                <div class="p-5">
+                                    <h5 class="mb-2 text-2xl text-center font-bold tracking-tight text-gray-900 dark:text-white">${item.Restaurant_name}</h5>
+                                    <h5 class="mb-2 text-xl text-center font-medium  tracking-tight text-gray-900 dark:text-white">${item.Province}</h5>
+                                </div>
+                            </a>
                         `;
                         container.appendChild(section);
                     });

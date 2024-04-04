@@ -143,7 +143,8 @@ router.post('/sign-in-summit', (req, res) => {
 // Example API endpoint to fetch data from the database
 router.get('/api/toppicks', (req, res) => {
     let sql = `SELECT Restaurant_name, Province
-               FROM Account_R`; // Replace 'your_table_name' with your actual table name
+               FROM Account_R
+               ORDER BY Reserve_count DESC`;
     connection.query(sql, function (error, results) {
         if (error) {
             console.error('Error fetching data:', error);
