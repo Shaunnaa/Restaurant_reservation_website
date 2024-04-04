@@ -12,7 +12,7 @@ app.use('/css', express.static(path.join(__dirname, '/css')));
 app.use('/js', express.static(path.join(__dirname, '/js')));
 app.use('/images', express.static(path.join(__dirname, '/images')));
 app.use('/reference', express.static(path.join(__dirname, '/reference')));
-
+let searchword = "";
 /* 1. Create a router object and register the router */
 const mysql = require('mysql2');
 var connection = mysql.createConnection
@@ -116,7 +116,12 @@ router.get('/About', (req, res) => {
     res.sendFile(path.join(__dirname, '/html/About.html'))
     // console.log(`Server listening on port: ${port}`)
 })
-
+/* -------------------- Search page -------------------- */
+router.get('/search', (req, res) => {
+    res.status(200)
+    res.sendFile(path.join(`${__dirname}/html/SearchResult.html`))
+    // console.log(`Server listening on port: ${port}`)
+})
 router.post('/sign-in-summit', (req, res) => {
     console.log('Requested at', req.url)
     console.log('Form submitted by')
@@ -133,7 +138,11 @@ router.post('/sign-in-summit', (req, res) => {
 //     res.sendFile(path.join(`${__dirname}/success.html`))
 //     // console.log(`Server listening on port: ${port}`)
 // })
-
+router.post('/search-summit', (req, res) => {
+    console.log(req.body.searchdropdown)
+    searchword = req.body.searchdropdown
+    res.redirect(path.join(`/search`));
+})
 
 
 
@@ -153,7 +162,19 @@ router.get('/api/toppicks', (req, res) => {
         }
     });
 });
-
+router.get('/api/search', (req, res) => {
+    let sql = `select Restaurant_name,Province from Account_R where Restaurant_name like "%${searchword}%";`;
+    connection.query(sql, function (error, results) {
+        if (error) {
+            console.error('Error fetching data:', error);
+            console.log("Error!!!!!!")
+            res.status(500).json({ error: 'Error fetching data' });
+        } else {
+            res.status(200).json(results);
+            console.log("Complete!!!!!!")
+        }
+    });
+})
 
 
 
