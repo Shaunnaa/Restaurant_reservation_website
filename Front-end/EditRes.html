@@ -22,121 +22,200 @@
     </header>
 
     <!-- Main Content -->
-    <main class="grid place-items-center gap-11 px-9 pb-9 pt-32">
+    <main class="place-items-center gap-11 px-9 pb-9 pt-32">
         <!-- Profile Info Section -->
-        <section class="profile-info container mx-auto">
-            <!-- Section Title -->
-            <h2 class="text-3xl font-bold mb-4">Edit Restaurant Profile</h2>
-            <form action="#">
+        <section class="grid grid-cols-[40%_60%] gap-11">
 
-                <!-- Restaurant Name & Phone Number-->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label for="name" class="block mb-2 font-semibold">Restaurant Name</label>
-                        <input type="text" id="name" class="border border-gray-300 rounded-md p-2 w-full"
-                            placeholder="Restaurant1">
-                    </div>
-                    <div>
-                        <label for="phone" class="block mb-2 font-semibold">Phone Number</label>
-                        <input type="tel" id="phone" class="shadow-sm border border-gray-300 rounded-md p-2 w-full"
-                            placeholder="xxx-xxx-xxxx">
-                    </div>
-                </div>
-
-                <!-- Email and Password -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                    <div>
-                        <label for="email" class="block mb-2 font-semibold">Email</label>
-                        <input type="email" id="email" class="shadow-sm border border-gray-300 rounded-md p-2 w-full"
-                            placeholder="Restaurant1@gmail.com">
-                    </div>
-                    <div>
-                        <label for="password" class="block mb-2 font-semibold">Password</label>
-                        <input type="password" id="password"
-                            class="shadow-sm border border-gray-300 rounded-md p-2 w-full" placeholder="blabla">
+            <!-- Opening Hours Section -->
+            <div class="container mx-auto px-4 py-8">
+                <!-- Profile -->
+                <div class="flex items-center justify-center">
+                    <div
+                        class="relative shadow-xl hover:shadow-2xl transition-shadow duration-500 ease-in-out rounded-xl p-5">
+                        <!-- Image Preview Container -->
+                        <div class="flex items-center justify-center">
+                            <!-- Default image or user uploaded image -->
+                            <img id="userImage"
+                                src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHwyfHxhdmF0YXJ8ZW58MHwwfHx8MTY5MTg0NzYxMHww&ixlib=rb-4.0.3&q=80&w=1080"
+                                class="w-32 h-32 object-cover rounded-full transition-all duration-500 transform group-hover:w-36 group-hover:h-36" />
+                        </div>
+                        <!-- File Upload Input, hidden -->
+                        <div class="pt-4 flex items-center justify-center">
+                            <button type="button"
+                            class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800">Upload</button>
+                          </div>
                     </div>
                 </div>
 
-                <!-- Description -->
-                <div class="mt-4">
-                    <label for="description" class="block mb-2 font-semibold">Description</label>
-                    <textarea id="description" rows="1" class="shadow-sm border border-gray-300 rounded-md p-2 w-full"
-                        placeholder="Your description"></textarea>
+                <!-- Stars -->
+                <div class="flex items-center justify-center pt-8">
+                    <svg class="w-8 h-8 ms-3 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor" viewBox="0 0 22 20">
+                        <path
+                            d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                    </svg>
+                    <svg class="w-8 h-8 ms-3 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor" viewBox="0 0 22 20">
+                        <path
+                            d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                    </svg>
+                    <svg class="w-8 h-8 ms-3 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor" viewBox="0 0 22 20">
+                        <path
+                            d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                    </svg>
+                    <svg class="w-8 h-8 ms-3 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor" viewBox="0 0 22 20">
+                        <path
+                            d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                    </svg>
+                    <svg class="w-8 h-8 ms-3 text-gray-300 dark:text-gray-500" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                        <path
+                            d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                    </svg>
                 </div>
 
-                <!-- Address -->
-                <div class="grid grid-cols-1 md:grid-cols-1 gap-4 mt-4">
-                    <div>
-                        <label for="Location" class="block mb-2 font-semibold">Location</label>
-                        <input type="text" id="Location" class="shadow-sm border border-gray-300 rounded-md p-2 w-full"
-                            placeholder="Salaya, Nakhon pathom">
-                    </div>
+                <div class="bg-white shadow-md rounded px-4 py-6">
+                    <table class="w-full table-auto">
+                        <div class="font-bold text-xl mb-2">Open - Close</div>
+                        <tr>
+                            <td class="text-left">Sunday</td>
+                            <td class="text-left">09:30</td>
+                            <td class="text-left">23:00</td>
+                        </tr>
+                        <tr>
+                            <td>Monday</td>
+                            <td>11:00</td>
+                            <td>20:00</td>
+                        </tr>
+                        <tr>
+                            <td>Tuesday</td>
+                            <td>11:00</td>
+                            <td>20:00</td>
+                        </tr>
+                        <tr>
+                            <td>Wednesday</td>
+                            <td>11:00</td>
+                            <td>18:00</td>
+                        </tr>
+                        <tr>
+                            <td>Thursday</td>
+                            <td>11:00</td>
+                            <td>20:00</td>
+                        </tr>
+                        <tr>
+                            <td>Friday</td>
+                            <td>11:00</td>
+                            <td>20:00</td>
+                        </tr>
+                        <tr>
+                            <td>Saturday</td>
+                            <td>10:00</td>
+                            <td>21:00</td>
+                        </tr>
+                    </table>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-                    <div>
-                        <label for="province" class="block mb-2 font-semibold">Province</label>
-                        <select id="province" class="shadow-sm border border-gray-300 rounded-md p-2 w-full">
+            </div>
 
-                            <!-- Add more options -->
-                        </select>
+            <div class="pr-16">
+                <!-- Section Title -->
+                <h2 class="text-3xl font-bold mb-4">Edit Restaurant Profile</h2>
+                <form action="#">
+
+                    <!-- Restaurant Name & Phone Number-->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="name" class="block mb-2 font-semibold">Restaurant Name</label>
+                            <input type="text" id="name" class="border border-gray-300 rounded-md p-2 w-full"
+                                placeholder="Restaurant1">
+                        </div>
+                        <div>
+                            <label for="phone" class="block mb-2 font-semibold">Phone Number</label>
+                            <input type="tel" id="phone" class="shadow-sm border border-gray-300 rounded-md p-2 w-full"
+                                placeholder="xxx-xxx-xxxx">
+                        </div>
                     </div>
-                    <div>
-                        <label for="district" class="block mb-2 font-semibold">District</label>
-                        <select id="district" class="shadow-sm border border-gray-300 rounded-md p-2 w-full">
 
-                            <!-- Add more options -->
-                        </select>
+                    <!-- Email and Password -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <div>
+                            <label for="email" class="block mb-2 font-semibold">Email</label>
+                            <input type="email" id="email"
+                                class="shadow-sm border border-gray-300 rounded-md p-2 w-full"
+                                placeholder="Restaurant1@gmail.com">
+                        </div>
+                        <div>
+                            <label for="password" class="block mb-2 font-semibold">Password</label>
+                            <input type="password" id="password"
+                                class="shadow-sm border border-gray-300 rounded-md p-2 w-full" placeholder="blabla">
+                        </div>
                     </div>
-                    <div>
-                        <label for="subdistrict" class="block mb-2 font-semibold">Subdistrict</label>
-                        <select id="subdistrict" class="shadow-sm border border-gray-300 rounded-md p-2 w-full">
 
-                            <!-- Add more options -->
-                        </select>
+                    <!-- Description -->
+                    <div class="mt-4">
+                        <label for="description" class="block mb-2 font-semibold">Description</label>
+                        <textarea id="description" rows="1"
+                            class="shadow-sm border border-gray-300 rounded-md p-2 w-full"
+                            placeholder="Your description"></textarea>
                     </div>
-                </div>
 
-                <!-- 20 manu -->
-                <div class="mt-8">
-                    <div class="shadow-sm border border-gray-300 rounded-md p-2 w-full">
-                        <!-- Text with button -->
-                        <a class="text-lg font-semibold">The manu in your restaurant: 20 manu</a>
-                        <button class="text-black font-semibold">Add more menu</button>
-                        <button class="text-red-500 font-semibold">-- Click here --</button>
+                    <!-- Address -->
+                    <div class="grid grid-cols-1 md:grid-cols-1 gap-4 mt-4">
+                        <div>
+                            <label for="Location" class="block mb-2 font-semibold">Location</label>
+                            <input type="text" id="Location"
+                                class="shadow-sm border border-gray-300 rounded-md p-2 w-full"
+                                placeholder="Salaya, Nakhon pathom">
+                        </div>
                     </div>
-                </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                        <div>
+                            <label for="province" class="block mb-2 font-semibold">Province</label>
+                            <select id="province" class="shadow-sm border border-gray-300 rounded-md p-2 w-full">
 
-                <!-- button -->
-                <div class="mt-4 grid grid-cols-1 gap-4">
-                    <button class="bg-red-500 text-white py-2 px-4 rounded-md">Save</button>
-                </div>
-                <button
-                    class="absolute left-10 bottom-5 mb-8 ml-8 bg-red-500 text-white font-semibold py-2 px-4 rounded">
-                    Back
-                </button>
-            </form>
+                                <!-- Add more options -->
+                            </select>
+                        </div>
+                        <div>
+                            <label for="district" class="block mb-2 font-semibold">District</label>
+                            <select id="district" class="shadow-sm border border-gray-300 rounded-md p-2 w-full">
+
+                                <!-- Add more options -->
+                            </select>
+                        </div>
+                        <div>
+                            <label for="subdistrict" class="block mb-2 font-semibold">Subdistrict</label>
+                            <select id="subdistrict" class="shadow-sm border border-gray-300 rounded-md p-2 w-full">
+
+                                <!-- Add more options -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 20 manu -->
+                    <div class="mt-8">
+                        <div class="shadow-sm border border-gray-300 rounded-md p-2 w-full">
+                            <!-- Text with button -->
+                            <a class="text-lg font-semibold">The manu in your restaurant: 20 manu</a>
+                            <button class="text-black font-semibold">Add more menu</button>
+                            <button class="text-red-500 font-semibold">-- Click here --</button>
+                        </div>
+                    </div>
+
+                    <!-- button -->
+                    <div class="mt-4 grid grid-cols-1 gap-4">
+                        <button class="bg-red-500 text-white py-2 px-4 rounded-md">Save</button>
+                    </div>
+                    <button
+                        class="absolute left-10 bottom-5 mb-8 ml-8 bg-red-500 text-white font-semibold py-2 px-4 rounded">
+                        Back
+                    </button>
+                </form>
+            </div>
         </section>
-
-        <!-- Opening Hours Section -->
-        <section class="opening-hours container mx-auto">
-            <h2 class="text-2xl font-bold mb-4">Open - Close</h2>
-            <table class="border border-gray-300 w-full">
-                <tr>
-                    <th class="border-r border-gray-300 px-4 py-2 font-semibold">Date</th>
-                    <th class="border-r border-gray-300 px-4 py-2 font-semibold">Open Time</th>
-                    <th class="px-4 py-2 font-semibold">Close Time</th>
-                </tr>
-                <tbody>
-                    <tr>
-                        <td class="border-r border-gray-300 px-4 py-2">Sunday</td>
-                        <td class="border-r border-gray-300 px-4 py-2">09:30</td>
-                        <td class="px-4 py-2">23:00</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-
-        <script src="./js/navbar.js"></script>
+    </main>
+    <script src="./js/navbar.js"></script>
 </body>
 
 </html>
