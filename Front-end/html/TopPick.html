@@ -25,7 +25,7 @@
                 <!--Topic-->
                 <div class="p-2">
                     <a href="#">
-                        <h5 class="mb-9 text-5xl text-center font-bold tracking-tight text-gray-900 dark:text-white">Top Pick</h5>
+                        <h5 class="mb-9 text-5xl text-center font-bold tracking-tight text-gray-900">Top Pick</h5>
                     </a>
                 </div>
 
@@ -49,13 +49,14 @@
                     const container = document.getElementById('toppicks-container');
                     data.forEach(item => {
                         const section = document.createElement('section');
-                        section.className = 'max-w-64 bg-white border border-gray rounded-3xl shadow dark:bg-gray-800 dark:border-gray-700';
+                        section.className = 'max-w-64 bg-white border border-gray rounded-3xl shadow';
                         section.innerHTML = `
                             <a href="#">
-                                <img class="rounded-3xl w-full h-auto" src="" alt="" />
+                                <img class="rounded-3xl w-full h-auto" src="https://lh3.googleusercontent.com/d/${item.Restaurant_image}" alt="" />
+                                
                                 <div class="p-5">
-                                    <h5 class="mb-2 text-2xl text-center font-bold tracking-tight text-gray-900 dark:text-white">${item.Restaurant_name}</h5>
-                                    <h5 class="mb-2 text-xl text-center font-medium  tracking-tight text-gray-900 dark:text-white">${item.Province}</h5>
+                                    <h5 class="mb-2 text-2xl text-center font-bold tracking-tight text-gray-900">${item.Restaurant_name}</h5>
+                                    <h5 class="mb-2 text-xl text-center font-medium  tracking-tight text-gray-900">${item.Province}</h5>
                                 </div>
                             </a>
                         `;
