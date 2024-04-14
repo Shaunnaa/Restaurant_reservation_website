@@ -39,11 +39,12 @@ app.use(router)
 router.use(express.json())
 router.use(express.urlencoded({ extended: true }))
 
+
 /*------------------------ API Link database ------------------------*/
 
 router.get('/api/toppicks', (req, res) => {
-    let sql = `SELECT Restaurant_name, Province
-               FROM Account_R
+    let sql = `SELECT Restaurant_name, Province, Restaurant_image
+               FROM Account_Restaurant
                ORDER BY Reserve_count DESC`;
     connection.query(sql, function (error, results) {
         if (error) {
@@ -55,8 +56,22 @@ router.get('/api/toppicks', (req, res) => {
     });
 });
 
+router.get('/api/Category', (req, res) => {
+    let sql = `SELECT *
+               FROM Restaurant_Category
+               ORDER BY Category`;
+    connection.query(sql, function (error, results) {
+        if (error) {
+            console.error('Error fetching data:', error);
+            res.status(500).json({ error: 'Error fetching data' });
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
 router.get('/api/search', (req, res) => {
-    let sql = `select Restaurant_name,Province from Account_R where Restaurant_name like "%${searchword}%";`;
+    let sql = `select Restaurant_name,Province from Account_Restaurant where Restaurant_name like "%${searchword}%";`;
     connection.query(sql, function (error, results) {
         if (error) {
             console.error('Error fetching data:', error);
@@ -79,5 +94,6 @@ router.use((req, res, next) => {
     res.status(404)
     res.sendFile(path.join(`${__dirname}/reference/error.html`));
 })
+
 app.listen(port, () => {
 })
