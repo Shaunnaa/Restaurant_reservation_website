@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="./css/index.css">
 
     <!-- ionicon-->
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
@@ -22,8 +22,8 @@
     </header>
 
     <!-- Main Content -->
-    <main class="grid place-items-center gap-11 px-9 pb-9 pt-32">
-        
+    <main class="grid place-items-center gap-11 px-9 pb-9 pt-32 mx-20">
+        <h1 class="text-3xl font-bold my-6 text-center">SCHEDULE</h1>
         <!-- table -->
         <table class="border-collapse border border-gray-300 w-full">
             <thead>
@@ -69,13 +69,13 @@
                             to cancel</button></td>
                 </tr>
                 <tr class="text-center">
-                    <td class="border border-gray-300 p-2 text-red-500">Jose</td>
-                    <td class="border border-gray-300 p-2 text-red-500">01/03/2024</td>
-                    <td class="border border-gray-300 p-2 text-red-500">18:00-20:00</td>
-                    <td class="border border-gray-300 p-2 text-red-500">9</td>
-                    <td class="border border-gray-300 p-2 text-red-500">29/02/2024: 05:20:00</td>
-                    <td class="border border-gray-300 p-2 text-red-500">095-173-6567</td>
-                    <td class="border border-gray-300 p-2 text-red-500">Canceled</td>
+                    <td class="border border-gray-300 p-2 text-red-500"><s>Jose</s></td>
+                    <td class="border border-gray-300 p-2 text-red-500"><s>01/03/2024</s></td>
+                    <td class="border border-gray-300 p-2 text-red-500"><s>18:00-20:00</s></td>
+                    <td class="border border-gray-300 p-2 text-red-500"><s>9</s></td>
+                    <td class="border border-gray-300 p-2 text-red-500"><s>29/02/2024: 05:20:00</s></td>
+                    <td class="border border-gray-300 p-2 text-red-500"><s>095-173-6567</s></td>
+                    <td class="border border-gray-300 p-2 text-red-500"><s>Canceled</s></td>
                 </tr>
                 <tr class="text-center">
                     <td class="border border-gray-300 p-2">Bradley</td>
@@ -94,12 +94,7 @@
             </button>
     </main>
 
-    <footer>
-        <footer-component></footer-component>
-    </footer>
-    
-    <script src="../js/navbar.js"></script>
-    <script src="../js/footer.js"></script>
+    <script src="./js/navbar.js"></script>
 </body>
 
 </html>
