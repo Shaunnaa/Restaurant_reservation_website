@@ -1,3 +1,4 @@
+VERSION 1.0.0
 *** This project need to use internet connection because we use " Tailwind CSS CDN " ***
 
 1) Download "SQL_Restaurant_reservation_website.sql" file and run
