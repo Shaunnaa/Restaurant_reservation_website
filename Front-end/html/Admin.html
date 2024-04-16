@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title></title>
+
+  <!-- Tailwind css-->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="./css/index.css">
+
+  <!-- ionicon-->
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+
+<body>
+  <header class="bg-[#BC3535] fixed w-full z-50">
+    <!--fixed = fixed position | w-full = The full width of the viewport | z-50 = Stays on top of other elements-->
+    <navbar-component></navbar-component>
+  </header>
+
+  <!-- Main Content -->
+  <main class="place-items-center gap-11 px-9 pb-9 pt-32">
+    <div class="grid grid-cols-[30%_70%] gap-11">
+
+      <!-- Profile -->
+      <div class="flex items-center justify-center">
+        <div class="relative shadow-xl hover:shadow-2xl transition-shadow duration-500 ease-in-out rounded-xl p-5">
+          <!-- Image Preview Container -->
+          <div class="flex items-center justify-center">
+            <!-- Default image or user uploaded image -->
+            <img id="userImage"
+              src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHwyfHxhdmF0YXJ8ZW58MHwwfHx8MTY5MTg0NzYxMHww&ixlib=rb-4.0.3&q=80&w=1080"
+              class="w-32 h-32 object-cover rounded-full transition-all duration-500 transform group-hover:w-36 group-hover:h-36" />
+          </div>
+          <!-- File Upload Input, hidden -->
+          <div class="pt-4 flex items-center justify-center">
+            <button type="button"
+            class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800">Upload</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="pr-16">
+        <!-- Admin Profile Section -->
+        <section class="profile-info container mx-auto">
+
+          <!-- Title -->
+          <h1 class="text-3xl font-bold text-gray-800 mb-4 text-center">ADMIN PROFILE</h1>
+
+          <!-- Admin ID -->
+          <div class="text-center">
+            <h2 class="text-xl font-bold text-gray-800 mb-2">Your Admin ID</h2>
+            <h3 class="text-xl font-bold text-gray-800 mb-6">00001</h3>
+          </div>
+
+          <!-- Form -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <!-- First Name -->
+            <div>
+              <label for="first_name" class="block mb-2 font-semibold">First Name</label>
+              <input type="text" id="first_name" class="shadow-sm border border-gray-300 rounded-md p-2 w-full"
+                placeholder="Your First Name">
+            </div>
+
+            <!-- Last Name -->
+            <div>
+              <label for="last_name" class="block mb-2 font-semibold">Last Name</label>
+              <input type="text" id="last_name" class="shadow-sm border border-gray-300 rounded-md p-2 w-full"
+                placeholder="Your Last Name">
+            </div>
+
+            <!-- Middle Name -->
+            <div>
+              <label for="middle_name" class="block mb-2 font-semibold">Middle Name</label>
+              <input type="text" id="middle_name" class="shadow-sm border border-gray-300 rounded-md p-2 w-full"
+                placeholder="Your Middle Name">
+            </div>
+
+            <!-- Phone Number -->
+            <div>
+              <label for="phone_number" class="block mb-2 font-semibold">Phone</label>
+              <input type="tel" id="phone_number" class="shadow-sm border border-gray-300 rounded-md p-2 w-full"
+                placeholder="xxx-xxx-xxxx">
+            </div>
+
+            <!-- Email -->
+            <div>
+              <label for="email" class="block mb-2 font-semibold">Email</label>
+              <input type="email" id="email" class="shadow-sm border border-gray-300 rounded-md p-2 w-full"
+                placeholder="Your Email">
+            </div>
+
+            <!-- Password -->
+            <div>
+              <label for="password" class="block mb-2 font-semibold">Password</label>
+              <input type="password" id="password" class="shadow-sm border border-gray-300 rounded-md p-2 w-full"
+                placeholder="**********">
+            </div>
+
+            <!-- Date of Birth -->
+            <div>
+              <label for="date_of_birth" class="block mb-2 font-semibold">Date Of Birth</label>
+              <input type="date" id="date_of_birth" class="shadow-sm border border-gray-300 rounded-md p-2 w-full"
+                placeholder="DD/MM/YYYY">
+            </div>
+
+            <!-- Username -->
+            <div>
+              <label for="username" class="block mb-2 font-semibold">Username</label>
+              <input type="text" id="username" class="shadow-sm border border-gray-300 rounded-md p-2 w-full"
+                placeholder="Your Username">
+            </div>
+
+            <!-- Back button -->
+            <button class="absolute left-10 bottom-5 mb-8 ml-8 bg-red-500 text-white font-semibold py-2 px-4 rounded">
+              Back
+            </button>
+
+          </div>
+        </section>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="./js/navbar.js"></script>
+</body>
+
+</html>
