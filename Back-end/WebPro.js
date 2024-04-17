@@ -7,12 +7,12 @@ const cors = require('cors'); //(Cross-Origin Resource Sharing)
 const port = 3040
 
 dotenv.config();
-app.use(express.static(path.join(__dirname, '../Front-end',  'public')));
-app.use('/image', express.static(path.join(__dirname, '../Front-end',  'image')));
-app.use('/css', express.static(path.join(__dirname, '../Front-end',  'css')));
+app.use(express.static(path.join(__dirname, '../Front-end', 'public')));
+app.use('/image', express.static(path.join(__dirname, '../Front-end', 'image')));
+app.use('/css', express.static(path.join(__dirname, '../Front-end', 'css')));
 app.use('/js', express.static(path.join(__dirname, '../Front-end', 'js')));
-app.use('/images', express.static(path.join(__dirname, '../Front-end',  'images')));
-app.use('/reference', express.static(path.join(__dirname, '../Front-end',  'reference')));
+app.use('/images', express.static(path.join(__dirname, '../Front-end', 'images')));
+app.use('/reference', express.static(path.join(__dirname, '../Front-end', 'reference')));
 
 app.use(cors());
 
@@ -48,6 +48,7 @@ router.get('/api/toppicks', (req, res) => {
                ORDER BY Reserve_count DESC`;
     connection.query(sql, function (error, results) {
         if (error) {
+            console.error('Error from Toppick');
             console.error('Error fetching data:', error);
             res.status(500).json({ error: 'Error fetching data' });
         } else {
@@ -62,6 +63,7 @@ router.get('/api/Category', (req, res) => {
                ORDER BY Category`;
     connection.query(sql, function (error, results) {
         if (error) {
+            console.error('Error from Category');
             console.error('Error fetching data:', error);
             res.status(500).json({ error: 'Error fetching data' });
         } else {
@@ -74,6 +76,7 @@ router.get('/api/search', (req, res) => {
     let sql = `select Restaurant_name,Province from Account_Restaurant where Restaurant_name like "%${searchword}%";`;
     connection.query(sql, function (error, results) {
         if (error) {
+            console.error('Error from search');
             console.error('Error fetching data:', error);
             console.log("Error!!!!!!")
             res.status(500).json({ error: 'Error fetching data' });
@@ -83,9 +86,34 @@ router.get('/api/search', (req, res) => {
         }
     });
 })
+router.post('/sign-in-summit', (req, res) => {
+    let sql = `select * from Account where Email = "${req.body.email}" AND Passwords = "${req.body.password}";`;
+    connection.query(sql, function (error, results) {
+        if (error) {
+            console.error('Error from signin');
+            console.error('Error fetching data:', error);
+            console.log("Error!!!!!!")
+            res.status(500).json({ error: 'Error fetching data' });
+        }
+        else {
+            console.log(results)
+            if (results.length > 0) {
+                res.redirect(path.join(`http://localhost:3030`));
+            }
+            else {
+                res.redirect(path.join(`http://localhost:3030/Login-Error`));
+            }
+            console.log("Complete!!!!!!")
+        }
+    });
 
+})
 
-
+router.post('/search-summit', (req, res) => {
+    console.log(req.body.searchdropdown)
+    searchword = req.body.searchdropdown
+    res.redirect(path.join(`http://localhost:3030/search`));
+})
 
 router.use((req, res, next) => {
     console.log(req.url)

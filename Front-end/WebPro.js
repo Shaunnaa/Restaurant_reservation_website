@@ -106,26 +106,16 @@ router.get('/search', (req, res) => {
     res.sendFile(path.join(`${__dirname}/html/SearchResult.html`))
 })
 
-router.post('/sign-in-summit', (req, res) => {
-    console.log('Requested at', req.url)
-    console.log('Form submitted by')
-    console.log(req.body.email, 'at')
-    console.log(Date.now())
-    res.status(200)
-    res.redirect(path.join(`/home`))
 
-})
+
+// })
 // router.get('/member', (req, res) => {
 //     console.log('Requested at', req.url)
 //     res.status(200)
 //     res.sendFile(path.join(`${__dirname}/success.html`))
 //     // console.log(`Server listening on port: ${port}`)
 // })
-router.post('/search-summit', (req, res) => {
-    console.log(req.body.searchdropdown)
-    searchword = req.body.searchdropdown
-    res.redirect(path.join(`/search`));
-})
+
 
 
 
