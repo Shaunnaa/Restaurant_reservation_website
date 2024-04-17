@@ -17,7 +17,8 @@ app.use('/reference', express.static(path.join(__dirname, '../Front-end', 'refer
 app.use(cors());
 
 let searchword = "";
-
+let RestaurantList = []
+let restuarantdetail = ""
 /*------------------------ Connect to database ------------------------*/
 const mysql = require('mysql2');
 var connection = mysql.createConnection
@@ -34,7 +35,22 @@ connection.connect(function (err) {
 
 const router = express.Router();
 app.use(router)
+// Initialize restaurantList
+let sql = `select Restaurant_name from Account_Restaurant;`;
+connection.query(sql, function (error, results) {
+    if (error) {
+        console.error('Error fetching data:', error);
+        console.log("Error!!!!!!")
+        res.status(500).json({ error: 'Error fetching data' });
+    } else {
 
+        for (let i = 0; i < results.length; i++) {
+            let str = results[i].Restaurant_name;
+            let newStr = str.replace(/\s+/g, '_');
+            RestaurantList.push(newStr);
+        }
+    }
+});
 // app.use(express.static('public'))
 router.use(express.json())
 router.use(express.urlencoded({ extended: true }))
@@ -86,6 +102,22 @@ router.get('/api/search', (req, res) => {
         }
     });
 })
+router.get('/api/detail', (req, res) => {
+    // console.log(data)
+    console.log("check")
+    let sql = `select Restaurant_name,Descriptions, Province, District, Subdistrict from Account_Restaurant where Restaurant_name = "${restuarantdetail}";`;
+    connection.query(sql, function (error, results) {
+        if (error) {
+            console.error('Error fetching data:', error);
+            console.log("Error!!!!!!")
+            res.status(500).json({ error: 'Error fetching data' });
+        } else {
+            console.log(results)
+            res.status(200).json(results);
+            console.log("Complete!!!!!!")
+        }
+    });
+});
 router.post('/sign-in-summit', (req, res) => {
     let sql = `select * from Account where Email = "${req.body.email}" AND Passwords = "${req.body.password}";`;
     connection.query(sql, function (error, results) {
@@ -114,7 +146,20 @@ router.post('/search-summit', (req, res) => {
     searchword = req.body.searchdropdown
     res.redirect(path.join(`http://localhost:3030/search`));
 })
-
+router.get('/restaurants', (req, res) => {
+    res.status(200).json(RestaurantList);
+})
+router.get('/api/:name', (req, res) => {
+    console.log("check")
+    restuarantdetail = req.params.name
+    restuarantdetail = restuarantdetail.split('_').join(' ')
+    if (RestaurantList.includes(req.params.name)) {
+        res.redirect(path.join(`http://localhost:3030/${req.params.name}`));
+    }
+    else {
+        res.redirect(path.join(`http://localhost:3030/Error}`));
+    }
+})
 router.use((req, res, next) => {
     console.log(req.url)
     console.log(__dirname)

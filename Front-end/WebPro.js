@@ -22,7 +22,21 @@ app.use(router)
 router.use(express.json())
 router.use(express.urlencoded({ extended: true }))
 
-
+// async function fetchData() {
+//     try {
+//         const response = await fetch('http://localhost:3040/restaurants');
+//         const data = await response.json();
+//         // console.log('Data received:', data);
+//         test = data;
+//         return data;
+//         // Use the fetched data here
+//     } catch (error) {
+//         console.error('Error fetching data:', error);
+//         // Handle the error here
+//     }
+// const response = await fetch(`http://localhost:3040/test`);
+// const data = await response.json(); // Change to .text() if data is plain text
+// }
 /* Login and sign in*/
 router.get('/login', (req, res) => {
     res.status(200)
@@ -44,22 +58,6 @@ router.get('/forget-password', (req, res) => {
     res.sendFile(path.join(`${__dirname}/html/ForgetPassword.html`))
 })
 
-router.post('/sign-in-summit', (req, res) => {
-    console.log('Requested at', req.url)
-    console.log('Form submitted by')
-    console.log(req.body.email, 'at')
-    let sql = `select Email from Account where Email = "${req.body.email}" and Passwords = "${req.body.password}";`
-    connection.query(sql, function (error, results) {
-        if (error) throw error;
-        else if (results.length == 0) {
-            return res.redirect(path.join(`/Login-Error`));
-        }
-        else {
-            console.log(req.body.email)
-            return res.redirect(path.join(`/`));
-        };
-    })
-})
 
 /* 2. Add routes */
 /* -------------------- Home page -------------------- */
@@ -106,18 +104,12 @@ router.get('/search', (req, res) => {
     res.sendFile(path.join(`${__dirname}/html/SearchResult.html`))
 })
 
+router.get('/:name', (req, res) => {
 
-
-// })
-// router.get('/member', (req, res) => {
-//     console.log('Requested at', req.url)
-//     res.status(200)
-//     res.sendFile(path.join(`${__dirname}/success.html`))
-//     // console.log(`Server listening on port: ${port}`)
-// })
-
-
-
+    console.log(req.params.name)
+    res.status(200)
+    res.sendFile(path.join(`${__dirname}/html/RestaurantDetailPage.html`))
+})
 
 router.use((req, res, next) => {
     console.log(req.url)
