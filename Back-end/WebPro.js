@@ -63,6 +63,7 @@ router.use(express.urlencoded({ extended: true }))
 
 /*------------------------ API Link database ------------------------*/
 
+/* -------------------- Toppick -------------------- */
 router.get('/api/toppicks', (req, res) => {
     let sql = `SELECT Restaurant_name, Province, Restaurant_image
                FROM Account_Restaurant
@@ -78,6 +79,7 @@ router.get('/api/toppicks', (req, res) => {
     });
 });
 
+/* -------------------- Category -------------------- */
 router.get('/api/Category', (req, res) => {
     let sql = `SELECT *
                FROM Restaurant_Category
@@ -93,6 +95,7 @@ router.get('/api/Category', (req, res) => {
     });
 });
 
+/* -------------------- search -------------------- */
 router.get('/api/search', (req, res) => {
     let sql = `select Restaurant_name,Province from Account_Restaurant where Restaurant_name like "%${searchword}%";`;
     connection.query(sql, function (error, results) {
@@ -107,6 +110,14 @@ router.get('/api/search', (req, res) => {
         }
     });
 })
+
+router.post('/search-summit', (req, res) => {
+    console.log(req.body.searchdropdown)
+    searchword = req.body.searchdropdown
+    res.redirect(path.join(`http://localhost:3030/search`));
+})
+
+/* -------------------- adv search -------------------- */
 router.get('/api/adv-search', (req, res) => {
     let sql = ''
     if (Adv[0] == '') {
@@ -134,32 +145,7 @@ router.get('/api/adv-search', (req, res) => {
     });
 })
 
-router.get('/api/adv-search', (req, res) => {
-    let sql = ''
-    if (Adv[0] == '') {
-        sql = `select Restaurant_name,Province from Account_Restaurant where Province = "${Adv[1]}"; `;
-    }
-    else if (Adv[1] == '') {
-        sql = `select Restaurant_name,Province from Account_Restaurant where Restaurant_name like "%${Adv[0]}%";`;
-    }
-    else if (Adv[0] == '' && Adv[1] == '') {
-        Adv = ["unknown", "unknown", "unknown"]
-    }
-    else {
-        sql = `select Restaurant_name,Province from Account_Restaurant where Restaurant_name like "%${Adv[0]}%" and Province = "${Adv[1]}"; `;
-    }
-    connection.query(sql, function (error, results) {
-        if (error) {
-            console.error('Error from search');
-            console.error('Error fetching data:', error);
-            console.log("Error!!!!!!")
-            res.status(500).json({ error: 'Error fetching data' });
-        } else {
-            res.status(200).json(results);
-            console.log("Complete!!!!!!")
-        }
-    });
-})
+/* -------------------- detail -------------------- */
 router.get('/api/detail', (req, res) => {
     // console.log(data)
     // console.log("check")
@@ -178,28 +164,29 @@ router.get('/api/detail', (req, res) => {
 });
 
 router.post('/sign-in-summit', (req, res) => {
-    const email = req.body.email;
-    const password = req.body.password;
-
-    // Use parameterized queries to prevent SQL injection
-    const sql = `SELECT * FROM Account WHERE Email = ? AND Passwords = ?;`;
-    connection.query(sql, [email, password], function (error, results) {
+    let sql = `select * from Account where Email = "${req.body.email}" AND Passwords = "${req.body.password}";`;
+    connection.query(sql, function (error, results) {
         if (error) {
+            console.error('Error from signin');
             console.error('Error fetching data:', error);
-            return res.status(500).json({ error: 'Error fetching data' });
+            console.log("Error!!!!!!")
+            res.status(500).json({ error: 'Error fetching data' });
         }
-
-        if (results.length === 0) {
-            // Handle the case where no account is found
-            return res.status(401).json({ error: 'Invalid email or password' });
+        else {
+            console.log(results)
+            if (results.length > 0) {
+                res.redirect(path.join(`http://localhost:3030`));
+            }
+            else {
+                res.redirect(path.join(`http://localhost:3030/Login-Error`));
+            }
+            console.log("Complete!!!!!!")
         }
-
-        // Redirect user if authentication is successful
-        const searchword = req.body.searchdropdown;
-        // Pass `searchword` as a query parameter in the redirect URL
-        res.redirect(`http://localhost:3030/search?query=${encodeURIComponent(searchword)}`);
     });
-});
+
+})
+
+
 
 router.post('/adv-search-summit', (req, res) => {
     // console.log(req.body.first_name)
@@ -212,18 +199,6 @@ router.post('/adv-search-summit', (req, res) => {
 
 router.get('/restaurants', (req, res) => {
     res.status(200).json(RestaurantList);
-})
-
-router.get('/api/:name', (req, res) => {
-    console.log("check")
-    restuarantdetail = req.params.name
-    restuarantdetail = restuarantdetail.split('_').join(' ')
-    if (RestaurantList.includes(req.params.name)) {
-        res.redirect(path.join(`http://localhost:3030/${req.params.name}`));
-    }
-    else {
-        res.redirect(path.join(`http://localhost:3030/Error}`));
-    }
 })
 
 router.get('/api/:name', (req, res) => {
