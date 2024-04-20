@@ -8,12 +8,12 @@ const googleMapsClient = require('@google/maps').createClient({ key: process.env
 const port = 3040
 
 dotenv.config();
-app.use(express.static(path.join(__dirname, '../Front-end',  'public')));
-app.use('/image', express.static(path.join(__dirname, '../Front-end',  'image')));
-app.use('/css', express.static(path.join(__dirname, '../Front-end',  'css')));
+app.use(express.static(path.join(__dirname, '../Front-end', 'public')));
+app.use('/image', express.static(path.join(__dirname, '../Front-end', 'image')));
+app.use('/css', express.static(path.join(__dirname, '../Front-end', 'css')));
 app.use('/js', express.static(path.join(__dirname, '../Front-end', 'js')));
-app.use('/images', express.static(path.join(__dirname, '../Front-end',  'images')));
-app.use('/reference', express.static(path.join(__dirname, '../Front-end',  'reference')));
+app.use('/images', express.static(path.join(__dirname, '../Front-end', 'images')));
+app.use('/reference', express.static(path.join(__dirname, '../Front-end', 'reference')));
 
 app.use(cors());
 
@@ -69,6 +69,7 @@ router.get('/api/toppicks', (req, res) => {
                ORDER BY Reserve_count DESC`;
     connection.query(sql, function (error, results) {
         if (error) {
+            console.error('Error from Toppick');
             console.error('Error fetching data:', error);
             res.status(500).json({ error: 'Error fetching data' });
         } else {
@@ -83,6 +84,7 @@ router.get('/api/Category', (req, res) => {
                ORDER BY Category`;
     connection.query(sql, function (error, results) {
         if (error) {
+            console.error('Error from Category');
             console.error('Error fetching data:', error);
             res.status(500).json({ error: 'Error fetching data' });
         } else {
@@ -95,6 +97,33 @@ router.get('/api/search', (req, res) => {
     let sql = `select Restaurant_name,Province from Account_Restaurant where Restaurant_name like "%${searchword}%";`;
     connection.query(sql, function (error, results) {
         if (error) {
+            console.error('Error from search');
+            console.error('Error fetching data:', error);
+            console.log("Error!!!!!!")
+            res.status(500).json({ error: 'Error fetching data' });
+        } else {
+            res.status(200).json(results);
+            console.log("Complete!!!!!!")
+        }
+    });
+})
+router.get('/api/adv-search', (req, res) => {
+    let sql = ''
+    if (Adv[0] == '') {
+        sql = `select Restaurant_name,Province from Account_Restaurant where Province = "${Adv[1]}"; `;
+    }
+    else if (Adv[1] == '') {
+        sql = `select Restaurant_name,Province from Account_Restaurant where Restaurant_name like "%${Adv[0]}%";`;
+    }
+    else if (Adv[0] == '' && Adv[1] == '') {
+        Adv = ["unknown", "unknown", "unknown"]
+    }
+    else {
+        sql = `select Restaurant_name,Province from Account_Restaurant where Restaurant_name like "%${Adv[0]}%" and Province = "${Adv[1]}"; `;
+    }
+    connection.query(sql, function (error, results) {
+        if (error) {
+            console.error('Error from search');
             console.error('Error fetching data:', error);
             console.log("Error!!!!!!")
             res.status(500).json({ error: 'Error fetching data' });
