@@ -273,6 +273,22 @@ function geocodeLatLng(lat, lng, callback) {
 
 
 
+router.get('/admin-accounts', (req, res) => {
+    const sql = 'SELECT * FROM Account_Admin;';
+    console.log('check')
+    connection.query(sql, (err, results) => {
+      if (err) {
+        console.error('Error fetching admin accounts:', err);
+        res.status(500).json({ error: 'Error fetching admin accounts' });
+        return;
+      }
+      else{
+        console.log(results)
+        res.json(results);
+      }
+      
+    });
+  });
 
 
 
@@ -284,5 +300,11 @@ router.use((req, res, next) => {
     res.sendFile(path.join(`${__dirname}/reference/error.html`));
 })
 
+
+
+
+  
+
 app.listen(port, () => {
+
 })

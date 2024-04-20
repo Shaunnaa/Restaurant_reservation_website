@@ -24,27 +24,21 @@
             <div>
                 <h1 class="text-4xl">ADMIN</h1>
             </div>
-
             <div class = "flex space-x-10">
                 <button class=" text-black rounded-md p-2">Admin Accounts</button>
                 <button>Restaurant Accounts</button>
                 <button>User Accounts</button>
             </div>
-
             <div class="w-full bg-white rounded-lg shadow  border border-2 border-gray-300">
-                <h1 class="text-2xl text-left font-medium tracking-tight text-gray-900 mb-5 ml-3 mt-3">Add New Admin Account</h1>
-                <label for="Username" class="block mb-5 ml-3 mt-3 text-sm font-medium text-gray-900">Username:</label>
-                <input style = "padding-right: 400px;" type="text" name="Username" id="Username" placeholder="Username" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 mb-5 ml-3"  required="">
-                
-                <label for="Passwrod" class="block mb-5 ml-3 mt-3 text-sm font-medium text-gray-900">Passwrod:</label>
-                <input style = "padding-right: 400px;" type="text" name="Passwrod" id="Passwrod" placeholder="Passwrod" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 mb-5 ml-3"  required="">
-                <button class="bg-red-500 text-white rounded-md p-2 ml-3 mb-3">Add Restaurant</button>
+                <!-- <h1 class="text-2xl text-left font-medium tracking-tight text-gray-900 mb-5 ml-3 mt-3">Add New Admin Account</h1> -->
+                <button class="bg-red-500 text-white rounded-md p-2 mb-3 ml-3 mt-3">Add New Admin Account</button>
             </div>
             
+
+            <h1 class="text-2xl text-left">Administration Accounts</h1>
             
-            
-            <h1 class="text-2xl text-left">Restaurant Accounts</h1>
-            <table class="border-collapse border border-gray-300 w-full text-center">
+
+            <table id="adminAccountsTable" class="border-collapse border border-gray-300 w-full text-center">
                 <thead>
                     <tr class="bg-gray-100">
                         <th class="border border-gray-300 p-2">ID</th>
@@ -55,48 +49,44 @@
                         <th class="border border-gray-300 p-2">Action</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr class="text-center">
-                        <td class="border border-gray-300 p-2">00001</td>
-                        <td class="border border-gray-300 p-2">Admin1</td>
-                        <td class="border border-gray-300 p-2">Admin1@gmail.com</td>
-                        <td class="border border-gray-300 p-2">blabla</td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2">
-                            <button class="bg-red-500 text-white rounded-md p-2">See</button>
-                            <button class="bg-red-500 text-white rounded-md p-2">Edit</button>
-                            <button class="bg-red-500 text-white rounded-md p-2">Delete</button>
-                        </td>
-                    </tr>
-                    <!-- Add more rows as needed -->
-                    <tr class="text-center">
-                        <td class="border border-gray-300 p-2">00002</td>
-                        <td class="border border-gray-300 p-2">Admin2</td>
-                        <td class="border border-gray-300 p-2">Admin2@gmail.com</td>
-                        <td class="border border-gray-300 p-2">blabla</td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2">
-                            <button class="bg-red-500 text-white rounded-md p-2">See</button>
-                            <button class="bg-red-500 text-white rounded-md p-2">Edit</button>
-                            <button class="bg-red-500 text-white rounded-md p-2">Delete</button>
-                        </td>
-                    </tr>
-                    <tr class="text-center">
-                        <td class="border border-gray-300 p-2">00003</td>
-                        <td class="border border-gray-300 p-2">Admin3</td>
-                        <td class="border border-gray-300 p-2">Admin3@gmail.com</td>
-                        <td class="border border-gray-300 p-2">blaba</td>
-                        <td class="border border-gray-300 p-2"></td>
-                        <td class="border border-gray-300 p-2">
-                            <button class="bg-red-500 text-white rounded-md p-2">See</button>
-                            <button class="bg-red-500 text-white rounded-md p-2">Edit</button>
-                            <button class="bg-red-500 text-white rounded-md p-2">Delete</button>
-                        </td>
-                    </tr>
-
+                <tbody id="adminAccounts">
+                    <!-- Admin accounts will be listed here dynamically -->
                 </tbody>
             </table>
+            
         </main>
+        <script>
+            // Fetch admin accounts from server and display them
+            fetch('http://localhost:3040/admin-accounts')
+                .then(response => response.json())
+                .then(adminAccounts => {
+                    const adminAccountsTable = document.getElementById('adminAccounts');
+                    adminAccountsTable.innerHTML = '';
+
+        
+
+                    adminAccounts.forEach(admin => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                        <tr class="text-center">
+                            <td class="border border-gray-300 p-2">${admin.AID}</td>
+                            <td class="border border-gray-300 p-2">${admin.username}</td>
+                            <td class="border border-gray-300 p-2">${admin.email}</td>
+                            <td class="border border-gray-300 p-2">${admin.passwords}</td>
+                            <td class="border border-gray-300 p-2"></td>
+                            <td class="border border-gray-300 p-2">
+                                <button class="bg-red-500 text-white rounded-md p-2">See</button>
+                                <button class="bg-red-500 text-white rounded-md p-2">Edit</button>
+                                <button class="bg-red-500 text-white rounded-md p-2">Delete</button>
+                            </td>
+                        </tr>
+                        `;
+                        adminAccountsTable.appendChild(row);
+                    });
+            })
+            .catch(error => console.error('Error fetching admin accounts:', error));
+
+        </script>
 
         <footer>
             <footer-component></footer-component>

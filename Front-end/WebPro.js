@@ -48,6 +48,16 @@ router.get('/Login-Error', (req, res) => {
     res.sendFile(path.join(`${__dirname}/html/LoginError.html`))
 })
 
+router.get('/Admin_management', (req, res) => {
+    res.status(200)
+    res.sendFile(path.join(`${__dirname}/html/Admin_Management_For_Admin.html`))
+})
+
+router.get('/restaurant_management', (req, res) => {
+    res.status(200)
+    res.sendFile(path.join(`${__dirname}/html/Restaurnt_Management_For_Admin.html`))
+})
+
 // router.get('/sign-up', (req, res) => {
 //     res.status(200)
 //     res.sendFile(path.join(`${__dirname}/sign-in.html`))
@@ -122,6 +132,8 @@ router.get('/:name', (req, res) => {
     res.status(200)
     res.sendFile(path.join(`${__dirname}/html/RestaurantDetailPage.html`))
 })
+
+
 
 
 
