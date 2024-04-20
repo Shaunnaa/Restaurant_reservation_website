@@ -126,7 +126,11 @@
                 <button type="submit"
                     class="text-white bg-blue-700 mt-6 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Submit</button>
             </form>
-
+            <div class="p-2">
+                <br>
+                <h5 class="mb-9 text-5xl text-center font-bold tracking-tight text-gray-900">Search
+                    Result</h5>
+            </div>
             <div id="search-container" class="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 gap-12"></div>
 
         </article>
@@ -148,7 +152,7 @@
                     const section = document.createElement('section');
                     section.className = 'max-w-64 bg-white border border-gray rounded-3xl shadow';
                     section.innerHTML = `
-                            <a href="#">
+                            <a href="http://localhost:3040/api/${item.Restaurant_name.split(' ').join('_')}">
                                 <img class="rounded-3xl w-full h-auto" src="../image/Restaurant1.png" alt="" />
                                 <div class="p-5">
                                     <h5 class="mb-2 text-2xl text-center font-bold tracking-tight text-gray-900">${item.Restaurant_name}</h5>
