@@ -26,16 +26,14 @@
     <main class="grid place-items-center gap-11 px-9 pb-9 pt-32">
         <!--place-items-center = Set the gird in to the center | gap-9 = 36 px| p-9 = padding all 36px-->
         <!--Advertising (First box)-->
-        <article
-            class="Box_section bg-white border border-black rounded-3xl shadow">
+        <article class="Box_section bg-white border border-black rounded-3xl shadow">
             <a href="#">
                 <img class="rounded-3xl w-full h-auto" src="../image/Advertising.png" alt="" />
             </a>
         </article>
 
         <!--Top Pick (Second box)-->
-        <article
-            class="Box_section bg-white border border-black rounded-3xl shadow px-12 pt-6 pb-3">
+        <article class="Box_section bg-white border border-black rounded-3xl shadow px-12 pt-6 pb-3">
             <!--Topic-->
             <div class="p-2">
                 <a href="./TopPick">
@@ -46,14 +44,13 @@
             <!--Restaurant group of 5-->
             <div id="toppicks-group" class="grid grid-cols-5 gap-12">
                 <!--Restaurant No.1-->
-                
+
 
             </div>
         </article>
 
         <!--Close To You (Third box)-->
-        <article
-            class="Box_section bg-white border border-black rounded-3xl shadow px-12 pt-6 pb-3">
+        <article class="Box_section bg-white border border-black rounded-3xl shadow px-12 pt-6 pb-3">
             <!--Topic-->
             <div class="p-2">
                 <a href="./CloseToYou.html">
@@ -68,8 +65,7 @@
                     <a href="#">
                         <img class="rounded-3xl w-full h-auto" src="../image/Restaurant1.png" alt="" />
                         <div class="p-5">
-                            <h5
-                                class="mb-2 text-2xl text-center font-bold tracking-tight text-gray-900">
+                            <h5 class="mb-2 text-2xl text-center font-bold tracking-tight text-gray-900">
                                 Savor & Sage</h5>
                         </div>
                     </a>
@@ -80,8 +76,7 @@
                     <a href="#">
                         <img class="rounded-3xl w-full h-auto" src="../image/Restaurant1.png" alt="" />
                         <div class="p-5">
-                            <h5
-                                class="mb-2 text-2xl text-center font-bold tracking-tight text-gray-900">
+                            <h5 class="mb-2 text-2xl text-center font-bold tracking-tight text-gray-900">
                                 Savor & Sage</h5>
                         </div>
                     </a>
@@ -92,8 +87,7 @@
                     <a href="#">
                         <img class="rounded-3xl w-full h-auto" src="../image/Restaurant1.png" alt="" />
                         <div class="p-5">
-                            <h5
-                                class="mb-2 text-2xl text-center font-bold tracking-tight text-gray-900">
+                            <h5 class="mb-2 text-2xl text-center font-bold tracking-tight text-gray-900">
                                 Savor & Sage</h5>
                         </div>
                     </a>
@@ -104,8 +98,7 @@
                     <a href="#">
                         <img class="rounded-3xl w-full h-auto" src="../image/Restaurant1.png" alt="" />
                         <div class="p-5">
-                            <h5
-                                class="mb-2 text-2xl text-center font-bold tracking-tight text-gray-900">
+                            <h5 class="mb-2 text-2xl text-center font-bold tracking-tight text-gray-900">
                                 Savor & Sage</h5>
                         </div>
                     </a>
@@ -116,8 +109,7 @@
                     <a href="#">
                         <img class="rounded-3xl w-full h-auto" src="../image/Restaurant1.png" alt="" />
                         <div class="p-5">
-                            <h5
-                                class="mb-2 text-2xl text-center font-bold tracking-tight text-gray-900">
+                            <h5 class="mb-2 text-2xl text-center font-bold tracking-tight text-gray-900">
                                 Savor & Sage</h5>
                         </div>
                     </a>
@@ -138,13 +130,13 @@
             .then(data => {
                 // Update HTML content dynamically with fetched data
                 const container = document.getElementById('toppicks-group');
-                for (let i=0; i<5; i++) {
+                for (let i = 0; i < 5; i++) {
                     const item = data[i]
                     const section = document.createElement('section');
                     section.className = 'max-w-64 bg-white';
                     section.innerHTML = `
                     <section class="">
-                        <a href="#">
+                        <a href="http://localhost:3040/api/${item.Restaurant_name.split(' ').join('_')}">
                             <img class="rounded-3xl w-full h-auto" src="https://lh3.googleusercontent.com/d/${item.Restaurant_image}" alt="" />
                             <div class="p-5">
                                 <h5 class="mb-2 text-2xl text-center font-bold tracking-tight text-gray-900">${item.Restaurant_name}</h5>
