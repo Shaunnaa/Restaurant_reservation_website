@@ -106,6 +106,18 @@ router.get('/search', (req, res) => {
     res.sendFile(path.join(`${__dirname}/html/SearchResult.html`))
 })
 
+router.get('/adv-search', (req, res) => {
+    res.status(200)
+    res.sendFile(path.join(`${__dirname}/html/Adv_Search.html`))
+})
+
+router.get('/:name', (req, res) => {
+
+    console.log(req.params.name)
+    res.status(200)
+    res.sendFile(path.join(`${__dirname}/html/RestaurantDetailPage.html`))
+})
+
 router.post('/sign-in-summit', (req, res) => {
     console.log('Requested at', req.url)
     console.log('Form submitted by')
