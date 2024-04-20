@@ -10,8 +10,8 @@ app.use(express.static(path.join(__dirname, '/public')));
 app.use('/image', express.static(path.join(__dirname, '/image')));
 app.use('/css', express.static(path.join(__dirname, '/css')));
 app.use('/js', express.static(path.join(__dirname, '/js')));
-app.use('/images', express.static(path.join(__dirname, '/images')));
-app.use('/reference', express.static(path.join(__dirname, '/reference')));
+// app.use('/images', express.static(path.join(__dirname, '/images')));
+// app.use('/reference', express.static(path.join(__dirname, '/reference')));
 
 /* 1. Create a router object and register the router */
 
@@ -103,7 +103,10 @@ router.get('/search', (req, res) => {
     res.status(200)
     res.sendFile(path.join(`${__dirname}/html/SearchResult.html`))
 })
-
+router.get('/adv-search', (req, res) => {
+    res.status(200)
+    res.sendFile(path.join(`${__dirname}/html/Adv_Search.html`))
+})
 router.get('/:name', (req, res) => {
 
     console.log(req.params.name)

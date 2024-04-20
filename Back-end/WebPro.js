@@ -19,6 +19,7 @@ app.use(cors());
 let searchword = "";
 let RestaurantList = []
 let restuarantdetail = ""
+let Adv = ["", "", ""]
 /*------------------------ Connect to database ------------------------*/
 const mysql = require('mysql2');
 var connection = mysql.createConnection
@@ -102,9 +103,35 @@ router.get('/api/search', (req, res) => {
         }
     });
 })
+router.get('/api/adv-search', (req, res) => {
+    let sql = ''
+    if (Adv[0] == '') {
+        sql = `select Restaurant_name,Province from Account_Restaurant where Province = "${Adv[1]}"; `;
+    }
+    else if (Adv[1] == '') {
+        sql = `select Restaurant_name,Province from Account_Restaurant where Restaurant_name like "%${Adv[0]}%";`;
+    }
+    else if (Adv[0] == '' && Adv[1] == '') {
+        Adv = ["unknown", "unknown", "unknown"]
+    }
+    else {
+        sql = `select Restaurant_name,Province from Account_Restaurant where Restaurant_name like "%${Adv[0]}%" and Province = "${Adv[1]}"; `;
+    }
+    connection.query(sql, function (error, results) {
+        if (error) {
+            console.error('Error from search');
+            console.error('Error fetching data:', error);
+            console.log("Error!!!!!!")
+            res.status(500).json({ error: 'Error fetching data' });
+        } else {
+            res.status(200).json(results);
+            console.log("Complete!!!!!!")
+        }
+    });
+})
 router.get('/api/detail', (req, res) => {
     // console.log(data)
-    console.log("check")
+    // console.log("check")
     let sql = `select Restaurant_name,Descriptions, Province, District, Subdistrict from Account_Restaurant where Restaurant_name = "${restuarantdetail}";`;
     connection.query(sql, function (error, results) {
         if (error) {
@@ -145,6 +172,14 @@ router.post('/search-summit', (req, res) => {
     console.log(req.body.searchdropdown)
     searchword = req.body.searchdropdown
     res.redirect(path.join(`http://localhost:3030/search`));
+})
+router.post('/adv-search-summit', (req, res) => {
+    // console.log(req.body.first_name)
+    Adv[0] = req.body.last_name
+    Adv[1] = req.body.company
+    Adv[2] = req.body.datetime
+    console.log(Adv)
+    res.redirect(path.join(`http://localhost:3030/adv-search`));
 })
 router.get('/restaurants', (req, res) => {
     res.status(200).json(RestaurantList);
