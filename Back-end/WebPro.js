@@ -20,7 +20,7 @@ app.use(cors());
 let searchword = "";
 let RestaurantList = []
 let restuarantdetail = ""
-let Adv = ["", "", ""]
+let Adv = ["", "", "", ""]
 
 /*------------------------ Connect to database ------------------------*/
 const mysql = require('mysql2');
@@ -97,7 +97,9 @@ router.get('/api/Category', (req, res) => {
 
 /* -------------------- search -------------------- */
 router.get('/api/search', (req, res) => {
-    let sql = `select Restaurant_name,Province from Account_Restaurant where Restaurant_name like "%${searchword}%";`;
+    let sql = `SELECT Restaurant_name, Restaurant_image,Province 
+               FROM Account_Restaurant 
+               WHERE Restaurant_name like "%${searchword}%";`;
     connection.query(sql, function (error, results) {
         if (error) {
             console.error('Error from search');
@@ -114,24 +116,44 @@ router.get('/api/search', (req, res) => {
 router.post('/search-summit', (req, res) => {
     console.log(req.body.searchdropdown)
     searchword = req.body.searchdropdown
-    res.redirect(path.join(`http://localhost:3030/search`));
+    res.redirect(`http://localhost:3030/search`);
 })
 
 /* -------------------- adv search -------------------- */
 router.get('/api/adv-search', (req, res) => {
-    let sql = ''
-    if (Adv[0] == '') {
-        sql = `select Restaurant_name,Province from Account_Restaurant where Province = "${Adv[1]}"; `;
+    let sql = `SELECT Restaurant_name, Restaurant_image, Province 
+               FROM Account_Restaurant`;
+    if (Adv[1] == '' && Adv[2] == '' && Adv[3] == undefined) {
+        sql = sql + ` WHERE Category = "${Adv[0]}";`;
     }
-    else if (Adv[1] == '') {
-        sql = `select Restaurant_name,Province from Account_Restaurant where Restaurant_name like "%${Adv[0]}%";`;
+    else if (Adv[0] == undefined && Adv[2] == '' && Adv[3] == undefined) {
+        sql = sql + ` WHERE Restaurant_name like "%${Adv[1]}%";`;
     }
-    else if (Adv[0] == '' && Adv[1] == '') {
-        Adv = ["unknown", "unknown", "unknown"]
+    else if (Adv[0] == undefined && Adv[1] == '' && Adv[3] == undefined) {
+        sql = sql + ` WHERE Province = "${Adv[2]}";`;
+    }
+    // else if (Adv[0] == '' && Adv[1] == '' && Adv[2] == '') {
+    //     sql = `select Restaurant_name,Province from Account_Restaurant where Province = "${Adv[3]}"; `;
+    // }
+    else if (Adv[2] == '' && Adv[3] == undefined) {
+        sql = sql + ` WHERE Category = "%${Adv[0]}%" and Restaurant_name like "%${Adv[1]}%";`;
+    }
+    else if (Adv[0] == undefined && Adv[3] == undefined) {
+        sql = sql + ` WHERE Restaurant_name like "%${Adv[1]}%" and Province = "${Adv[2]}";`;
+    }
+    // else if (Adv[0] == undefined && Adv[1] == '') {
+    //     sql = sql + ` WHERE Province = "${Adv[2]}" and Province = "${Adv[3]}";`;
+    // }
+    else if (Adv[1] == '' && Adv[3] == undefined) {
+        sql = sql + ` WHERE  Category = "%${Adv[0]}%"" and Province = "${Adv[2]}";`;
+    }
+    else if (Adv[3] == undefined) {
+        sql = sql + ` WHERE Category = "%${Adv[0]}%" and Restaurant_name like "%${Adv[1]}%" and Province = "${Adv[2]}"; `;
     }
     else {
-        sql = `select Restaurant_name,Province from Account_Restaurant where Restaurant_name like "%${Adv[0]}%" and Province = "${Adv[1]}"; `;
+        Adv = ["unknown", "unknown", "unknown", "unknown"]
     }
+
     connection.query(sql, function (error, results) {
         if (error) {
             console.error('Error from search');
@@ -143,6 +165,17 @@ router.get('/api/adv-search', (req, res) => {
             console.log("Complete!!!!!!")
         }
     });
+})
+
+router.post('/adv-search-summit', (req, res) => {
+    // console.log(req.body.first_name)
+    Adv[0] = req.body.Category
+    Adv[1] = req.body.RestaurantName
+    Adv[2] = req.body.Location
+    Adv[3] = req.body.datetime
+    console.log(Adv)
+    // res.redirect(path.join(`http://localhost:3030/adv-search`));
+    res.redirect(`http://localhost:3030/adv-search`);
 })
 
 /* -------------------- detail -------------------- */
@@ -186,16 +219,6 @@ router.post('/sign-in-summit', (req, res) => {
 
 })
 
-
-
-router.post('/adv-search-summit', (req, res) => {
-    // console.log(req.body.first_name)
-    Adv[0] = req.body.last_name
-    Adv[1] = req.body.company
-    Adv[2] = req.body.datetime
-    console.log(Adv)
-    res.redirect(path.join(`http://localhost:3030/adv-search`));
-})
 
 router.get('/restaurants', (req, res) => {
     res.status(200).json(RestaurantList);
@@ -303,7 +326,7 @@ router.use((req, res, next) => {
 
 
 
-  
+
 
 app.listen(port, () => {
 
