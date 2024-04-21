@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path')
 const app = express();
 const dotenv = require("dotenv")
+const cors = require('cors'); //(Cross-Origin Resource Sharing)
 
 const port = 3030
 
@@ -14,7 +15,7 @@ app.use('/js', express.static(path.join(__dirname, '/js')));
 // app.use('/reference', express.static(path.join(__dirname, '/reference')));
 
 /* 1. Create a router object and register the router */
-
+app.use(cors());
 
 const router = express.Router();
 app.use(router)
@@ -114,10 +115,12 @@ router.get('/search', (req, res) => {
     res.status(200)
     res.sendFile(path.join(`${__dirname}/html/SearchResult.html`))
 })
+
 router.get('/adv-search', (req, res) => {
     res.status(200)
     res.sendFile(path.join(`${__dirname}/html/Adv_Search.html`))
 })
+
 router.get('/:name', (req, res) => {
     console.log(req.params.name)
     res.status(200)

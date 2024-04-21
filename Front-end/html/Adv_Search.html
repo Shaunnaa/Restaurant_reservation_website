@@ -27,41 +27,24 @@
         <article class="Box_section bg-white  px-12 pt-6 pb-3">
 
             <form action="http://localhost:3040/adv-search-summit" method="post">
-                <div class="mb-6" name="first_name">
-                    <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900">Category</label>
+                <!---------- Category ---------->
+                <div class="mb-6" name="name">
+                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Category</label>
 
-                    <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown"
-                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
-                        type="button">Dropdown button <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m1 1 4 4 4-4" />
-                        </svg>
+                    <button id="dropdownDefaultButton" 
+                            data-dropdown-toggle="dropdown"
+                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
+                            type="button">
+                            Choose the category
+                            <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"d="m1 1 4 4 4-4" />
+                            </svg>
                     </button>
 
                     <!-- Dropdown menu -->
                     <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
-                        <!-- <select class="form-select" name="picker" class="py-2 text-sm text-gray-700"
-                            aria-labelledby="dropdownDefaultButton">
-                            <option value="" selected>Select</option>
-                            <option value="Proffesor">Proffesor</option>
-                            <option value="Associate Proffessor">Associate Proffessor</option>
-                            <option value="Lab Assistan">Lab Assistant</option>
-                        </select> -->
-                        <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownDefaultButton">
-                            <li>
-                                <!-- <option value="Dashboard" selected>Dashboard</option> -->
-                                <a href="#" value="Dashboard" class="block px-4 py-2 hover:bg-gray-100">Dashboard</a>
-                            </li>
-                            <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Settings</a>
-                            </li>
-                            <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Earnings</a>
-                            </li>
-                            <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Sign out</a>
-                            </li>
+                        <ul id="Category" class="py-2 text-sm text-gray-700" aria-labelledby="dropdownDefaultButton">
+                            <!-- Information from API script-->
                         </ul>
                     </div>
 
@@ -77,23 +60,63 @@
                         });
                     </script>
 
+                    <script>
+                        // Add click event listeners to each list item in the dropdown menu
+                        function addClickListenerToDropdownItems() {
+                            const items = dropdownMenu.getElementsByTagName('li');
+                            for (let i = 0; i < items.length; i++) {
+                                items[i].addEventListener('click', function () {
+                                    // Update the button text with the selected category and keep the SVG icon
+                                    dropdownButton.innerHTML = `
+                                        ${items[i].textContent}
+                                        <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"d="m1 1 4 4 4-4" />
+                                        </svg>
+                                    `;
+                                    // Close the dropdown menu
+                                    dropdownMenu.classList.add('hidden');
+                                });
+                            }
+                        }
+
+                        fetch('http://localhost:3040/api/Category')
+                            .then(response => response.json())
+                            .then(data => {
+                                const container = document.getElementById('Category');
+                                data.forEach(item => {
+                                    const li = document.createElement('li');
+                                    li.innerHTML = `
+                                        <li value="${item.Category}" name="${item.Category}" class="block px-4 py-2 hover:bg-gray-100" selected>${item.Category}</li>
+                                    `;
+                                    container.appendChild(li);
+                                });
+                                 // Add click event listener to the dropdown items
+                                addClickListenerToDropdownItems();
+                            })
+                            .catch(error => {
+                                console.error('Error fetching data:', error);
+                                // Handle error
+                            });
+                    </script>
                 </div>
 
+                <!---------- Restaurant name ---------->
                 <div class="mb-6">
-                    <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900">Title</label>
-                    <input type="text" id="last_name" name="last_name"
+                    <label for="RestaurantName" class="block mb-2 text-sm font-medium text-gray-900">Restaurant name</label>
+                    <input type="text" id="RestaurantName" name="RestaurantName"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         placeholder="Doe" />
                 </div>
 
+                <!---------- Location ---------->
                 <div class="mb-6">
-                    <label for="company" class="block mb-2 text-sm font-medium text-gray-900">Location</label>
-                    <input type="text" id="company" name="company"
+                    <label for="Location" class="block mb-2 text-sm font-medium text-gray-900">Location</label>
+                    <input type="text" id="Location" name="Location"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         placeholder="Flowbite" />
                 </div>
 
-                <!-- Data and time picker-->
+                <!---------- Data and time picker---------->
                 <div x-data
                     x-init="flatpickr($refs.datetimewidget, {wrap: true, enableTime: true, dateFormat: 'M j, Y h:i K'});"
                     x-ref="datetimewidget" class="flatpickr container mx-auto col-span-6 sm:col-span-6 mt-5">
@@ -124,14 +147,18 @@
                 <!--End - Data and time picker-->
 
                 <button type="submit"
-                    class="text-white bg-blue-700 mt-6 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Submit</button>
+                    class="text-white bg-blue-700 mt-6 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
+                    Submit</button>
             </form>
+
             <div class="p-2">
                 <br>
-                <h5 class="mb-9 text-5xl text-center font-bold tracking-tight text-gray-900">Search
-                    Result</h5>
+                <h5 class="mb-9 text-5xl text-center font-bold tracking-tight text-gray-900">Search Result</h5>
             </div>
-            <div id="search-container" class="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 gap-12"></div>
+
+            <div id="search-container" class="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 gap-12">
+                <!-- Information from API script-->
+            </div>
 
         </article>
 
@@ -170,7 +197,8 @@
                     section.className = 'max-w-64 bg-white border border-gray rounded-3xl shadow';
                     section.innerHTML = `
                             <a href="http://localhost:3040/api/${item.Restaurant_name.split(' ').join('_')}">
-                                <img class="rounded-3xl w-full h-auto" src="../image/Restaurant1.png" alt="" />
+                                <img class="rounded-3xl w-full h-auto" src="https://lh3.googleusercontent.com/d/${item.Restaurant_image}" alt="" />
+                                
                                 <div class="p-5">
                                     <h5 class="mb-2 text-2xl text-center font-bold tracking-tight text-gray-900">${item.Restaurant_name}</h5>
                                     <h5 class="mb-2 text-xl text-center font-medium  tracking-tight text-gray-900">${item.Province}</h5>
@@ -185,6 +213,8 @@
                 // Handle error
             });
     </script>
+    
+    <script src="../js/navbar.js"></script>
     <script src="../js/footer.js"></script>
 </body>
 
