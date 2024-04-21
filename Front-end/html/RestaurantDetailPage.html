@@ -29,8 +29,9 @@
             <section class="flex flex-col items-center px-6 py-8 mx-auto lg:py-0">
                 <div class="grid grid-cols-2 bg-white rounded-lg shadow md:mt-0 sm:max-w-4xl xl:p-0 place-items-center">
 
-                    <div class="w-full p-6 space-y-4 md:space-y-6 sm:p-8">
-                        <img class="w-full rounded-2xl shadow-md" src="../image/Pic.png" alt="">
+                    <div id='image' class="w-full p-6 space-y-4 md:space-y-6 sm:p-8">
+                        <!-- <img id="image" alt=""> -->
+                        <!-- <img class="w-full rounded-2xl shadow-md" src="../image/Pic.png" alt=""> -->
                     </div>
 
                     <section
@@ -45,9 +46,10 @@
                                 <h5>Address:</h5>
                                 <h5 id="address"></h5>
                             </div>
-                            <div class="p-2">
-                                <button type="submit"
-                                    class="w-full text-white bg-red-500 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-lg px-5 py-2.5 text-center">Reserve</button>
+                            <div id='reserve' class="p-2">
+
+                                <!-- <button type="submit"
+                                    class="w-full text-white bg-red-500 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-lg px-5 py-2.5 text-center">Reserve</button> -->
                             </div>
                             <div class="p-2 text-center text-yellow-500 text-3xl">
                                 <ion-icon name="star"></ion-icon>
@@ -62,7 +64,7 @@
                                 <div class="p-4">
                                     <div class="flex flex-row">
                                         <img class="w-10 h-10 p-1 rounded-full ring-2 ring-gray-300"
-                                            src="../images/people/profile-picture-5.jpg" alt="Bordered avatar">
+                                            src="../image/profile.jpg" alt="Bordered avatar">
                                         <h5>User001</h5>
                                     </div>
                                     <section
@@ -117,12 +119,49 @@
         <footer-component></footer-component>
     </footer>
 
-    <script src="../js/navbar.js"></script>
+    <script>
+        let status = 0
+        fetch('http://localhost:3040/status-check')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                status = data
+                if (status == 0) {
+                    const script = document.createElement('script');
+                    script.src = "../js/navbar.js";
+                    document.head.appendChild(script);
+                } else {
+                    const script = document.createElement('script');
+                    script.src = "../js/navbar2.js";
+                    document.head.appendChild(script);
+                }
+            })
+    </script>
+    <!-- <script src="../js/navbar.js"></script> -->
     <script>// Fetch data from the API endpoint
         fetch('http://localhost:3040/api/detail')
             .then(response => response.json())
             .then(data => {
                 // Update HTML content dynamically with fetched data
+                const Image = document.getElementById('image');
+                data.forEach(item => {
+                    const image = document.createElement('div');
+                    image.innerHTML = `
+                    <img class="rounded-3xl w-full h-auto" src="https://lh3.googleusercontent.com/d/${item.Restaurant_image}" alt="" />
+                            `;
+                    Image.appendChild(image);
+                })
+                const Reserve = document.getElementById('reserve');
+                data.forEach(item => {
+                    const reserve = document.createElement('div');
+                    reserve.innerHTML = `
+                    <a href="./${item.Restaurant_name.split(' ').join('_')}/reservation" >
+                        <button type="submit"
+                                    class="w-full text-white bg-red-500 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-lg px-5 py-2.5 text-center">Reserve</button>
+                </a>
+                            `;
+                    Reserve.appendChild(reserve);
+                })
                 const Name = document.getElementById('name');
                 data.forEach(item => {
                     const name = document.createElement('h3');

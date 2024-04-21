@@ -168,8 +168,24 @@
         <footer-component></footer-component>
     </footer>
 
-    
-
+    <script>
+        let status = 0
+        fetch('http://localhost:3040/status-check')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                status = data
+                if (status == 0) {
+                    const script = document.createElement('script');
+                    script.src = "../js/navbar.js";
+                    document.head.appendChild(script);
+                } else {
+                    const script = document.createElement('script');
+                    script.src = "../js/navbar2.js";
+                    document.head.appendChild(script);
+                }
+            })
+    </script>
     <script>// Fetch data from the API endpoint
         fetch('http://localhost:3040/api/adv-search')
             .then(response => response.json())

@@ -16,7 +16,7 @@ app.use('/images', express.static(path.join(__dirname, '../Front-end', 'images')
 app.use('/reference', express.static(path.join(__dirname, '../Front-end', 'reference')));
 
 app.use(cors());
-
+let status = 0; //status 0 = log out status 1 = loged in
 let searchword = "";
 let RestaurantList = []
 let restuarantdetail = ""
@@ -182,7 +182,7 @@ router.post('/adv-search-summit', (req, res) => {
 router.get('/api/detail', (req, res) => {
     // console.log(data)
     // console.log("check")
-    let sql = `select Restaurant_name,Descriptions, Province, District, Subdistrict from Account_Restaurant where Restaurant_name = "${restuarantdetail}";`;
+    let sql = `select Restaurant_image,Restaurant_name,Descriptions, Province, District, Subdistrict from Account_Restaurant where Restaurant_name = "${restuarantdetail}";`;
     connection.query(sql, function (error, results) {
         if (error) {
             console.error('Error fetching data:', error);
@@ -208,10 +208,11 @@ router.post('/sign-in-summit', (req, res) => {
         else {
             console.log(results)
             if (results.length > 0) {
-                res.redirect(path.join(`http://localhost:3030`));
+                status = 1
+                res.redirect(`http://localhost:3030`);
             }
             else {
-                res.redirect(path.join(`http://localhost:3030/Login-Error`));
+                res.redirect(`http://localhost:3030/Login-Error`);
             }
             console.log("Complete!!!!!!")
         }
@@ -229,10 +230,10 @@ router.get('/api/:name', (req, res) => {
     restuarantdetail = req.params.name
     restuarantdetail = restuarantdetail.split('_').join(' ')
     if (RestaurantList.includes(req.params.name)) {
-        res.redirect(path.join(`http://localhost:3030/${req.params.name}`));
+        res.redirect(`http://localhost:3030/${req.params.name}`);
     }
     else {
-        res.redirect(path.join(`http://localhost:3030/Error}`));
+        res.redirect(`http://localhost:3030/Error}`);
     }
 })
 
@@ -290,7 +291,9 @@ function geocodeLatLng(lat, lng, callback) {
     });
 }
 
-
+router.get('/status-check', (req, res) => {
+    res.status(200).json(status)
+});
 
 
 
@@ -300,18 +303,18 @@ router.get('/admin-accounts', (req, res) => {
     const sql = 'SELECT * FROM Account_Admin;';
     console.log('check')
     connection.query(sql, (err, results) => {
-      if (err) {
-        console.error('Error fetching admin accounts:', err);
-        res.status(500).json({ error: 'Error fetching admin accounts' });
-        return;
-      }
-      else{
-        console.log(results)
-        res.json(results);
-      }
-      
+        if (err) {
+            console.error('Error fetching admin accounts:', err);
+            res.status(500).json({ error: 'Error fetching admin accounts' });
+            return;
+        }
+        else {
+            console.log(results)
+            res.json(results);
+        }
+
     });
-  });
+});
 
 
 
@@ -329,5 +332,4 @@ router.use((req, res, next) => {
 
 
 app.listen(port, () => {
-
 })
