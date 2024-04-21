@@ -51,7 +51,8 @@
                                         napat.pho@student.mahidol.ac.th</h5>
                                 </a>
                                 <div class="mt-2 text-xl text-center grap-2">
-                                    <a href="https://linkedin.com/in/napatphongphichart" target="_blank"><ion-icon name="logo-linkedin"></ion-icon></a>
+                                    <a href="https://linkedin.com/in/napatphongphichart" target="_blank"><ion-icon
+                                            name="logo-linkedin"></ion-icon></a>
                                 </div>
                         </div>
                     </a>
@@ -64,17 +65,20 @@
                             src="https://lh3.googleusercontent.com/d/1CQCVoRjd0od-LuCvw8cb0HGWOMchelwb" alt="" />
                         <div class="p-5">
                             <h6 class="mb-2 text-md font-normal tracking-tight text-gray-500">Dev</h6>
-                            <h5 class="mb-2 text-xl text-center font-medium tracking-tight text-gray-900">Pornpinit Auppatham</h5>
-                            <a href="mailto:pornpinit.aup@student.mahidol.ac.th" class="text-sm text-center font-normal tracking-tight text-gray-900">
+                            <h5 class="mb-2 text-xl text-center font-medium tracking-tight text-gray-900">Pornpinit
+                                Auppatham</h5>
+                            <a href="mailto:pornpinit.aup@student.mahidol.ac.th"
+                                class="text-sm text-center font-normal tracking-tight text-gray-900">
                                 pornpinit.aup@student.mahidol.ac.th
                             </a>
                             <div class="mt-2 text-xl text-center grap-2">
-                                <a href="https://linkedin.com/in/pornpinit-auppatham-90a9272b9" target="_blank"><ion-icon name="logo-linkedin"></ion-icon></a>
+                                <a href="https://linkedin.com/in/pornpinit-auppatham-90a9272b9"
+                                    target="_blank"><ion-icon name="logo-linkedin"></ion-icon></a>
                             </div>
                         </div>
                     </a>
                 </section>
-                
+
 
                 <!--Team member No.3-->
                 <section class="max-w-64 bg-white border border-gray rounded-3xl shadow">
@@ -82,17 +86,20 @@
                     <div class="p-5">
                         <h6 class="mb-2 text-md font-normal tracking-tight text-gray-500">Dev</h6>
 
-                                <h5 class="mb-2 text-xl text-center font-medium  tracking-tight text-gray-900">Arbhichar Thanajirawat</h5>
-                                <a href="mailto:napat.pho@student.mahidol.ac.th" class="text-center">
-                                    <a href="#">
-                                        <h5 class="text-sm text-center font-normal tracking-tight text-gray-900">arbhichar.tha@student.mahidol.ac.th</h5>
-                                    </a>
-                                </a>
-                                <div class="mt-2 text-xl text-center grap-2">
-                                    <a href="https://linkedin.com/in/arbhichar-thanajirawat" target="_blank"><ion-icon name="logo-linkedin"></ion-icon></a>
-                                </div>
-                            </div>
-                    </section>
+                        <h5 class="mb-2 text-xl text-center font-medium  tracking-tight text-gray-900">Arbhichar
+                            Thanajirawat</h5>
+                        <a href="mailto:napat.pho@student.mahidol.ac.th" class="text-center">
+                            <a href="#">
+                                <h5 class="text-sm text-center font-normal tracking-tight text-gray-900">
+                                    arbhichar.tha@student.mahidol.ac.th</h5>
+                            </a>
+                        </a>
+                        <div class="mt-2 text-xl text-center grap-2">
+                            <a href="https://linkedin.com/in/arbhichar-thanajirawat" target="_blank"><ion-icon
+                                    name="logo-linkedin"></ion-icon></a>
+                        </div>
+                    </div>
+                </section>
 
                 <!--Team member No.4-->
                 <section class="max-w-64 bg-white border border-gray rounded-3xl shadow">
@@ -109,7 +116,8 @@
                                         napat.cho@student.mahidol.ac.th</h5>
                                 </a>
                                 <div class="mt-2 text-xl text-center grap-2">
-                                    <a href="https://linkedin.com/in/napat-cholkuljana-391490188" target="_blank"><ion-icon name="logo-linkedin"></ion-icon></a>
+                                    <a href="https://linkedin.com/in/napat-cholkuljana-391490188"
+                                        target="_blank"><ion-icon name="logo-linkedin"></ion-icon></a>
                                 </div>
                         </div>
                     </a>
@@ -128,7 +136,24 @@
         <footer-component></footer-component>
     </footer>
 
-    <script src="../js/navbar.js"></script>
+    <script>
+        let status = 0
+        fetch('http://localhost:3040/status-check')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                status = data
+                if (status == 0) {
+                    const script = document.createElement('script');
+                    script.src = "../js/navbar.js";
+                    document.head.appendChild(script);
+                } else {
+                    const script = document.createElement('script');
+                    script.src = "../js/navbar2.js";
+                    document.head.appendChild(script);
+                }
+            })
+    </script>
     <script src="../js/footer.js"></script>
 </body>
 
