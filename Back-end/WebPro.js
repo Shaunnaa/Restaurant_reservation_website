@@ -251,6 +251,8 @@ router.get('/reservation-status', (req, res) => {
         res.redirect(`http://localhost:3030/login`);
     }
     res.status(200).json(RestaurantList);
+});
+
 router.post('/sign-in-summit', (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
@@ -282,7 +284,7 @@ router.post('/adv-search-summit', (req, res) => {
     Adv[2] = req.body.datetime
     console.log(Adv)
 
-    res.redirect(path.join(`http://localhost:3030/adv-search`));
+    res.redirect(`http://localhost:3030/adv-search`);
 })
 
 
@@ -390,7 +392,6 @@ router.get('/admin-accounts', (req, res) => {
         }
 
     });
-});
 });
 
 router.get('/modify-admin/:id', (req, res) => {
