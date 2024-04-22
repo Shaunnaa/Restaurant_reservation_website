@@ -297,10 +297,10 @@ router.get('/api/:name', (req, res) => {
     restuarantdetail = req.params.name
     restuarantdetail = restuarantdetail.split('_').join(' ')
     if (RestaurantList.includes(req.params.name)) {
-        res.redirect(`http://localhost:3030/${req.params.name}`);
+        res.redirect(path.join(`http://localhost:3030/${req.params.name}`));
     }
     else {
-        res.redirect(`http://localhost:3030/Error}`);
+        res.redirect(path.join(`http://localhost:3030/Error}`));
     }
 })
 
@@ -364,24 +364,10 @@ router.get('/status-check', (req, res) => {
     res.status(200).json(status)
 });
 
-
-
-
-
 router.get('/admin-accounts', (req, res) => {
     const sql = 'SELECT Account_Admin.AID, Account_Admin.username ,Account.Email, Account.Passwords FROM Account JOIN Account_Admin ON Account.ID = Account_Admin.AID;';
 
     connection.query(sql, (err, results) => {
-        if (err) {
-            console.error('Error fetching admin accounts:', err);
-            res.status(500).json({ error: 'Error fetching admin accounts' });
-            return;
-        }
-        else {
-            console.log(results)
-            res.json(results);
-        }
-
         if (err) {
             console.error('Error fetching admin accounts:', err);
             res.status(500).json({ error: 'Error fetching admin accounts' });
@@ -398,6 +384,7 @@ router.get('/modify-admin/:id', (req, res) => {
     currentAdmin = req.params.id
     res.redirect(`http://localhost:3030/modify_admin/${currentAdmin}`)
 });
+
 router.get('/Apo/modify-admin', (req, res) => {
     // console.log(currentAdmin)
     res.status(200).json(currentAdmin)
