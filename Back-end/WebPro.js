@@ -183,48 +183,6 @@ router.post('/adv-search-summit', (req, res) => {
     res.redirect(`http://localhost:3030/adv-search`);
 })
 
-router.post('/sign-in-summit', (req, res) => {
-    let sql = `select * from Account where Email = "${req.body.email}" AND Passwords = "${req.body.password}";`;
-    connection.query(sql, function (error, results) {
-        if (error) {
-            console.error('Error from signin');
-            console.error('Error fetching data:', error);
-            console.log("Error!!!!!!")
-            res.status(500).json({ error: 'Error fetching data' });
-        }
-        else {
-            // console.log(results)
-            // console.log(results[0].ID)
-            if (results.length > 0) {
-                status = 1
-                if (results[0].ID >= 1000 && results[0].ID < 2000)
-                    res.redirect(`http://localhost:3030`);
-                else if (results[0].ID >= 9000 && results[0].ID < 10000) {
-                    let sql2 = `select Restaurant_name from Account_Restaurant where RID = "${results[0].ID}";`;
-                    connection.query(sql2, function (error, result2) {
-                        if (error) {
-                            res.status(500).json({ error: 'Error fetching data' });
-                        }
-                        else {
-                            console.log("Complete!!!!!!")
-                            restuarantdetail = result2[0].Restaurant_name
-                            console.log(restuarantdetail)
-                            res.redirect(`http://localhost:3030/${result2[0].Restaurant_name.split(' ').join('_')}/Profile`);
-                        }
-                    })
-                }
-            }
-            else {
-                res.redirect(`http://localhost:3030/Login-Error`);
-            }
-            console.log("Complete!!!!!!")
-        }
-    });
-})
-router.post('/:name/reserve-summit', (req, res) => {
-    console.log()
-    res.redirect(`http://localhost:3030/${restuarantdetail.split(' ').join('_')}/reserve-success`);
-})
 /* -------------------- detail -------------------- */
 router.get('/api/detail', (req, res) => {
     // console.log(data)
@@ -243,16 +201,6 @@ router.get('/api/detail', (req, res) => {
     });
 });
 
-router.get('/reservation-status', (req, res) => {
-    if (status == 1) {
-        res.redirect(`http://localhost:3030/${restuarantdetail.split(' ').join('_')}/reservation`);
-    }
-    else {
-        res.redirect(`http://localhost:3030/login`);
-    }
-    res.status(200).json(RestaurantList);
-});
-
 router.post('/sign-in-summit', (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
@@ -264,27 +212,19 @@ router.post('/sign-in-summit', (req, res) => {
             console.error('Error fetching data:', error);
             return res.status(500).json({ error: 'Error fetching data' });
         }
-
-        if (results.length === 0) {
-            // Handle the case where no account is found
-            return res.status(401).json({ error: 'Invalid email or password' });
+        else {
+            console.log(results)
+            if (results.length > 0) {
+                status = 1
+                res.redirect(`http://localhost:3030`);
+            }
+            else {
+                res.redirect(`http://localhost:3030/Login-Error`);
+            }
+            console.log("Complete!!!!!!")
         }
-
-        // Redirect user if authentication is successful
-        const searchword = req.body.searchdropdown;
-        // Pass `searchword` as a query parameter in the redirect URL
-        res.redirect(`http://localhost:3030/search?query=${encodeURIComponent(searchword)}`);
     });
-});
 
-router.post('/adv-search-summit', (req, res) => {
-    // console.log(req.body.first_name)
-    Adv[0] = req.body.last_name
-    Adv[1] = req.body.company
-    Adv[2] = req.body.datetime
-    console.log(Adv)
-
-    res.redirect(`http://localhost:3030/adv-search`);
 })
 
 

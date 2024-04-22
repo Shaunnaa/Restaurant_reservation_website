@@ -150,11 +150,8 @@ router.get('/:name/reservation', (req, res) => {
     res.status(200)
     res.sendFile(path.join(`${__dirname}/html/Reservationpage.html`))
 })
-router.get('/:name/reserve-success', (req, res) => {
-    console.log(req.params.name)
-    res.status(200)
-    res.sendFile(path.join(`${__dirname}/html/ReservationSuccessfulPage.html`))
-})
+
+
 
 router.use((req, res, next) => {
     console.log(req.url)

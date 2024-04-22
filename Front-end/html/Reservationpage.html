@@ -42,51 +42,7 @@
 
                         <h1 id='name' class="text-lg text-center leading-tight tracking-tight text-gray-900"></h1>
 
-                        <form id='form'>
-                        </form>
-                    </div>
-
-
-                </div>
-            </section>
-
-
-
-        </article>
-    </main>
-
-    <footer>
-        <footer-component></footer-component>
-    </footer>
-
-    <script>// Fetch data from the API endpoint
-        fetch('http://localhost:3040/api/detail')
-            .then(response => response.json())
-            .then(data => {
-                // Update HTML content dynamically with fetched data
-                const Image = document.getElementById('image');
-                data.forEach(item => {
-                    const image = document.createElement('div');
-                    image.innerHTML = `
-                        <img class="w-full rounded-2xl shadow-md" src="https://lh3.googleusercontent.com/d/${item.Restaurant_image}" alt="" />
-                                `;
-                    Image.appendChild(image);
-                })
-                const Name = document.getElementById('name');
-                data.forEach(item => {
-                    const name = document.createElement('h1');
-                    name.innerHTML = `
-                                    Welcome to ${item.Restaurant_name}
-                                `;
-                    Name.appendChild(name);
-                })
-                const Form = document.getElementById('form');
-                data.forEach(item => {
-                    const form = document.createElement('form');
-                    form.class = "space-y-4 md:space-y-6"
-                    form.action = `http://localhost:3040/${item.Restaurant_name.split(' ').join('_')}/reserve-summit`
-                    form.method = "POST"
-                    form.innerHTML = `
+                        <form class="space-y-4 md:space-y-6" action="#">
                             <div>
                                 <label for="Reserve_name" class="block mb-2 text-sm font-medium text-gray-900">Reserve
                                     name</label>
