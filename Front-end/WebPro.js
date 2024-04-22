@@ -108,8 +108,19 @@ router.get('/About', (req, res) => {
     res.status(200)
     res.sendFile(path.join(__dirname, '/html/About.html'))
 })
-
-
+/* -------------------- Restaurant pages -------------------- */
+router.get('/:name/Profile', (req, res) => {
+    console.log('Requested at', req.url)
+    console.log('Retrieve a form')
+    res.status(200)
+    res.sendFile(path.join(__dirname, '/html/RestaurantProfile.html'))
+})
+router.get('/:name/schedule', (req, res) => {
+    console.log('Requested at', req.url)
+    console.log('Retrieve a form')
+    res.status(200)
+    res.sendFile(path.join(__dirname, '/html/RestaurantSchedule.html'))
+})
 /* -------------------- Search page -------------------- */
 router.get('/search', (req, res) => {
     res.status(200)
@@ -132,7 +143,11 @@ router.get('/:name/reservation', (req, res) => {
     res.status(200)
     res.sendFile(path.join(`${__dirname}/html/Reservationpage.html`))
 })
-
+router.get('/:name/reserve-success', (req, res) => {
+    console.log(req.params.name)
+    res.status(200)
+    res.sendFile(path.join(`${__dirname}/html/ReservationSuccessfulPage.html`))
+})
 
 
 router.use((req, res, next) => {
