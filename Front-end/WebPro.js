@@ -54,9 +54,7 @@ router.get('/Admin_management', (req, res) => {
     res.sendFile(path.join(`${__dirname}/html/Admin_Management_For_Admin.html`))
 })
 
-router.get('/', (req, res) => {
-    res.sendFile(__dirname + '/public/Add_new_admin.html');
-});
+
 
 router.get('/modify_admin/:id', (req, res) => {
     res.status(200)
