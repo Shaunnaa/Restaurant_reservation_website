@@ -30,7 +30,6 @@
                 <!---------- Category ---------->
                 <div class="mb-6" name="name">
                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Category</label>
-
                     <button id="dropdownDefaultButton" 
                             data-dropdown-toggle="dropdown"
                             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
@@ -42,7 +41,8 @@
                     </button>
 
                     <!-- Dropdown menu -->
-                    <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
+                    <div  id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
+                        <input type="text" name="Category" hidden/>
                         <ul id="Category" class="py-2 text-sm text-gray-700" aria-labelledby="dropdownDefaultButton">
                             <!-- Information from API script-->
                         </ul>
@@ -64,6 +64,8 @@
                         // Add click event listeners to each list item in the dropdown menu
                         function addClickListenerToDropdownItems() {
                             const items = dropdownMenu.getElementsByTagName('li');
+                            const hiddenInput = document.querySelector('input[name="Category"]');
+    
                             for (let i = 0; i < items.length; i++) {
                                 items[i].addEventListener('click', function () {
                                     // Update the button text with the selected category and keep the SVG icon
@@ -73,11 +75,15 @@
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"d="m1 1 4 4 4-4" />
                                         </svg>
                                     `;
+                                    // Set the hidden input value to the data category attribute of the clicked item
+                                    hiddenInput.value = items[i].getAttribute('CategoryData');
+
                                     // Close the dropdown menu
                                     dropdownMenu.classList.add('hidden');
                                 });
                             }
                         }
+
 
                         fetch('http://localhost:3040/api/Category')
                             .then(response => response.json())
@@ -86,8 +92,9 @@
                                 data.forEach(item => {
                                     const li = document.createElement('li');
                                     li.innerHTML = `
-                                        <li value="${item.Category}" name="${item.Category}" class="block px-4 py-2 hover:bg-gray-100" selected>${item.Category}</li>
+                                        <li class="block px-4 py-2 hover:bg-gray-100" selected>${item.Category}</li>
                                     `;
+                                    li.setAttribute('CategoryData', item.Category);
                                     container.appendChild(li);
                                 });
                                  // Add click event listener to the dropdown items
@@ -122,8 +129,8 @@
                     x-ref="datetimewidget" class="flatpickr container mx-auto col-span-6 sm:col-span-6 mt-5">
                     <label for="datetime" class="flex-grow  block font-medium text-sm text-gray-700 mb-1">Date and
                         Time</label>
-                    <div class="flex align-middle align-content-center" name="datetime">
-                        <input x-ref="datetime" type="text" id="datetime" data-input placeholder="Select.."
+                    <div class="flex align-middle align-content-center">
+                        <input x-ref="datetime" type="text" id="datetime" name="datetime" data-input placeholder="Select.."
                             class="block w-full px-2 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-l-md shadow-sm">
 
                         <a class="h-11 w-10 input-button cursor-pointer rounded-r-md bg-transparent border-gray-300 border-t border-b border-r"
@@ -168,24 +175,6 @@
         <footer-component></footer-component>
     </footer>
 
-    <script>
-        let status = 0
-        fetch('http://localhost:3040/status-check')
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
-                status = data
-                if (status == 0) {
-                    const script = document.createElement('script');
-                    script.src = "../js/navbar.js";
-                    document.head.appendChild(script);
-                } else {
-                    const script = document.createElement('script');
-                    script.src = "../js/navbar2.js";
-                    document.head.appendChild(script);
-                }
-            })
-    </script>
     <script>// Fetch data from the API endpoint
         fetch('http://localhost:3040/api/adv-search')
             .then(response => response.json())

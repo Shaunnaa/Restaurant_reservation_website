@@ -16,7 +16,12 @@ class NavBar extends HTMLElement {
                     <a class="text-white hover:text-gray-500" href="/">Home</a>
                 </li>
                 <li class="relative">
-                    <a class="text-white hover:text-gray-500" href="#">Restaurant</a>
+                    <a class="text-white hover:text-gray-500 flex items-center" href="#">
+                        Restaurant
+                        <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"d="m1 1 4 4 4-4" />
+                        </svg>
+                    </a>
                     <!-- Dropdown Menu -->
                     <ul class="absolute top-full left-0 bg-[#BC3535] w-32 rounded-lg shadow-md hidden">
                         <li><a class="block px-4 py-2 text-white hover:bg-[#8B1010]" href="/TopPick">Top pick</a></li>
@@ -61,10 +66,17 @@ class NavBar extends HTMLElement {
             </div>
         </form>
 
-        <div class="flex items-center gap-6">
+        <div id="SignUplogo" class="flex items-center gap-6">
             <ion-icon name="notifications" class="text-3xl"></ion-icon>
             <a href="./login" class="bg-white text-black px-5 py-2 rounded-full hover:bg-[#87acec]">Sign Up / Login</a>
             <ion-icon onclick="onToggleMenu(this)" name="menu" class="text-3xl cursor-pointer md:hidden"></ion-icon>
+        </div>
+
+        <div id="Accountlogo" class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+            <button type="button" class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
+            <span class="sr-only">Open user menu</span>
+            <img class="w-10 h-10 rounded-full" src="/docs/images/people/profile-picture-3.jpg" alt="user photo">
+            </button>
         </div>
     </nav>
         `;
@@ -102,3 +114,35 @@ document.addEventListener("DOMContentLoaded", function () {
         toggleDropdown(); // Call the toggleDropdown function
     });
 });
+
+let status = 0;
+
+fetch('http://localhost:3040/status-check')
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        status = data;
+
+        // Select elements for SignUplogo and Accountlogo
+        const signUpLogo = document.getElementById('SignUplogo');
+        const accountLogo = document.getElementById('Accountlogo');
+
+        // Show/Hide SignUplogo and Accountlogo based on status
+        if (status == 0) {
+            // Hide Accountlogo and show SignUplogo
+            if (accountLogo) {
+                accountLogo.style.display = 'none';
+            }
+            if (signUpLogo) {
+                signUpLogo.style.display = 'flex'; // Ensure SignUplogo is visible
+            }
+        } else {
+            // Hide SignUplogo and show Accountlogo
+            if (signUpLogo) {
+                signUpLogo.style.display = 'none';
+            }
+            if (accountLogo) {
+                accountLogo.style.display = 'flex'; // Ensure Accountlogo is visible
+            }
+        }
+    });

@@ -73,24 +73,7 @@
             });
     </script>
 
-    <script>
-        let status = 0
-        fetch('http://localhost:3040/status-check')
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
-                status = data
-                if (status == 0) {
-                    const script = document.createElement('script');
-                    script.src = "../js/navbar.js";
-                    document.head.appendChild(script);
-                } else {
-                    const script = document.createElement('script');
-                    script.src = "../js/navbar2.js";
-                    document.head.appendChild(script);
-                }
-            })
-    </script>
+    <script src="../js/navbar.js"></script>
     <script src="../js/footer.js"></script>
 </body>
 

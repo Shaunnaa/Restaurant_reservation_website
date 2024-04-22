@@ -123,31 +123,31 @@ router.post('/search-summit', (req, res) => {
 router.get('/api/adv-search', (req, res) => {
     let sql = `SELECT Restaurant_name, Restaurant_image, Province 
                FROM Account_Restaurant`;
-    if (Adv[1] == '' && Adv[2] == '' && Adv[3] == undefined) {
+    if (Adv[1] == '' && Adv[2] == '' && Adv[3] == '') {
         sql = sql + ` WHERE Category = "${Adv[0]}";`;
     }
-    else if (Adv[0] == undefined && Adv[2] == '' && Adv[3] == undefined) {
+    else if (Adv[0] == '' && Adv[2] == '' && Adv[3] == '') {
         sql = sql + ` WHERE Restaurant_name like "%${Adv[1]}%";`;
     }
-    else if (Adv[0] == undefined && Adv[1] == '' && Adv[3] == undefined) {
+    else if (Adv[0] == '' && Adv[1] == '' && Adv[3] == '') {
         sql = sql + ` WHERE Province = "${Adv[2]}";`;
     }
-    // else if (Adv[0] == '' && Adv[1] == '' && Adv[2] == '') {
-    //     sql = `select Restaurant_name,Province from Account_Restaurant where Province = "${Adv[3]}"; `;
-    // }
-    else if (Adv[2] == '' && Adv[3] == undefined) {
+    else if (Adv[0] == '' && Adv[1] == '' && Adv[2] == '') {
+        sql = `select Restaurant_name,Province from Account_Restaurant where Province = "${Adv[3]}"; `;
+    }
+    else if (Adv[2] == '' && Adv[3] == '') {
         sql = sql + ` WHERE Category = "%${Adv[0]}%" and Restaurant_name like "%${Adv[1]}%";`;
     }
-    else if (Adv[0] == undefined && Adv[3] == undefined) {
+    else if (Adv[0] == '' && Adv[3] == '') {
         sql = sql + ` WHERE Restaurant_name like "%${Adv[1]}%" and Province = "${Adv[2]}";`;
     }
-    // else if (Adv[0] == undefined && Adv[1] == '') {
-    //     sql = sql + ` WHERE Province = "${Adv[2]}" and Province = "${Adv[3]}";`;
-    // }
-    else if (Adv[1] == '' && Adv[3] == undefined) {
+    else if (Adv[0] == '' && Adv[1] == '') {
+        sql = sql + ` WHERE Province = "${Adv[2]}" and Province = "${Adv[3]}";`;
+    }
+    else if (Adv[1] == '' && Adv[3] == '') {
         sql = sql + ` WHERE  Category = "%${Adv[0]}%"" and Province = "${Adv[2]}";`;
     }
-    else if (Adv[3] == undefined) {
+    else if (Adv[3] == '') {
         sql = sql + ` WHERE Category = "%${Adv[0]}%" and Restaurant_name like "%${Adv[1]}%" and Province = "${Adv[2]}"; `;
     }
     else {
