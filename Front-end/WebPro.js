@@ -53,6 +53,11 @@ router.get('/Admin_management', (req, res) => {
     res.sendFile(path.join(`${__dirname}/html/Admin_Management_For_Admin.html`))
 })
 
+router.get('/Add_admin', (req, res) => {
+    res.status(200)
+    res.sendFile(path.join(`${__dirname}/html/Add_admin.html`))
+})
+
 router.get('/restaurant_management', (req, res) => {
     res.status(200)
     res.sendFile(path.join(`${__dirname}/html/Restaurnt_Management_For_Admin.html`))

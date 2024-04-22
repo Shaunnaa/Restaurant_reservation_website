@@ -29,14 +29,11 @@
                 <button>Restaurant Accounts</button>
                 <button>User Accounts</button>
             </div>
-            <div class="w-full bg-white rounded-lg shadow  border border-2 border-gray-300">
-                <!-- <h1 class="text-2xl text-left font-medium tracking-tight text-gray-900 mb-5 ml-3 mt-3">Add New Admin Account</h1> -->
-                <button class="bg-red-500 text-white rounded-md p-2 mb-3 ml-3 mt-3">Add New Admin Account</button>
+            
+            <div class="flex justify-between items-center flex space-x-80 mb-2">
+                <h1 class="text-2xl text-left">Administration Accounts</h1>
+                <a><button class="bg-red-500 text-white rounded-md p-2">Add New Admin Account</button></a>
             </div>
-            
-
-            <h1 class="text-2xl text-left">Administration Accounts</h1>
-            
 
             <table id="adminAccountsTable" class="border-collapse border border-gray-300 w-full text-center">
                 <thead>
@@ -62,9 +59,6 @@
                 .then(adminAccounts => {
                     const adminAccountsTable = document.getElementById('adminAccounts');
                     adminAccountsTable.innerHTML = '';
-
-        
-
                     adminAccounts.forEach(admin => {
                         const row = document.createElement('tr');
                         row.innerHTML = `
