@@ -166,7 +166,7 @@ router.get('/api/adv-search', (req, res) => {
         }
     });
 })
-
+/* -------------------- summit zone -------------------- */
 router.post('/adv-search-summit', (req, res) => {
     // console.log(req.body.first_name)
     Adv[0] = req.body.Category
@@ -177,24 +177,6 @@ router.post('/adv-search-summit', (req, res) => {
     // res.redirect(path.join(`http://localhost:3030/adv-search`));
     res.redirect(`http://localhost:3030/adv-search`);
 })
-
-/* -------------------- detail -------------------- */
-router.get('/api/detail', (req, res) => {
-    // console.log(data)
-    // console.log("check")
-    let sql = `select Restaurant_image,Restaurant_name,Descriptions, Province, District, Subdistrict from Account_Restaurant where Restaurant_name = "${restuarantdetail}";`;
-    connection.query(sql, function (error, results) {
-        if (error) {
-            console.error('Error fetching data:', error);
-            console.log("Error!!!!!!")
-            res.status(500).json({ error: 'Error fetching data' });
-        } else {
-            console.log(results)
-            res.status(200).json(results);
-            console.log("Complete!!!!!!")
-        }
-    });
-});
 
 router.post('/sign-in-summit', (req, res) => {
     let sql = `select * from Account where Email = "${req.body.email}" AND Passwords = "${req.body.password}";`;
@@ -217,7 +199,37 @@ router.post('/sign-in-summit', (req, res) => {
             console.log("Complete!!!!!!")
         }
     });
+})
+router.post('/:name/reserve-summit', (req, res) => {
+    console.log()
+    res.redirect(`http://localhost:3030/${restuarantdetail.split(' ').join('_')}/reserve-success`);
+})
+/* -------------------- detail -------------------- */
+router.get('/api/detail', (req, res) => {
+    // console.log(data)
+    // console.log("check")
+    let sql = `select Restaurant_image,Restaurant_name,Descriptions, Province, District, Subdistrict from Account_Restaurant where Restaurant_name = "${restuarantdetail}";`;
+    connection.query(sql, function (error, results) {
+        if (error) {
+            console.error('Error fetching data:', error);
+            console.log("Error!!!!!!")
+            res.status(500).json({ error: 'Error fetching data' });
+        } else {
+            console.log(results)
+            res.status(200).json(results);
+            console.log("Complete!!!!!!")
+        }
+    });
+});
 
+router.get('/reservation-status', (req, res) => {
+    if (status == 1) {
+        res.redirect(`http://localhost:3030/${restuarantdetail.split(' ').join('_')}/reservation`);
+    }
+    else {
+        res.redirect(`http://localhost:3030/login`);
+    }
+    res.status(200).json(RestaurantList);
 })
 
 
