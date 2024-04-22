@@ -53,9 +53,13 @@ router.get('/Admin_management', (req, res) => {
     res.sendFile(path.join(`${__dirname}/html/Admin_Management_For_Admin.html`))
 })
 
-router.get('/Add_admin', (req, res) => {
+router.get('/', (req, res) => {
+    res.sendFile(__dirname + '/public/Add_new_admin.html');
+});
+
+router.get('/modify_admin/:id', (req, res) => {
     res.status(200)
-    res.sendFile(path.join(`${__dirname}/html/Add_admin.html`))
+    res.sendFile(path.join(`${__dirname}/html/modify_admin.html`))
 })
 
 router.get('/restaurant_management', (req, res) => {
@@ -145,7 +149,6 @@ router.get('/:name', (req, res) => {
     res.status(200)
     res.sendFile(path.join(`${__dirname}/html/RestaurantDetailPage.html`))
 })
-
 
 
 router.use((req, res, next) => {
