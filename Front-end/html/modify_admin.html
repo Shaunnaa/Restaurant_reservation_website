@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Restaurant Management for Admin</title>
+
+    <!-- Tailwind css-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./css/index.css">
+
+    <!-- ionicon-->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+
+
+<body>
+    <header class="bg-[#BC3535] fixed w-full z-50">
+        <!--fixed = fixed position | w-full = The full width of the viewport | z-50 = Stays on top of other elements-->
+        <navbar-component></navbar-component>
+    </header>
+
+    <main class="grid place-items-center gap-11 px-9 pb-9 pt-32">
+        <!--place-items-center = Set the gird in to the center | gap-9 = 36 px| p-9 = padding all 36px-->
+        <div style="padding-left: 500px;">
+            <h1 class="text-4xl">EDIT ADMINISTRATION ACCOUNT</h1>
+            <h1 id = "Admin"></h1>
+        </div>
+        <div class="flex justify-between items-center flex mb-2">
+            <div class="w-60 h-60 rounded-full bg-gray-300 border-2 border-white shadow-md"
+                style="margin-right: 500px;">
+                <!-- <img src="your-image.jpg" alt="Your Image" class="w-full h-full rounded-full object-cover"> -->
+            </div>
+            <div class="pt-10">
+                <form id="updateForm" class="flex flex-col items-center mb-2">
+                    <div class="flex justify-between items-center flex space-x-10 mt-0">
+                        <div>
+                            <label for="fname">First Name:</label><br>
+                            <div class="rounded-lg border border-gray-300">
+                                <input type="text" id="fname"  name="fname" class="w-full rounded-md border-gray-300">
+                            </div>
+                            <label for="mname">Middle Name:</label><br>
+                            <div class="rounded-lg border border-gray-300">
+                                <input type="text" id="mname" name="mname" class="w-full rounded-md border-gray-300">
+                            </div>
+                            <label for="Email">Email:</label><br>
+                            <div class="rounded-lg border border-gray-300">
+                                <input type="text" id="Email" name="Email" class="w-full rounded-md border-gray-300">
+                            </div>
+                            <label for="username">Username:</label><br>
+                            <div class="rounded-lg border border-gray-300">
+                                <input type="text" id="username" name="username"
+                                    class="w-full rounded-md border-gray-300">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="lname">Last Name:</label><br>
+                            <div class="rounded-lg border border-gray-300">
+                                <input type="text" id="lname" name="lname" class="w-full rounded-md border-gray-300">
+                            </div>
+                            <label for="Phone_num">Phone Number:</label><br>
+                            <div class="rounded-lg border border-gray-300">
+                                <input type="text" id="Phone_num" name="Phone_num"
+                                    class="w-full rounded-md border-gray-300">
+                            </div>
+                            <label for="Passwords">Password:</label><br>
+                            <div class="rounded-lg border border-gray-300">
+                                <input type="text" id="Passwords" name="Passwords"
+                                    class="w-full rounded-md border-gray-300">
+                            </div>
+                            <label for="DOB">Date of Birth:</label><br>
+                            <div class="rounded-lg border border-gray-300">
+                                <input type="text" id="DOB" name="DOB" class="w-full rounded-md border-gray-300">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-10">
+                        <button type="button" onclick="updateResource()">Update</button>
+                    </div>
+                </form>
+                <!-- <form id="updateForm">
+                    <label for="fname">Updated Field:</label>
+                    <input type="text" id="fname" name="fname">
+                    <button type="button" onclick="updateResource()">Update</button>
+                </form> -->
+            </div>
+
+        </div>
+    </main>
+    <script>
+        function updateResource() {
+            console.log('clicked')
+            let data = {
+                fname: document.getElementById('fname').value,
+                lname: document.getElementById('lname').value,
+                mname: document.getElementById('mname').value,
+                username: document.getElementById('username').value,
+                Email: document.getElementById('Email').value,
+                Passwords: document.getElementById('Passwords').value,
+                Phone_num: document.getElementById('Phone_num').value,
+                DOB: document.getElementById('DOB').value
+            };
+        
+            fetch('http://localhost:3040/modify-admin', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data) // Include all fields here
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log(data); // Log the response from the server
+            })
+            .catch(error => {
+                console.error('There was a problem with your fetch operation:', error);
+            });
+        }
+        
+    </script>
+    <script>
+     fetch('http://localhost:3040/Apo/modify-admin')
+        .then(response => response.json())
+        .then(adminAccounts => {
+            const ADMINNAME = document.getElementById('Admin');
+                const a = document.createElement('h1');
+                    a.innerHTML = `
+                    <br>
+                                Welcome ID:${adminAccounts}
+                            `;
+                 ADMINNAME.appendChild(a);
+        })
+    </script>
+    <footer>
+        <footer-component></footer-component>
+    </footer>
+
+    <script src="../js/navbar.js"></script>
+    <script src="../js/footer.js"></script>
+</body>
+
+</html>

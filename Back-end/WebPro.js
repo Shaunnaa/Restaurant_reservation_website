@@ -22,6 +22,7 @@ let RestaurantList = []
 let restuarantdetail = ""
 let Adv = ["", "", "", ""]
 
+let currentAdmin = ""
 /*------------------------ Connect to database ------------------------*/
 const mysql = require('mysql2');
 var connection = mysql.createConnection
@@ -59,6 +60,10 @@ connection.query(sql, function (error, results) {
 // app.use(express.static('public'))
 router.use(express.json())
 router.use(express.urlencoded({ extended: true }))
+
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/public/Add_admin.html');
+});
 
 
 /*------------------------ API Link database ------------------------*/
@@ -246,6 +251,38 @@ router.get('/reservation-status', (req, res) => {
         res.redirect(`http://localhost:3030/login`);
     }
     res.status(200).json(RestaurantList);
+router.post('/sign-in-summit', (req, res) => {
+    const email = req.body.email;
+    const password = req.body.password;
+
+    // Use parameterized queries to prevent SQL injection
+    const sql = `SELECT * FROM Account WHERE Email = ? AND Passwords = ?;`;
+    connection.query(sql, [email, password], function (error, results) {
+        if (error) {
+            console.error('Error fetching data:', error);
+            return res.status(500).json({ error: 'Error fetching data' });
+        }
+
+        if (results.length === 0) {
+            // Handle the case where no account is found
+            return res.status(401).json({ error: 'Invalid email or password' });
+        }
+
+        // Redirect user if authentication is successful
+        const searchword = req.body.searchdropdown;
+        // Pass `searchword` as a query parameter in the redirect URL
+        res.redirect(`http://localhost:3030/search?query=${encodeURIComponent(searchword)}`);
+    });
+});
+
+router.post('/adv-search-summit', (req, res) => {
+    // console.log(req.body.first_name)
+    Adv[0] = req.body.last_name
+    Adv[1] = req.body.company
+    Adv[2] = req.body.datetime
+    console.log(Adv)
+
+    res.redirect(path.join(`http://localhost:3030/adv-search`));
 })
 
 
@@ -264,6 +301,11 @@ router.get('/api/:name', (req, res) => {
         res.redirect(`http://localhost:3030/Error}`);
     }
 })
+        res.redirect(path.join(`http://localhost:3030/Error}`));
+    }
+})
+
+
 
 /*------------------------ API location ------------------------*/
 
@@ -328,8 +370,8 @@ router.get('/status-check', (req, res) => {
 
 
 router.get('/admin-accounts', (req, res) => {
-    const sql = 'SELECT * FROM Account_Admin;';
-    console.log('check')
+    const sql = 'SELECT Account_Admin.AID, Account_Admin.username ,Account.Email, Account.Passwords FROM Account JOIN Account_Admin ON Account.ID = Account_Admin.AID;';
+
     connection.query(sql, (err, results) => {
         if (err) {
             console.error('Error fetching admin accounts:', err);
@@ -341,8 +383,76 @@ router.get('/admin-accounts', (req, res) => {
             res.json(results);
         }
 
+        if (err) {
+            console.error('Error fetching admin accounts:', err);
+            res.status(500).json({ error: 'Error fetching admin accounts' });
+            return;
+        }
+        else {
+            res.json(results);
+        }
+
     });
 });
+});
+
+router.get('/modify-admin/:id', (req, res) => {
+    currentAdmin = req.params.id
+    res.redirect(`http://localhost:3030/modify_admin/${currentAdmin}`)
+});
+router.get('/Apo/modify-admin', (req, res) => {
+    // console.log(currentAdmin)
+    res.status(200).json(currentAdmin)
+});
+
+router.put('/modify-admin', (req, res) => {
+    const { fname, lname, mname, username, DOB, Email, Phone_num, Passwords } = req.body;
+    console.log(fname, lname, mname, username, DOB, Email, Phone_num, Passwords)
+    // console.log(lname)
+    if (!fname && !lname && !mname && !username && !DOB && !Email && !Phone_num && !Passwords) {
+        console.log("No input from the user");
+    } else {
+        console.log("Input from the user detected");
+        if (fname) {
+
+        }
+        if (lname) {
+
+        }
+    }
+})
+
+
+
+router.post('/add-admin', (req, res) => {
+    const { Email, Phone_num, Passwords, ID } = req.body;
+    const registedDate = new Date().toISOString().split('T')[0];
+
+    const sql_account = 'INSERT INTO Account (Email, Registed_date, Phone_num, Passwords, ID) VALUES (?, ?, ?, ?, ?)';
+
+    connection.query(sql_account, [Email, registedDate, Phone_num, Passwords, ID], (error, results) => {
+        if (error) {
+            console.error('Error adding Account:', error);
+            res.status(500).send('Error adding Account');
+            return;
+        }
+        console.log('Account added successfully');
+
+        // Now, execute the second query for Account_Admin
+        const sql_admin = 'INSERT INTO Account_Admin (AID) VALUES (?)';
+        connection.query(sql_admin, [ID], (error, results) => {
+            if (error) {
+                console.error('Error adding admin:', error);
+                res.status(500).send('Error adding admin');
+                return;
+            }
+            console.log('Admin added successfully');
+            // res.sendStatus(200);
+        });
+    });
+});
+
+
 
 
 
@@ -353,6 +463,7 @@ router.use((req, res, next) => {
     res.status(404)
     res.sendFile(path.join(`${__dirname}/reference/error.html`));
 })
+
 
 
 

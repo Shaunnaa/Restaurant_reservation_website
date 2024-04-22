@@ -1,99 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Restaurant Management for Admin</title>
 
-        <!-- Tailwind css-->
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="https://cdn.tailwindcss.com"></script>
-        <link rel="stylesheet" href="./css/index.css">
+<head>
+    <title>Restaurant Management for Admin</title>
 
-        <!-- ionicon-->
-        <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-        <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    </head>
+    <!-- Tailwind css-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./css/index.css">
+
+    <!-- ionicon-->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
 
 
-    <body>
-        <header class="bg-[#BC3535] fixed w-full z-50"> <!--fixed = fixed position | w-full = The full width of the viewport | z-50 = Stays on top of other elements-->
-            <navbar-component></navbar-component>
-        </header>
+<body>
+    <header class="bg-[#BC3535] fixed w-full z-50">
+        <!--fixed = fixed position | w-full = The full width of the viewport | z-50 = Stays on top of other elements-->
+        <navbar-component></navbar-component>
+    </header>
 
-        <main class="grid place-items-center gap-11 px-9 pb-9 pt-32"> <!--place-items-center = Set the gird in to the center | gap-9 = 36 px| p-9 = padding all 36px-->
-            <div>
-                <h1 class="text-4xl">ADMIN</h1>
-            </div>
-            <div class = "flex space-x-10">
-                <button class=" text-black rounded-md p-2">Admin Accounts</button>
-                <button>Restaurant Accounts</button>
-                <button>User Accounts</button>
-            </div>
-            <div class="w-full bg-white rounded-lg shadow  border border-2 border-gray-300">
-                <!-- <h1 class="text-2xl text-left font-medium tracking-tight text-gray-900 mb-5 ml-3 mt-3">Add New Admin Account</h1> -->
-                <button class="bg-red-500 text-white rounded-md p-2 mb-3 ml-3 mt-3">Add New Admin Account</button>
-            </div>
-            
+    <main class="grid place-items-center gap-11 px-9 pb-9 pt-32">
+        <!--place-items-center = Set the gird in to the center | gap-9 = 36 px| p-9 = padding all 36px-->
+        <div>
+            <h1 class="text-4xl">ADMIN</h1>
+        </div>
+        <div class="flex space-x-10">
+            <button class=" text-black rounded-md p-2">Admin Accounts</button>
+            <button>Restaurant Accounts</button>
+            <button>User Accounts</button>
+        </div>
 
-            <h1 class="text-2xl text-left">Administration Accounts</h1>
-            
+        <!-- <div class="flex justify-between items-center flex space-x-80 mb-2">
+                <h1 class="text-2xl text-left">Administration Accounts</h1>
+            </div> -->
+        <div style="left: 0;">
+            <h1 class="text-2xl text-left">Add New Admin</h1>
+            <form action="http://localhost:3040/add-admin" method="post" class="flex flex-col mb-2">
+                <div class="flex justify-between space-x-10 item-left">
+                    <div>
+                        <label for="ID">ID:</label><br>
+                        <div class="rounded-lg border border-gray-300">
+                            <input type="text" id="ID" name="ID" class="w-full rounded-md border-gray-300" required=""><br>
+                        </div>
+                        <label for="Passwords">Passwords:</label><br>
+                        <div class="rounded-lg border border-gray-300">
+                            <input type="text" id="Passwords" name="Passwords" class="w-full rounded-md border-gray-300" required=""><br>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="Email">Email:</label><br>
+                        <div class="rounded-lg border border-gray-300">
+                            <input type="text" id="Email" name="Email" class="w-full rounded-md border-gray-300" required=""><br>
+                        </div>
+                        <label for="Phone_num">Phone_num:</label><br>
+                        <div class="rounded-lg border border-gray-300">
+                            <input type="text" id="Phone_num" name="Phone_num" class="w-full rounded-md border-gray-300" required=""><br>
+                        </div>
+                    </div>
+                </div>
 
-            <table id="adminAccountsTable" class="border-collapse border border-gray-300 w-full text-center">
-                <thead>
-                    <tr class="bg-gray-100">
-                        <th class="border border-gray-300 p-2">ID</th>
-                        <th class="border border-gray-300 p-2">Username</th>
-                        <th class="border border-gray-300 p-2">Email</th>
-                        <th class="border border-gray-300 p-2">Password</th>
-                        <th class="border border-gray-300 p-2">Note</th>
-                        <th class="border border-gray-300 p-2">Action</th>
-                    </tr>
-                </thead>
-                <tbody id="adminAccounts">
-                    <!-- Admin accounts will be listed here dynamically -->
-                </tbody>
-            </table>
-            
-        </main>
-        <script>
-            // Fetch admin accounts from server and display them
-            fetch('http://localhost:3040/admin-accounts')
-                .then(response => response.json())
-                .then(adminAccounts => {
-                    const adminAccountsTable = document.getElementById('adminAccounts');
-                    adminAccountsTable.innerHTML = '';
+                <div class="pt-5">
+                    <input class="bg-red-500 text-white rounded-md p-2" type="submit" value="Submit">
+                </div>
 
-        
+            </form>
+        </div>
 
-                    adminAccounts.forEach(admin => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
+        <table id="adminAccountsTable" class="border-collapse border border-gray-300 w-full text-center">
+            <thead>
+                <tr class="bg-gray-100">
+                    <th class="border border-gray-300 p-2">ID</th>
+                    <th class="border border-gray-300 p-2">Username</th>
+                    <th class="border border-gray-300 p-2">Email</th>
+                    <th class="border border-gray-300 p-2">Password</th>
+                    <th class="border border-gray-300 p-2">Note</th>
+                    <th class="border border-gray-300 p-2">Action</th>
+                </tr>
+            </thead>
+            <tbody id="adminAccounts">
+                <!-- Admin accounts will be listed here dynamically -->
+            </tbody>
+        </table>
+
+    </main>
+    <script>
+        // Fetch admin accounts from server and display them
+        fetch('http://localhost:3040/admin-accounts')
+            .then(response => response.json())
+            .then(adminAccounts => {
+                const adminAccountsTable = document.getElementById('adminAccounts');
+                adminAccountsTable.innerHTML = '';
+                adminAccounts.forEach(admin => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
                         <tr class="text-center">
                             <td class="border border-gray-300 p-2">${admin.AID}</td>
                             <td class="border border-gray-300 p-2">${admin.username}</td>
-                            <td class="border border-gray-300 p-2">${admin.email}</td>
-                            <td class="border border-gray-300 p-2">${admin.passwords}</td>
+                            <td class="border border-gray-300 p-2">${admin.Email}</td>
+                            <td class="border border-gray-300 p-2">${admin.Passwords}</td>
                             <td class="border border-gray-300 p-2"></td>
                             <td class="border border-gray-300 p-2">
                                 <button class="bg-red-500 text-white rounded-md p-2">See</button>
-                                <button class="bg-red-500 text-white rounded-md p-2">Edit</button>
+                                <a href="http://localhost:3040/modify-admin/${admin.AID}">
+                                    <button class="bg-red-500 text-white rounded-md p-2">Edit</button>
+                                </a>
                                 <button class="bg-red-500 text-white rounded-md p-2">Delete</button>
                             </td>
                         </tr>
                         `;
-                        adminAccountsTable.appendChild(row);
-                    });
+                    adminAccountsTable.appendChild(row);
+                });
             })
             .catch(error => console.error('Error fetching admin accounts:', error));
 
-        </script>
+    </script>
 
-        <footer>
-            <footer-component></footer-component>
-        </footer>
+    <footer>
+        <footer-component></footer-component>
+    </footer>
 
-        <script src="../js/navbar.js"></script>
-        <script src="../js/footer.js"></script>
-    </body>
+    <script src="../js/navbar.js"></script>
+    <script src="../js/footer.js"></script>
+</body>
 
 </html>
