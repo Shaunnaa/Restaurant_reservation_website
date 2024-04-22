@@ -16,11 +16,12 @@ app.use('/images', express.static(path.join(__dirname, '../Front-end', 'images')
 app.use('/reference', express.static(path.join(__dirname, '../Front-end', 'reference')));
 
 app.use(cors());
-
+let status = 0; //status 0 = log out status 1 = loged in
 let searchword = "";
 let RestaurantList = []
 let restuarantdetail = ""
-let Adv = ["", "", ""]
+let Adv = ["", "", "", ""]
+
 let currentAdmin = ""
 /*------------------------ Connect to database ------------------------*/
 const mysql = require('mysql2');
@@ -67,6 +68,7 @@ app.get('/', (req, res) => {
 
 /*------------------------ API Link database ------------------------*/
 
+/* -------------------- Toppick -------------------- */
 router.get('/api/toppicks', (req, res) => {
     let sql = `SELECT Restaurant_name, Province, Restaurant_image
                FROM Account_Restaurant
@@ -82,6 +84,7 @@ router.get('/api/toppicks', (req, res) => {
     });
 });
 
+/* -------------------- Category -------------------- */
 router.get('/api/Category', (req, res) => {
     let sql = `SELECT *
                FROM Restaurant_Category
@@ -97,34 +100,11 @@ router.get('/api/Category', (req, res) => {
     });
 });
 
+/* -------------------- search -------------------- */
 router.get('/api/search', (req, res) => {
-    let sql = `select Restaurant_name,Province from Account_Restaurant where Restaurant_name like "%${searchword}%";`;
-    connection.query(sql, function (error, results) {
-        if (error) {
-            console.error('Error from search');
-            console.error('Error fetching data:', error);
-            console.log("Error!!!!!!")
-            res.status(500).json({ error: 'Error fetching data' });
-        } else {
-            res.status(200).json(results);
-            console.log("Complete!!!!!!")
-        }
-    });
-})
-router.get('/api/adv-search', (req, res) => {
-    let sql = ''
-    if (Adv[0] == '') {
-        sql = `select Restaurant_name,Province from Account_Restaurant where Province = "${Adv[1]}"; `;
-    }
-    else if (Adv[1] == '') {
-        sql = `select Restaurant_name,Province from Account_Restaurant where Restaurant_name like "%${Adv[0]}%";`;
-    }
-    else if (Adv[0] == '' && Adv[1] == '') {
-        Adv = ["unknown", "unknown", "unknown"]
-    }
-    else {
-        sql = `select Restaurant_name,Province from Account_Restaurant where Restaurant_name like "%${Adv[0]}%" and Province = "${Adv[1]}"; `;
-    }
+    let sql = `SELECT Restaurant_name, Restaurant_image,Province 
+               FROM Account_Restaurant 
+               WHERE Restaurant_name like "%${searchword}%";`;
     connection.query(sql, function (error, results) {
         if (error) {
             console.error('Error from search');
@@ -138,20 +118,47 @@ router.get('/api/adv-search', (req, res) => {
     });
 })
 
+router.post('/search-summit', (req, res) => {
+    console.log(req.body.searchdropdown)
+    searchword = req.body.searchdropdown
+    res.redirect(`http://localhost:3030/search`);
+})
+
+/* -------------------- adv search -------------------- */
 router.get('/api/adv-search', (req, res) => {
-    let sql = ''
-    if (Adv[0] == '') {
-        sql = `select Restaurant_name,Province from Account_Restaurant where Province = "${Adv[1]}"; `;
+    let sql = `SELECT Restaurant_name, Restaurant_image, Province 
+               FROM Account_Restaurant`;
+    if (Adv[1] == '' && Adv[2] == '' && Adv[3] == '') {
+        sql = sql + ` WHERE Category = "${Adv[0]}";`;
     }
-    else if (Adv[1] == '') {
-        sql = `select Restaurant_name,Province from Account_Restaurant where Restaurant_name like "%${Adv[0]}%";`;
+    else if (Adv[0] == '' && Adv[2] == '' && Adv[3] == '') {
+        sql = sql + ` WHERE Restaurant_name like "%${Adv[1]}%";`;
+    }
+    else if (Adv[0] == '' && Adv[1] == '' && Adv[3] == '') {
+        sql = sql + ` WHERE Province = "${Adv[2]}";`;
+    }
+    else if (Adv[0] == '' && Adv[1] == '' && Adv[2] == '') {
+        sql = `select Restaurant_name,Province from Account_Restaurant where Province = "${Adv[3]}"; `;
+    }
+    else if (Adv[2] == '' && Adv[3] == '') {
+        sql = sql + ` WHERE Category = "%${Adv[0]}%" and Restaurant_name like "%${Adv[1]}%";`;
+    }
+    else if (Adv[0] == '' && Adv[3] == '') {
+        sql = sql + ` WHERE Restaurant_name like "%${Adv[1]}%" and Province = "${Adv[2]}";`;
     }
     else if (Adv[0] == '' && Adv[1] == '') {
-        Adv = ["unknown", "unknown", "unknown"]
+        sql = sql + ` WHERE Province = "${Adv[2]}" and Province = "${Adv[3]}";`;
+    }
+    else if (Adv[1] == '' && Adv[3] == '') {
+        sql = sql + ` WHERE  Category = "%${Adv[0]}%"" and Province = "${Adv[2]}";`;
+    }
+    else if (Adv[3] == '') {
+        sql = sql + ` WHERE Category = "%${Adv[0]}%" and Restaurant_name like "%${Adv[1]}%" and Province = "${Adv[2]}"; `;
     }
     else {
-        sql = `select Restaurant_name,Province from Account_Restaurant where Restaurant_name like "%${Adv[0]}%" and Province = "${Adv[1]}"; `;
+        Adv = ["unknown", "unknown", "unknown", "unknown"]
     }
+
     connection.query(sql, function (error, results) {
         if (error) {
             console.error('Error from search');
@@ -164,10 +171,65 @@ router.get('/api/adv-search', (req, res) => {
         }
     });
 })
+/* -------------------- summit zone -------------------- */
+router.post('/adv-search-summit', (req, res) => {
+    // console.log(req.body.first_name)
+    Adv[0] = req.body.Category
+    Adv[1] = req.body.RestaurantName
+    Adv[2] = req.body.Location
+    Adv[3] = req.body.datetime
+    console.log(Adv)
+    // res.redirect(path.join(`http://localhost:3030/adv-search`));
+    res.redirect(`http://localhost:3030/adv-search`);
+})
+
+router.post('/sign-in-summit', (req, res) => {
+    let sql = `select * from Account where Email = "${req.body.email}" AND Passwords = "${req.body.password}";`;
+    connection.query(sql, function (error, results) {
+        if (error) {
+            console.error('Error from signin');
+            console.error('Error fetching data:', error);
+            console.log("Error!!!!!!")
+            res.status(500).json({ error: 'Error fetching data' });
+        }
+        else {
+            // console.log(results)
+            // console.log(results[0].ID)
+            if (results.length > 0) {
+                status = 1
+                if (results[0].ID >= 1000 && results[0].ID < 2000)
+                    res.redirect(`http://localhost:3030`);
+                else if (results[0].ID >= 9000 && results[0].ID < 10000) {
+                    let sql2 = `select Restaurant_name from Account_Restaurant where RID = "${results[0].ID}";`;
+                    connection.query(sql2, function (error, result2) {
+                        if (error) {
+                            res.status(500).json({ error: 'Error fetching data' });
+                        }
+                        else {
+                            console.log("Complete!!!!!!")
+                            restuarantdetail = result2[0].Restaurant_name
+                            console.log(restuarantdetail)
+                            res.redirect(`http://localhost:3030/${result2[0].Restaurant_name.split(' ').join('_')}/Profile`);
+                        }
+                    })
+                }
+            }
+            else {
+                res.redirect(`http://localhost:3030/Login-Error`);
+            }
+            console.log("Complete!!!!!!")
+        }
+    });
+})
+router.post('/:name/reserve-summit', (req, res) => {
+    console.log()
+    res.redirect(`http://localhost:3030/${restuarantdetail.split(' ').join('_')}/reserve-success`);
+})
+/* -------------------- detail -------------------- */
 router.get('/api/detail', (req, res) => {
     // console.log(data)
     // console.log("check")
-    let sql = `select Restaurant_name,Descriptions, Province, District, Subdistrict from Account_Restaurant where Restaurant_name = "${restuarantdetail}";`;
+    let sql = `select Restaurant_image,Restaurant_name,Descriptions, Province, District, Subdistrict from Account_Restaurant where Restaurant_name = "${restuarantdetail}";`;
     connection.query(sql, function (error, results) {
         if (error) {
             console.error('Error fetching data:', error);
@@ -181,6 +243,14 @@ router.get('/api/detail', (req, res) => {
     });
 });
 
+router.get('/reservation-status', (req, res) => {
+    if (status == 1) {
+        res.redirect(`http://localhost:3030/${restuarantdetail.split(' ').join('_')}/reservation`);
+    }
+    else {
+        res.redirect(`http://localhost:3030/login`);
+    }
+    res.status(200).json(RestaurantList);
 router.post('/sign-in-summit', (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
@@ -215,6 +285,7 @@ router.post('/adv-search-summit', (req, res) => {
     res.redirect(path.join(`http://localhost:3030/adv-search`));
 })
 
+
 router.get('/restaurants', (req, res) => {
     res.status(200).json(RestaurantList);
 })
@@ -224,9 +295,12 @@ router.get('/api/:name', (req, res) => {
     restuarantdetail = req.params.name
     restuarantdetail = restuarantdetail.split('_').join(' ')
     if (RestaurantList.includes(req.params.name)) {
-        res.redirect(path.join(`http://localhost:3030/${req.params.name}`));
+        res.redirect(`http://localhost:3030/${req.params.name}`);
     }
     else {
+        res.redirect(`http://localhost:3030/Error}`);
+    }
+})
         res.redirect(path.join(`http://localhost:3030/Error}`));
     }
 })
@@ -287,6 +361,14 @@ function geocodeLatLng(lat, lng, callback) {
     });
 }
 
+router.get('/status-check', (req, res) => {
+    res.status(200).json(status)
+});
+
+
+
+
+
 router.get('/admin-accounts', (req, res) => {
     const sql = 'SELECT Account_Admin.AID, Account_Admin.username ,Account.Email, Account.Passwords FROM Account JOIN Account_Admin ON Account.ID = Account_Admin.AID;';
 
@@ -297,10 +379,21 @@ router.get('/admin-accounts', (req, res) => {
             return;
         }
         else {
+            console.log(results)
+            res.json(results);
+        }
+
+        if (err) {
+            console.error('Error fetching admin accounts:', err);
+            res.status(500).json({ error: 'Error fetching admin accounts' });
+            return;
+        }
+        else {
             res.json(results);
         }
 
     });
+});
 });
 
 router.get('/modify-admin/:id', (req, res) => {
@@ -376,6 +469,6 @@ router.use((req, res, next) => {
 
 
 
-app.listen(port, () => {
 
+app.listen(port, () => {
 })

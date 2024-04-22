@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path')
 const app = express();
 const dotenv = require("dotenv")
+const cors = require('cors'); //(Cross-Origin Resource Sharing)
 
 const port = 3030
 
@@ -14,7 +15,7 @@ app.use('/js', express.static(path.join(__dirname, '/js')));
 // app.use('/reference', express.static(path.join(__dirname, '/reference')));
 
 /* 1. Create a router object and register the router */
-
+app.use(cors());
 
 const router = express.Router();
 app.use(router)
@@ -116,7 +117,19 @@ router.get('/About', (req, res) => {
     res.status(200)
     res.sendFile(path.join(__dirname, '/html/About.html'))
 })
-
+/* -------------------- Restaurant pages -------------------- */
+router.get('/:name/Profile', (req, res) => {
+    console.log('Requested at', req.url)
+    console.log('Retrieve a form')
+    res.status(200)
+    res.sendFile(path.join(__dirname, '/html/RestaurantProfile.html'))
+})
+router.get('/:name/schedule', (req, res) => {
+    console.log('Requested at', req.url)
+    console.log('Retrieve a form')
+    res.status(200)
+    res.sendFile(path.join(__dirname, '/html/RestaurantSchedule.html'))
+})
 /* -------------------- Search page -------------------- */
 router.get('/search', (req, res) => {
     res.status(200)
@@ -129,27 +142,21 @@ router.get('/adv-search', (req, res) => {
 })
 
 router.get('/:name', (req, res) => {
-
     console.log(req.params.name)
     res.status(200)
     res.sendFile(path.join(`${__dirname}/html/RestaurantDetailPage.html`))
 })
 
-router.post('/sign-in-summit', (req, res) => {
-    console.log('Requested at', req.url)
-    console.log('Form submitted by')
-    console.log(req.body.email, 'at')
-    console.log(Date.now())
-    res.status(200)
-    res.sendFile(path.join(`${__dirname}/html/Adv_Search.html`))
-})
-router.get('/:name', (req, res) => {
-
+router.get('/:name/reservation', (req, res) => {
     console.log(req.params.name)
     res.status(200)
-    res.sendFile(path.join(`${__dirname}/html/RestaurantDetailPage.html`))
+    res.sendFile(path.join(`${__dirname}/html/Reservationpage.html`))
 })
-
+router.get('/:name/reserve-success', (req, res) => {
+    console.log(req.params.name)
+    res.status(200)
+    res.sendFile(path.join(`${__dirname}/html/ReservationSuccessfulPage.html`))
+})
 
 router.use((req, res, next) => {
     console.log(req.url)
@@ -158,5 +165,6 @@ router.use((req, res, next) => {
     res.status(404)
     res.sendFile(path.join(`${__dirname}/reference/error.html`));
 })
+
 app.listen(port, () => {
 })
