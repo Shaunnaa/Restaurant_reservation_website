@@ -301,9 +301,6 @@ router.get('/api/:name', (req, res) => {
         res.redirect(`http://localhost:3030/Error}`);
     }
 })
-        res.redirect(path.join(`http://localhost:3030/Error}`));
-    }
-})
 
 
 
