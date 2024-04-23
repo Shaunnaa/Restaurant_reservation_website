@@ -73,10 +73,12 @@ class NavBar extends HTMLElement {
         </div>
 
         <div id="Accountlogo" class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+        <a href="http://localhost:3040/logout" class="bg-white text-black px-5 py-2 rounded-full hover:bg-[#87acec]">
             <button type="button" class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
             <span class="sr-only">Open user menu</span>
             <img class="w-10 h-10 rounded-full" src="#" alt="user photo">
             </button>
+            </a>
         </div>
     </nav>
         `;

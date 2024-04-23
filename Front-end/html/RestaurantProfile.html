@@ -191,10 +191,10 @@
             let data = {
                 RID: RID,
                 Restaurant_name: nameInputValue,
-                PhoneInputValue: PhoneInputValue,
+                Phone_num: PhoneInputValue,
                 Email: EmailInputValue,
                 Password: PasswordInputValue,
-                Description: DescriptionInputValue,
+                Descriptions: DescriptionInputValue,
                 // Province: document.getElementById('Province').value,
                 // District: document.getElementById('District').value,
                 // Subdistrict: document.getElementById('Subdistrict').value,
@@ -203,7 +203,7 @@
                 // Phone_num: document.getElementById('Phone_num').value
             };
 
-            fetch('http://localhost:3040/modify-restaurant', {
+            fetch('http://localhost:3040/modify-restaurant-restaurant', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
