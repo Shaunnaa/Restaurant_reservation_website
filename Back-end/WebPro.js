@@ -655,20 +655,30 @@ router.put('/modify-restaurant-restaurant', (req, res) => {
         accountValues.push(RID);
 
         connection.beginTransaction((err) => {
+
             if (err) {
                 console.error('Error beginning transaction:', err);
                 return res.status(500).json({ error: 'An error occurred while updating admin and account' });
             }
+            if(Restaurant_name  || Descriptions || Location || Province || District || Subdistrict){
+                console.log(Restaurant_name, Descriptions, Location, Province, District, Subdistrict)
+                connection.query(updateAdminQuery, adminValues, (error, adminResults) => {
+                    if (error) {
+                        console.error('Error updating admin:', error);
+                        return connection.rollback(() => {
+                            res.status(500).json({ error: 'An error occurred while updating admin' });
+                        });
+    
+    
+                    }
+                    else{
+                        checkUpdate = 1
+                        console.log('Restaurant updated successfully');
+                    }
+                });
+            }
 
-            connection.query(updateAdminQuery, adminValues, (error, adminResults) => {
-                if (error) {
-                    console.error('Error updating admin:', error);
-                    return connection.rollback(() => {
-                        res.status(500).json({ error: 'An error occurred while updating admin' });
-                    });
-
-                }
-
+            if(Email || Phone_num || Passwords){
                 connection.query(updateAccountQuery, accountValues, (error, accountResults) => {
                     if (error) {
                         console.error('Error updating account:', error);
@@ -676,7 +686,6 @@ router.put('/modify-restaurant-restaurant', (req, res) => {
                             res.status(500).json({ error: 'An error occurred while updating account' });
                         });
                     }
-
                     connection.commit((err) => {
                         if (err) {
                             console.error('Error committing transaction:', err);
@@ -684,11 +693,11 @@ router.put('/modify-restaurant-restaurant', (req, res) => {
                                 res.status(500).json({ error: 'An error occurred while committing transaction' });
                             });
                         }
-                        console.log('Restaurant and Account updated successfully');
-                        return res.status(200).json({ message: 'Restaurant and Account updated successfully' });
+                        checkUpdate = 1
+                        console.log('Account Restaurant updated successfully');
                     });
                 });
-            });
+            }
         });
     }
 });
@@ -867,6 +876,12 @@ router.post('/add-restaurant', (req, res) => {
     });
 });
 
+router.get('/:name/Profile', (req, res) =>{
+    restuarantdetail = req.params.name.split('_').join(' ')
+    res.redirect(`http://localhost:3030/${req.params.name}/Profile`)
+});
+
+
 //Modify Restaurant
 router.put('/modify-restaurant', (req, res) => {
     const { RID, Restaurant_name, Category, Descriptions, Location, Province, District, Subdistrict, Email, Passwords, Phone_num } = req.body;
@@ -987,37 +1002,6 @@ router.put('/modify-restaurant', (req, res) => {
                     });
                 });
             }
-
-
-            // connection.query(updateAdminQuery, adminValues, (error, adminResults) => {
-            //     if (error) {
-            //         console.error('Error updating admin:', error);
-            //         return connection.rollback(() => {
-            //             res.status(500).json({ error: 'An error occurred while updating admin' });
-            //         });
-
-            //     }
-
-            //     connection.query(updateAccountQuery, accountValues, (error, accountResults) => {
-            //         if (error) {
-            //             console.error('Error updating account:', error);
-            //             return connection.rollback(() => {
-            //                 res.status(500).json({ error: 'An error occurred while updating account' });
-            //             });
-            //         }
-
-            //         connection.commit((err) => {
-            //             if (err) {
-            //                 console.error('Error committing transaction:', err);
-            //                 return connection.rollback(() => {
-            //                     res.status(500).json({ error: 'An error occurred while committing transaction' });
-            //                 });
-            //             }
-            //             console.log('Restaurant and Account updated successfully');
-            //             return res.status(200).json({ message: 'Restaurant and Account updated successfully' });
-            //         });
-            //     });
-            // });
         });
     }
 });

@@ -323,21 +323,15 @@
 
                     <!-- button -->
                     <div id="RID" data-rid="${item.RID}"></div>
-                    <div class="mt-4 grid grid-cols-2 gap-4 justify-center">
-                        <button id = 'Edit' type="button" onclick = "updateResource()" class="bg-red-500 text-white py-2 px-4 rounded-md">Edit</button>
+                    <div class="mt-4 grid grid-cols-2 gap-4 justify-center text-center">
+                        <a href="/restaurant_management" class="bg-red-500 text-white py-2 px-4 rounded-md item-center">
+                            <button id = 'Edit' type="button" onclick = "updateResource()" cless = "item-center">Edit</button>
+                        </a>
                         <a href = "./schedule" class="bg-green-500 text-white py-2 px-4 rounded-md item-center">
-                            <button type = "button" ">Schedule</button>
+                            <button cless = "item-center" type = "button" ">Schedule</button>
                         </a>
                     </div>
                     `
-                    // const schedule = document.createElement('a');
-                    // schedule.href = `./schedule`
-                    // schedule.innerHTML = `
-                    // <button type = "button" class="bg-green-500 text-white py-2 px-4 rounded-md">Schedule</button>
-                    //         `;
-                    // Schedule.appendChild(schedule);
-                    // Detail.appendChild(detail);
-
                 })
             })
             .catch(error => {

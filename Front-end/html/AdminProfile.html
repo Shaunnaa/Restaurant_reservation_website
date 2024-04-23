@@ -23,7 +23,7 @@
 
   <!-- Main Content -->
   <main class="place-items-center gap-11 px-9 pb-9 pt-32">
-    <div class="grid grid-cols-[30%_70%] gap-11">
+    <div class="grid grid-cols-2 gap-11">
 
       <!-- Profile -->
       <div class="flex items-center justify-center">
@@ -45,99 +45,26 @@
 
       <div class="pr-16">
         <h1 id="Admin" class="text-2xl"></h1>
-        <div id="adminAccounts">
+        <div id="adminAccounts"></div>
+        <div class="flex justify-center pt-10">
+          <div class="flex justify-between items-center">
+            <div class="mr-4">
+              <a href="/Admin_management">
+                <button class="bg-red-500 text-white rounded-md px-4 py-2">Admin Management</button>
+              </a>
+            </div>
+            <div>
+              <a href="/restaurant_management">
+                <button class="bg-red-500 text-white rounded-md px-4 py-2">Restaurant Management</button>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
 
     </div>
     
   </main>
-  <!-- <script>
-    // Fetching AID
-    fetch('http://localhost:3040/Apo/AdminProfile')
-        .then(response => response.json())
-        .then(AID => {
-            console.log('Fetched AID:', AID);
-
-            const ADMINNAME = document.getElementById('Admin');
-            ADMINNAME.innerHTML = `EDITING ID: ${AID}`;
-
-            // Store the fetched AID in a data attribute
-            document.getElementById('AID').dataset.aid = AID;
-
-            // Now, fetch admin accounts and filter by AID
-            fetch('http://localhost:3040/admin-accounts')
-                .then(response => response.json())
-                .then(adminAccounts => {
-                    console.log('Fetched admin accounts:', adminAccounts);
-
-                    const admin = adminAccounts.find(admin => admin.AID === AID);
-
-                    if (admin) {
-                        const adminAccountsTable = document.getElementById('adminAccounts');
-                        adminAccountsTable.innerHTML = '';
-
-                        const row = document.createElement('div');
-                        row.innerHTML = `
-                            <section class="profile-info container mx-auto">
-
-                              <h1 class="text-3xl font-bold text-gray-800 mb-4 text-center">ADMIN PROFILE</h1>
-                    
-                              <div class="text-center">
-                                <h2 class="text-xl font-bold text-gray-800 mb-2">Your Admin ID</h2>
-                                <h3 class="text-xl font-bold text-gray-800 mb-6">${admin.AID}</h3>
-                              </div>
-
-                              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-                                <div>
-                                  <label for="first_name" class="block mb-2 font-semibold">First Name: ${admin.fname}</label>
-                                </div>
-
-                                <div>
-                                  <label for="last_name" class="block mb-2 font-semibold">Last Name: ${admin.lname}</label>
-                                </div>
-
-                                <div>
-                                  <label for="middle_name" class="block mb-2 font-semibold">Middle Name: ${admin.mname}</label>
-                                </div>
-
-                                <div>
-                                  <label for="phone_number" class="block mb-2 font-semibold">Phone: ${admin.Phone_num}</label>
-                                </div>
-
-                                <div>
-                                  <label for="email" class="block mb-2 font-semibold">Email: ${admin.Email}</label>
-                                </div>
-
-                                <div>
-                                  <label for="password" class="block mb-2 font-semibold">Password: ${admin.Passwords}</label>
-                                </div>
-
-                                <div>
-                                  <label for="date_of_birth" class="block mb-2 font-semibold">Date Of Birth: ${admin.DOB}</label>
-                                </div>
-
-                                <div>
-                                  <label for="username" class="block mb-2 font-semibold">Username: ${admin.username}</label>
-                                </div>
-                              </div>
-                            </section>
-                        `;
-                        adminAccountsTable.appendChild(row);
-                    } else {
-                        console.error('Admin not found for the fetched AID');
-                    }
-                })
-                .catch(error => console.error('Error fetching admin accounts:', error));
-        })
-        .catch(error => {
-            console.error('There was a problem with fetching AID:', error);
-        });
-</script> -->
-
-
-  
 
   <script>
     fetch('http://localhost:3040/Apo/AdminProfile')
@@ -153,18 +80,18 @@
             adminAccounts.forEach(admin => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                <section class="profile-info container mx-auto">
+                <section class="bg-white p-6 rounded-lg shadow-md max-w-2xl mx-auto my-8">
 
 
                   <h1 class="text-3xl font-bold text-gray-800 mb-4 text-center">ADMIN PROFILE</h1>
         
 
-                  <div class="text-center">
+                  <div class="text-center border-b pb-8">
                     <h2 class="text-xl font-bold text-gray-800 mb-2">Your Admin ID</h2>
                     <h3 class="text-xl font-bold text-gray-800 mb-6">${admin.AID}</h3>
                   </div>
 
-                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-grey-700 mt-6">
         
 
                     <div>

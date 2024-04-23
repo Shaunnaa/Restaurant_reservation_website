@@ -28,9 +28,12 @@
             <h1 class="text-4xl">RESTAURANT</h1>
         </div>
         <div class="flex space-x-10">
-            <button class=" text-black rounded-md p-2">Admin Accounts</button>
-            <button>Restaurant Accounts</button>
-            <button>User Accounts</button>
+            <a href="/Admin_management">
+                <button class="bg-red-500 text-white rounded-md p-2">Admin Accounts</button>
+            </a>
+            <a href="/restaurant_management">
+                <button class="bg-red-500 text-white rounded-md p-2">Restaurant Accounts</button>
+            </a>
         </div>
 
         <!-- <div class="flex justify-between items-center flex space-x-80 mb-2">
@@ -125,7 +128,7 @@
                                 <td class="border border-gray-300 p-2">${restaurant.Email}</td>
                                 <td class="border border-gray-300 p-2">${restaurant.Passwords}</td>
                                 <td class="border border-gray-300 p-2">
-                                    <a>
+                                    <a href="http://localhost:3040/${restaurant.Restaurant_name.split(' ').join('_')}/Profile">
                                         <button class="bg-green-500 text-white rounded-md p-2">See More</button>
                                     </a>
                                 </td>
