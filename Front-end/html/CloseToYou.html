@@ -13,8 +13,8 @@
     <!-- ionicon-->
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCuv9qtlcq1mT-DgpQCVe2-PvJ4bkYuZ6I&libraries=places"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCuv9qtlcq1mT-DgpQCVe2-PvJ4bkYuZ6I&libraries=places"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 </head>
 
 
@@ -23,8 +23,11 @@
         <!--fixed = fixed position | w-full = The full width of the viewport | z-50 = Stays on top of other elements-->
         <navbar-component></navbar-component>
     </header>
+    
 
     <main class="grid place-items-center gap-11 px-9 pb-9 pt-32">
+        <button id="find-location-button">Find Current Location</button>
+        <div id="province-display">Province: </div>
         <!--place-items-center = Set the gird in to the center | gap-9 = 36 px| p-9 = padding all 36px-->
         <article class="Box_section bg-white  px-12 pt-6 pb-3">
             <!--Topic-->
@@ -33,7 +36,7 @@
                     <h5 class="mb-9 text-5xl text-center font-bold tracking-tight text-gray-900">Close To You</h5>
                 </a>
             </div>
-
+            
             <div id="closetoyou-container" class="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 gap-12">
                 <!-- Information from API script-->
             </div>
@@ -46,24 +49,22 @@
     </footer>
 
     <script>
-        // Fetch data from the API endpoint with lat and lng parameters
-        fetch(`http://localhost:3040/api/closetoyou?lat=${latitude}&lng=${longitude}`)
+        // Fetch data from the API endpoint
+        fetch('http://localhost:3040/api/closetoyou')
             .then(response => response.json())
             .then(data => {
                 // Update HTML content dynamically with fetched data
                 const container = document.getElementById('closetoyou-container');
-                container.innerHTML = ''; // Clear previous content
-
-                // Display restaurants in the container
                 data.forEach(item => {
                     const section = document.createElement('section');
                     section.className = 'max-w-64 bg-white border border-gray rounded-3xl shadow';
                     section.innerHTML = `
-                            <a href="#">
-                                <img class="rounded-3xl w-full h-auto" src="${item.Restaurant_image}" alt="${item.Restaurant_name}" />
+                            <a href="http://localhost:3040/api/${item.Restaurant_name.split(' ').join('_')}">
+                                <img class="rounded-3xl w-full h-auto" src="https://lh3.googleusercontent.com/d/${item.Restaurant_image}" alt="" />
+                                
                                 <div class="p-5">
                                     <h5 class="mb-2 text-2xl text-center font-bold tracking-tight text-gray-900">${item.Restaurant_name}</h5>
-                                    <h5 class="mb-2 text-xl text-center font-medium tracking-tight text-gray-900">${item.Category}</h5>
+                                    <h5 class="mb-2 text-xl text-center font-medium  tracking-tight text-gray-900">${item.Province}</h5>
                                 </div>
                             </a>
                         `;
@@ -74,6 +75,65 @@
                 console.error('Error fetching data:', error);
                 // Handle error
             });
+    </script>
+
+    <script>
+        // Initialize geocoder
+        const geocoder = new google.maps.Geocoder();
+        
+        // Add event listener to the button
+        document.getElementById("find-location-button").addEventListener("click", () => {
+            // Check if geolocation is supported
+            if (navigator.geolocation) {
+                // Get the current location
+                navigator.geolocation.getCurrentPosition(
+                    position => {
+                        // Get the latitude and longitude
+                        const latLng = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+                        // Perform reverse geocoding
+                        reverseGeocode(geocoder, latLng);
+                    },
+                    error => {
+                        console.error('Error getting geolocation:', error);
+                        alert('Error getting geolocation.');
+                    }
+                );
+            } else {
+                console.error('Geolocation not supported by this browser.');
+                alert('Geolocation not supported by this browser.');
+            }
+        });
+        
+        // Function to perform reverse geocoding and display the province
+        function reverseGeocode(geocoder, latLng) {
+            // Set the region to 'en' (English) for the geocode request
+            geocoder.geocode({ location: latLng, region: 'en' }, (results, status) => {
+                if (status === 'OK' && results && results.length > 0) {
+                    let province = '';
+                    // Find the province in the address components
+                    for (const component of results[0].address_components) {
+                        if (component.types.includes('administrative_area_level_1')) {
+                            province = component.long_name;
+                            break;
+                        }
+                    }
+                    // Display the province in the province-display div
+                    document.getElementById('province-display').innerHTML = `Province: ${province}
+                    <a href = "http://localhost:3040/place/${province}">
+                        <br>
+                    <button type="button"
+                    class="text-white bg-blue-700 mt-6 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
+                    Search</button>
+                    </a>`
+                } else {
+                    console.error(`Geocoder failed due to: ${status}`);
+                    alert('Failed to perform reverse geocoding. Please try again.');
+                }
+            });
+        }
     </script>
 
     <script src="../js/navbar.js"></script>

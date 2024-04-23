@@ -54,7 +54,7 @@ class NavBar extends HTMLElement {
                     <button id="dropdown-button" type="button">Advanced Search</button> <!--focus:ring-4 = When click have a border show-->                                 
                 </a>
                 <div class="relative w-full">
-                    <input type="search" id="search-dropdown" name = "searchdropdown" class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder="Search " required />
+                    <input type="search" id="search-dropdown" name = "searchdropdown" class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder="Search "/>
                     <button type="submit" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-e-lg border border-blue-700 
                                                  hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
                         <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -75,7 +75,7 @@ class NavBar extends HTMLElement {
         <div id="Accountlogo" class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
             <button type="button" class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
             <span class="sr-only">Open user menu</span>
-            <img class="w-10 h-10 rounded-full" src="/docs/images/people/profile-picture-3.jpg" alt="user photo">
+            <img class="w-10 h-10 rounded-full" src="#" alt="user photo">
             </button>
         </div>
     </nav>
