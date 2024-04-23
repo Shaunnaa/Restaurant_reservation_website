@@ -11,7 +11,7 @@
         1.7 Go to Schema Privileges > Add Entry > Selected schema: restaurant > Click "OK" >  Click "Select *ALL*" > Apply
         1.8 From 1.4 - 1.7 add the same data to the Back-end > .env file
 
-3) cd Back-end
+2) cd Back-end
 
         Download
         1) npm init
@@ -27,7 +27,7 @@
 
     --------------------------------------------
 
-    cd Front-end
+3) cd Front-end
 
         Download
         1) npm init
