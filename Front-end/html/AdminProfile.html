@@ -141,81 +141,9 @@
         });
   </script>
 
-  <!-- <script>
-        fetch('http://localhost:3040/admin-accounts')
-                .then(response => response.json())
-                .then(adminAccounts => {
-                    const adminAccountsTable = document.getElementById('adminAccounts');
-                    adminAccountsTable.innerHTML = '';
-                    adminAccounts.forEach(admin => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <section class="profile-info container mx-auto">
-
-
-                              <h1 class="text-3xl font-bold text-gray-800 mb-4 text-center">ADMIN PROFILE</h1>
-                    
-
-                              <div class="text-center">
-                                <h2 class="text-xl font-bold text-gray-800 mb-2">Your Admin ID</h2>
-                                <h3 class="text-xl font-bold text-gray-800 mb-6">${admin.AID}</h3>
-                              </div>
-
-                              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    
-
-                                <div>
-                                  <label for="first_name" class="block mb-2 font-semibold">First Name: ${admin.fname}</label>
-                                </div>
-                    
-
-                                <div>
-                                  <label for="last_name" class="block mb-2 font-semibold">Last Name: ${admin.lname}</label>
-                                </div>
-                    
-
-                                <div>
-                                  <label for="middle_name" class="block mb-2 font-semibold">Middle Name: ${admin.mname}</label>
-                                </div>
-
-                                <div>
-                                  <label for="phone_number" class="block mb-2 font-semibold">Phone: ${admin.Phone_num}</label>
-
-                                </div>
-
-                                <div>
-                                  <label for="email" class="block mb-2 font-semibold">Email: ${admin.Email}</label>
-                                </div>
-
-                                <div>
-                                  <label for="password" class="block mb-2 font-semibold">Password: ${admin.Passwords}</label>
-                                </div>
-
-                                <div>
-                                  <label for="date_of_birth" class="block mb-2 font-semibold">Date Of Birth: ${admin.DOB}</label>
-                                </div>
-
-                                <div>
-                                  <label for="username" class="block mb-2 font-semibold">Username: ${admin.username}</label>
-                                </div>
-                              </div>
-                            </section>
-                            
-                            
-                            `;
-                        adminAccountsTable.appendChild(row);
-                    });
-                })
-                .catch(error => console.error('Error fetching admin accounts:', error));
-  </script> -->
-
-
   <footer>
     <footer-component></footer-component>
   </footer>
-
-
-  
 
   <script src="../js/navbar.js"></script>
   <script src="../js/footer.js"></script>
