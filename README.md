@@ -18,6 +18,8 @@
         3) npm install nodemon
         4) npm install dotenv
         5) npm install mysql2
+        6) npm install cors
+        7) npm install @google/maps
 
         After that
         >>> npm start <<<
@@ -31,7 +33,7 @@
         2) npm install express
         3) npm install nodemon
         4) npm install dotenv
-        5) npm install mysql2
+        5) npm install cors
 
         After that
         >>> npm start <<<
