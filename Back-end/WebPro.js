@@ -21,7 +21,7 @@ let searchword = "";
 let RestaurantList = []
 let restuarantdetail = ""
 let Adv = ["", "", "", ""]
-
+let province = '"'
 let currentAdmin = ""
 let currentRestaurant = ""
 let currentrestaurant = 9007
@@ -128,40 +128,39 @@ router.post('/search-summit', (req, res) => {
     searchword = req.body.searchdropdown
     res.redirect(`http://localhost:3030/search`);
 })
+router.get('/place/:province', (req, res) => {
+    // console.log(req.params.province)
+    // searchword = req.body.searchdropdown
+    province = req.params.province
+    console.log(province)
+    res.redirect(`http://localhost:3030/Close-to-you`);
+})
 
 /* -------------------- adv search -------------------- */
 router.get('/api/adv-search', (req, res) => {
     let sql = `SELECT Restaurant_name, Restaurant_image, Province 
                FROM Account_Restaurant`;
-    if (Adv[1] == '' && Adv[2] == '' && Adv[3] == '') {
-        sql = sql + ` WHERE Category = "${Adv[0]}";`;
+
+    // Initialize an array to hold conditions
+    const conditions = [];
+
+     // Add conditions based on non-empty Adv array elements
+    if (Adv[0]) { //non-empty string , non-zero number, non-null, non-undefined value, non-empty object or array.
+        conditions.push(`Category = "${Adv[0]}"`);
     }
-    else if (Adv[0] == '' && Adv[2] == '' && Adv[3] == '') {
-        sql = sql + ` WHERE Restaurant_name like "%${Adv[1]}%";`;
+    if (Adv[1]) {
+        conditions.push(`Restaurant_name LIKE "%${Adv[1]}%"`);
     }
-    else if (Adv[0] == '' && Adv[1] == '' && Adv[3] == '') {
-        sql = sql + ` WHERE Province = "${Adv[2]}";`;
+    if (Adv[2]) {
+        conditions.push(`Province = "${Adv[2]}"`);
     }
-    else if (Adv[0] == '' && Adv[1] == '' && Adv[2] == '') {
-        sql = `select Restaurant_name,Province from Account_Restaurant where Province = "${Adv[3]}"; `;
+    if (Adv[3]) {
+        conditions.push(`Time = "${Adv[3]}"`);
     }
-    else if (Adv[2] == '' && Adv[3] == '') {
-        sql = sql + ` WHERE Category = "%${Adv[0]}%" and Restaurant_name like "%${Adv[1]}%";`;
-    }
-    else if (Adv[0] == '' && Adv[3] == '') {
-        sql = sql + ` WHERE Restaurant_name like "%${Adv[1]}%" and Province = "${Adv[2]}";`;
-    }
-    else if (Adv[0] == '' && Adv[1] == '') {
-        sql = sql + ` WHERE Province = "${Adv[2]}" and Province = "${Adv[3]}";`;
-    }
-    else if (Adv[1] == '' && Adv[3] == '') {
-        sql = sql + ` WHERE  Category = "%${Adv[0]}%"" and Province = "${Adv[2]}";`;
-    }
-    else if (Adv[3] == '') {
-        sql = sql + ` WHERE Category = "%${Adv[0]}%" and Restaurant_name like "%${Adv[1]}%" and Province = "${Adv[2]}"; `;
-    }
-    else {
-        Adv = ["unknown", "unknown", "unknown", "unknown"]
+
+    // If there are conditions, join them with AND and add them to the SQL query
+    if (conditions.length > 0) {
+        sql = sql + ` WHERE ${conditions.join(' AND ')}`;
     }
 
     connection.query(sql, function (error, results) {
@@ -297,28 +296,6 @@ router.post('/sign-in-summit', (req, res) => {
     });
 });
 
-
-
-router.get('/api/schedule', (req, res) => {
-    // console.log(data)
-    console.log("check")
-    let sql = `select reserve_name, DATE_FORMAT(reserve_date, '%Y-%m-%d') AS formatted_date, reserve_time,DATE_FORMAT(reserving_time, '%Y-%m-%d %H:%i') AS formatted_reserve_date, people,tel from Reserve where RID = "${currentrestaurant}";`;
-    connection.query(sql, function (error, results) {
-        if (error) {
-            console.error('Error fetching data:', error);
-            console.log("Error!!!!!!")
-            res.status(500).json({ error: 'Error fetching data' });
-        } else {
-            console.log(currentrestaurant)
-            console.log(results)
-            res.status(200).json(results);
-            console.log("Complete!!!!!!")
-        }
-    });
-});
-
-
-
 router.post('/adv-search-summit', (req, res) => {
     // console.log(req.body.first_name)
     Adv[0] = req.body.last_name
@@ -334,73 +311,30 @@ router.get('/restaurants', (req, res) => {
     res.status(200).json(RestaurantList);
 })
 
-router.get('/api/:name', (req, res) => {
-    console.log("check")
-    restuarantdetail = req.params.name
-    restuarantdetail = restuarantdetail.split('_').join(' ')
-    if (RestaurantList.includes(req.params.name)) {
-        res.redirect(`http://localhost:3030/${req.params.name}`);
-    }
-    else {
-        res.redirect(`http://localhost:3030/Error}`);
-    }
-})
-
-
 
 /*------------------------ API location ------------------------*/
 
+// Endpoint to handle the request
 router.get('/api/closetoyou', (req, res) => {
-    const lat = parseFloat(req.query.lat);
-    const lng = parseFloat(req.query.lng);
+    // router.get('/api/toppicks', (req, res) => {
+        let sql = `SELECT Restaurant_name, Province, Restaurant_image
+                   FROM Account_Restaurant
+                   WHERE Province = "${province}"`;
+        connection.query(sql, function (error, results) {
+            if (error) {
+                console.error('Error from Toppick');
+                console.error('Error fetching data:', error);
+                res.status(500).json({ error: 'Error fetching data' });
+            } else {
+                console.log(results)
+                res.status(200).json(results);
+            }
+        });
+    // });
 
-    // Use geocodeLatLng function to find the province from lat and lng
-    geocodeLatLng(lat, lng, (error, province) => {
-        if (error) {
-            console.error('Error geocoding location:', error);
-            res.status(500).json({ error: 'Error geocoding location' });
-        } else {
-            // Query the database to get restaurants in the specified province
-            const sql = `SELECT Restaurant_name, Province, Restaurant_image
-                         FROM Account_Restaurant
-                         WHERE Province = ?`;
-
-            connection.query(sql, [province], (error, results) => {
-                if (error) {
-                    console.error('Error fetching data:', error);
-                    res.status(500).json({ error: 'Error fetching data' });
-                } else {
-                    res.status(200).json(results);
-                }
-            });
-        }
-    });
 });
 
-// Function to get province from latitude and longitude
-function geocodeLatLng(lat, lng, callback) {
-    const geocoder = new google.maps.Geocoder();
-    const latlng = { lat: lat, lng: lng };
 
-    geocoder.geocode({ location: latlng }, (results, status) => {
-        if (status === 'OK') {
-            if (results[0]) {
-                // Find the province (administrative area level 1) from the results
-                let province;
-                results[0].address_components.forEach(component => {
-                    if (component.types.includes('administrative_area_level_1')) {
-                        province = component.long_name;
-                    }
-                });
-                callback(null, province);
-            } else {
-                callback(new Error('No results found'), null);
-            }
-        } else {
-            callback(new Error('Geocoder failed due to: ' + status), null);
-        }
-    });
-}
 
 router.get('/status-check', (req, res) => {
     res.status(200).json(status)
@@ -408,8 +342,8 @@ router.get('/status-check', (req, res) => {
 
 
 
-//Admin Management---------------------------------------------------------------------
-//Get Admin info
+
+
 router.get('/admin-accounts', (req, res) => {
     const sql = 'SELECT Account_Admin.AID, Account_Admin.username ,Account.Email, Account.Passwords, Account.Phone_num FROM Account JOIN Account_Admin ON Account.ID = Account_Admin.AID;';
     console.log('check')
@@ -615,6 +549,68 @@ router.delete('/delete-admin/:AID', (req, res) => {
     });
 });
 
+router.get('/api/about_location', (req, res) => {
+    console.log("about_location work");
+    // Define the configuration data
+    const configurationData = {
+        locations: [
+            {
+                title: "Faculty of Information and Communication Technology (ICT)",
+                address1: "อาคาร ICT",
+                address2: "มหาวิทยาลัยมหิดล, 999 ถ. พุทธมณฑลสาย 4 ตำบล ศาลายา อำเภอพุทธมณฑล นครปฐม 73170, Thailand",
+                coords: {
+                    lat: 13.7945,
+                    lng: 100.3247
+                },
+                placeId: "ChIJj03KfYuT4jAROhBUGBxOyxg",
+                actions: [
+                    {
+                        label: "Book appointment",
+                        defaultUrl: "http://www.facebook.com/ict.mahidol.university"
+                    }
+                ]
+            }
+        ],
+        mapOptions: {
+            center: {
+                lat: 38.0,
+                lng: -100.0
+            },
+            fullscreenControl: true,
+            mapTypeControl: false,
+            streetViewControl: false,
+            zoom: 4,
+            zoomControl: true,
+            maxZoom: 17,
+            mapId: ""
+        },
+        mapsApiKey: process.env.GOOGLE_MAPS_API_KEY, // Use environment variable for the API key
+        capabilities: {
+            input: false,
+            autocomplete: false,
+            directions: false,
+            distanceMatrix: false,
+            details: false,
+            actions: true
+        }
+    };
+
+    // Send the JSON response
+    res.status(200).json(configurationData);
+});
+
+
+router.get('/api/:name', (req, res) => {
+    //console.log("check")
+    restuarantdetail = req.params.name
+    restuarantdetail = restuarantdetail.split('_').join(' ')
+    if (RestaurantList.includes(req.params.name)) {
+        res.redirect(`http://localhost:3030/${req.params.name}`);
+    }
+    else {
+        res.redirect(`http://localhost:3030/Error}`);
+    }
+})
 
 
 //Restaurant management
@@ -815,6 +811,7 @@ router.use((req, res, next) => {
     console.log(req.url)
     console.log(__dirname)
     console.log('404: Invalid accessed!!!!!')
+    console.log(req.url)
     res.status(404)
     res.sendFile(path.join(`${__dirname}/reference/error.html`));
 })
@@ -825,8 +822,6 @@ router.use((req, res, next) => {
 
 
 
-
-
-
 app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
 })

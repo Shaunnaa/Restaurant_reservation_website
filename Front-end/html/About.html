@@ -95,19 +95,37 @@
                         </div>
                     </div>
                 </section>
-
-
-
-
-
             </div>
         </article>
 
     </main>
 
+    <!-- Add locator functionality here -->
+    <div style="height: 500px; width: 80%; justify-content: center; margin: 0 auto;">
+        <gmpx-store-locator map-id="DEMO_MAP_ID"></gmpx-store-locator>
+    </div>
+
     <footer>
         <footer-component></footer-component>
     </footer>
+
+    <!-- Google Maps Locator -->
+    <script type="module" src="https://unpkg.com/@googlemaps/extended-component-library@0.6"></script>
+    <gmpx-api-loader key="AIzaSyCuv9qtlcq1mT-DgpQCVe2-PvJ4bkYuZ6I" solution-channel="GMP_QB_locatorplus_v10_cF"></gmpx-api-loader>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            await customElements.whenDefined('gmpx-store-locator');
+            const locator = document.querySelector('gmpx-store-locator');
+            
+            // Fetch configuration data from the server
+            const response = await fetch('http://localhost:3040/api/about_location');
+            const configuration = await response.json();
+
+            // Configure the locator element with the fetched data
+            locator.configureFromQuickBuilder(configuration);
+        });
+    </script>
 
     <script src="../js/navbar.js"></script>
     <script src="../js/footer.js"></script>
