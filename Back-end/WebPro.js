@@ -24,6 +24,7 @@ let Adv = ["", "", "", ""]
 let province = ''
 let currentAdmin = ""
 let currentRestaurant = 0
+// let currentrestaurant = 9007
 let currentcustomer = 0
 /*------------------------ Connect to database ------------------------*/
 const mysql = require('mysql2');
@@ -439,6 +440,7 @@ router.get('/status-check', (req, res) => {
     res.status(200).json(status)
 });
 
+
 router.get('/admin-accounts', (req, res) => {
     const sql = 'SELECT Account_Admin.AID, Account_Admin.username ,Account.Email, Account.Passwords, Account.Phone_num FROM Account JOIN Account_Admin ON Account.ID = Account_Admin.AID;';
     console.log('check')
@@ -449,6 +451,7 @@ router.get('/admin-accounts', (req, res) => {
             return;
         }
         else {
+            console.log(results)
             res.json(results);
         }
     });
@@ -744,6 +747,7 @@ router.post('/add-admin', (req, res) => {
                 res.status(500).send('Error adding admin');
                 return;
             }
+
             console.log('Admin added successfully');
             // res.sendStatus(200);
             res.redirect('http://localhost:3030/Admin_management');
@@ -840,7 +844,7 @@ router.get('/api/:name', (req, res) => {
 //Restaurant management
 //Get Restaurant Info
 router.get('/restaurant-accounts', (req, res) => {
-    const sql = 'SELECT Account_Restaurant.RID, Account_Restaurant.Restaurant_name ,Account.Email, Account.Passwords FROM Account JOIN Account_Restaurant ON Account.ID = Account_Restaurant.RID;';
+    const sql = 'SELECT Account_Restaurant.RID, Account_Restaurant.Restaurant_name ,Account.Email, Account.Passwords, Account.Phone_num FROM Account JOIN Account_Restaurant ON Account.ID = Account_Restaurant.RID;';
 
     connection.query(sql, (err, results) => {
         if (err) {
@@ -865,14 +869,11 @@ router.get('/Apo/modify-restaurant', (req, res) => {
 
 //Add Restaurant
 router.post('/add-restaurant', (req, res) => {
-    const { Email, Phone_num, Passwords, ID } = req.body;
+    const { ID, Email, Phone_num, Passwords, Restaurant_name} = req.body;
     const registedDate = new Date().toISOString().split('T')[0];
 
-    console.log(Email, Phone_num, Passwords, ID)
-
     const sql_account = 'INSERT INTO Account (Email, Registed_date, Phone_num, Passwords, ID) VALUES (?, ?, ?, ?, ?)';
-
-    connection.query(sql_account, [Email, registedDate, Phone_num, Passwords, ID], (error, results) => {
+    connection.query(sql_account, [Email, registedDate, Phone_num, Passwords, ID], (error, accountResults) => {
         if (error) {
             console.error('Error adding Account:', error);
             res.status(500).send('Error adding Account');
@@ -880,17 +881,18 @@ router.post('/add-restaurant', (req, res) => {
         }
         console.log('Account added successfully');
 
-        const sql_admin = 'INSERT INTO Account_Restaurant (RID) VALUES (?)';
-        connection.query(sql_admin, [ID], (error, results) => {
+        const sql_admin = 'INSERT INTO Account_Restaurant (RID, Restaurant_name) VALUES (?, ?)';
+        connection.query(sql_admin, [ID, Restaurant_name], (error, results) => {
             if (error) {
                 console.error('Error adding admin:', error);
                 res.status(500).send('Error adding admin');
                 return;
             }
             console.log('Restaurant added successfully');
-            // res.sendStatus(200);
+
             res.redirect('http://localhost:3030/restaurant_management');
         });
+
     });
 });
 
@@ -983,7 +985,7 @@ router.put('/modify-restaurant', (req, res) => {
                 return res.status(500).json({ error: 'An error occurred while updating admin and account' });
             }
             if(Restaurant_name || Category || Descriptions || Location || Province || District || Subdistrict){
-                console.log(RID, Restaurant_name, Category, Descriptions, Location, Province, District, Subdistrict)
+                console.log( Restaurant_name, Category, Descriptions, Location, Province, District, Subdistrict)
                 connection.query(updateAdminQuery, adminValues, (error, adminResults) => {
                     if (error) {
                         console.error('Error updating admin:', error);
@@ -1024,22 +1026,18 @@ router.put('/modify-restaurant', (req, res) => {
     }
 });
 
-//Delete Restaurant
 router.delete('/delete-restaurant/:RID', (req, res) => {
-    const AID = req.params.AID;
-
-    connection.query('DELETE FROM Account_Admin WHERE RID = ?', [RID], (error, adminResults) => {
+    const RID = req.params.RID;
+    connection.query('DELETE FROM Account_Restaurant WHERE RID = ?', [RID], (error, adminResults) => {
         if (error) {
-            console.error('Error deleting admin:', error);
-            return res.status(500).json({ error: 'An error occurred while deleting admin' });
+            return res.status(500).json({ error: 'An error occurred while deleting restaurant' });
         }
-
         connection.query('DELETE FROM Account WHERE ID = ?', [RID], (error, accountResults) => {
             if (error) {
                 console.error('Error deleting admin:', error);
-                return res.status(500).json({ error: 'An error occurred while deleting admin' });
+                return res.status(500).json({ error: 'An error occurred while deleting restaurant' });
             }
-            console.log('Admin deleted successfully');
+            console.log('restaurant deleted successfully');
             return res.status(200).json({ message: 'Admin deleted successfully' });
         });
     });
@@ -1054,12 +1052,6 @@ router.use((req, res, next) => {
     res.status(404)
     res.sendFile(path.join(`${__dirname}/reference/error.html`));
 })
-
-
-
-
-
-
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);

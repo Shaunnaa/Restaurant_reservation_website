@@ -58,6 +58,10 @@
                         <div class="rounded-lg border border-gray-300">
                             <input type="text" id="Email" name="Email" class="w-full rounded-md border-gray-300" required=""><br>
                         </div>
+                        <label for="Restaurant_name">Restaurant Name:</label><br>
+                        <div class="rounded-lg border border-gray-300">
+                            <input type="text" id="Restaurant_name" name="Restaurant_name" class="w-full rounded-md border-gray-300" required=""><br>
+                        </div>
                         <label for="Phone_num">Phone_num:</label><br>
                         <div class="rounded-lg border border-gray-300">
                             <input type="text" id="Phone_num" name="Phone_num" class="w-full rounded-md border-gray-300" required=""><br>
@@ -84,15 +88,15 @@
                 </tr>
             </thead>
             <tbody id="restaurantAccounts">
-                <!-- Admin accounts will be listed here dynamically -->
+                
             </tbody>
         </table>
 
     </main>
     <script>
         // Function to delete admin by AID
-        function deleteAdmin(AID) {
-            fetch(`http://localhost:3040/delete-admin/${AID}`, {
+        function deleteAdmin(RID) {
+            fetch(`http://localhost:3040/delete-restaurant/${RID}`, {
                 method: 'DELETE'
             })
             .then(response => {
@@ -102,16 +106,57 @@
                 return response.json();
             })
             .then(data => {
-                console.log('Admin deleted successfully:', data);
+                console.log('Restaurant deleted successfully:', data);
                 // Optionally, you can remove the deleted admin from the UI
                 // For example, you can reload the admin accounts after deletion
                 fetchAdminAccounts();
             })
             .catch(error => {
-                console.error('Error deleting admin:', error);
+                console.error('Error deleting Restaurant:', error);
             });
         }
     
+        // Fetch admin accounts from server and display them
+        function fetchAdminAccounts() {
+            fetch('http://localhost:3040/restaurant-accounts')
+                .then(response => response.json())
+                .then(restaurantAccounts => {
+                    const restaurantAccountsTable = document.getElementById('restaurantAccounts');
+                    restaurantAccountsTable.innerHTML = '';
+                    restaurantAccounts.forEach(restaurant => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <tr class="text-center">
+                                <td class="border border-gray-300 p-2">${restaurant.RID}</td>
+                                <td class="border border-gray-300 p-2">${restaurant.Restaurant_name}</td>
+                                <td class="border border-gray-300 p-2">${restaurant.Email}</td>
+                                <td class="border border-gray-300 p-2">${restaurant.Passwords}</td>
+                                <td class="border border-gray-300 p-2">
+                                    <a href="http://localhost:3040/${restaurant.Restaurant_name.split(' ').join('_')}/Profile">
+                                        <button class="bg-green-500 text-white rounded-md p-2">See More</button>
+                                    </a>
+                                </td>
+                                <td class="border border-gray-300 p-2">
+                                    <a href="http://localhost:3040/modify-restaurant/${restaurant.RID}">
+                                        <button class="bg-red-500 text-white rounded-md p-2">Edit</button>
+                                    </a>
+                                    <a href="http://localhost:3030/restaurant_management">
+                                        <button class="bg-red-500 text-white rounded-md p-2" onclick="deleteAdmin(${restaurant.RID})">Delete</button>
+                                    </a>
+                                    
+                                </td>
+                            </tr>
+                            `;
+                        adminAccountsTable.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error fetching restaurant accounts:', error));
+        }
+    
+        // Fetch admin accounts when the page loads
+        fetchAdminAccounts();
+    </script>
+    <!-- <script>
         // Fetch admin accounts from server and display them
         function fetchAdminAccounts() {
             fetch('http://localhost:3040/restaurant-accounts')
@@ -148,7 +193,7 @@
     
         // Fetch admin accounts when the page loads
         fetchAdminAccounts();
-    </script>
+    </script> -->
 
     <footer>
         <footer-component></footer-component>
