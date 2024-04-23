@@ -166,6 +166,7 @@ router.get('/:name/reservation', (req, res) => {
     res.status(200)
     res.sendFile(path.join(`${__dirname}/html/Reservationpage.html`))
 })
+
 router.get('/:name/reserve-success', (req, res) => {
     console.log(req.params.name)
     res.status(200)
@@ -173,12 +174,11 @@ router.get('/:name/reserve-success', (req, res) => {
 })
 
 router.use((req, res, next) => {
-    console.log(req.url)
-    console.log(__dirname)
-    console.log('404: Invalid accessed!!!!!')
-    res.status(404)
-    res.sendFile(path.join(`${__dirname}/reference/error.html`));
-})
+    console.log(req.url);
+    console.log(__dirname);
+    console.log('404: Invalid access!!!!!');
+    res.status(404).sendFile(path.join(`${__dirname}/html/index.html`));
+});
 
 app.listen(port, () => {
 })
