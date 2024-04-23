@@ -26,10 +26,18 @@
     
 
     <main class="grid place-items-center gap-11 px-9 pb-9 pt-32">
-        <button id="find-location-button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" >Find Current Location</button>
-        <div id="province-display" class="text-lg font-bold">Province: </div>
+        <div class="text-lg font-medium text-gray-500 text-center">
+            Your current Province: <div id="province-display" class="text-xl font-bold inline text-black"> <!-- API data--> </div>
+
+            <div class="text-lg font-semibold text-red-600 ">
+                *** If store information is not displayed, press refresh in your browser. ***
+            </div>
+        </div>
+
+        
+
         <!--place-items-center = Set the gird in to the center | gap-9 = 36 px| p-9 = padding all 36px-->
-        <article class="Box_section bg-white  px-12 pt-6 pb-3">
+        <article class="Box_section bg-white px-12 pt-3 pb-4">
             <!--Topic-->
             <div class="p-2">
                 <a href="#">
@@ -48,41 +56,108 @@
         <footer-component></footer-component>
     </footer>
 
+    <script src="../js/navbar.js"></script>
+    <script src="../js/footer.js"></script>
+
     <script>
-        // Fetch data from the API endpoint
-        fetch('http://localhost:3040/api/closetoyou')
-            .then(response => response.json())
-            .then(data => {
-                // Update HTML content dynamically with fetched data
-                const container = document.getElementById('closetoyou-container');
-                data.forEach(item => {
-                    const section = document.createElement('section');
-                    section.className = 'max-w-64 bg-white border border-gray rounded-3xl shadow';
-                    section.innerHTML = `
+        fetch("http://localhost:3040/api/closetoyou")
+                .then(response => response.json())
+                .then(data => {
+                    // Update HTML content dynamically with fetched data
+                    const container = document.getElementById('closetoyou-container');
+                    container.innerHTML = ''; // Clear previous content
+
+                    data.forEach(item => {
+                        const section = document.createElement('section');
+                        section.className = 'max-w-64 bg-white border border-gray rounded-3xl shadow';
+                        section.innerHTML = `
                             <a href="http://localhost:3040/api/${item.Restaurant_name.split(' ').join('_')}">
-                                <img class="rounded-3xl w-full h-auto" src="https://lh3.googleusercontent.com/d/${item.Restaurant_image}" alt="" />
-                                
+                                <img class="rounded-3xl w-full h-auto" src="https://lh3.googleusercontent.com/d/${item.Restaurant_image}" alt="${item.Restaurant_name}" />
                                 <div class="p-5">
                                     <h5 class="mb-2 text-2xl text-center font-bold tracking-tight text-gray-900">${item.Restaurant_name}</h5>
-                                    <h5 class="mb-2 text-xl text-center font-medium  tracking-tight text-gray-900">${item.Province}</h5>
+                                    <h5 class="mb-2 text-xl text-center font-medium tracking-tight text-gray-900">${item.Province}</h5>
                                 </div>
                             </a>
                         `;
-                    container.appendChild(section);
+                        container.appendChild(section);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    // Handle error
                 });
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-                // Handle error
-            });
     </script>
 
     <script>
+        let province = '';
+
+
         // Initialize geocoder
         const geocoder = new google.maps.Geocoder();
         
-        // Add event listener to the button
-        document.getElementById("find-location-button").addEventListener("click", () => {
+        // Function to perform reverse geocoding and display the province
+        function reverseGeocode(geocoder, latLng) {
+            // Set the region to 'en' (English) for the geocode request
+            geocoder.geocode({ location: latLng, region: 'en' }, (results, status) => {
+                if (status === 'OK' && results && results.length > 0) {
+                    // Find the province in the address components
+                    for (const component of results[0].address_components) {
+                        if (component.types.includes('administrative_area_level_1')) {
+                            province = component.long_name;
+                            break;
+                        }
+                    }
+
+                    // Call the function with the selected province
+                    document.getElementById('province-display').innerHTML = ` ${province}`;
+                    submitRequest(province);
+
+                } else {
+                    console.error(`Geocoder failed due to: ${status}`);
+                    alert('Failed to perform reverse geocoding. Please try again.');
+                }
+            });
+        }
+
+        // Flag to track whether the request has been submitted
+        let requestSubmitted = false;
+
+        // Function to submit the request and handle the response
+        function submitRequest(province) {
+            // Check if the request has already been submitted
+            if (requestSubmitted) {
+                return; // Exit the function if the request has been submitted
+            }
+
+            // Set the flag to true to indicate that the request has been submitted
+            requestSubmitted = true;
+
+            fetch(`http://localhost:3040/place/${province}`, {
+                method: 'GET', // Change method to POST if needed
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                // You can add body data here if needed for a POST request
+            })
+            .then(response => response.json()) // Parse the JSON response
+            .then(data => {
+                // Handle the data returned from the server
+                // Update the UI with the data
+                console.log(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        function autoRefresh() {
+            window.location = window.location.href;
+        }
+
+
+
+        // Add an onload event listener to the window
+        window.addEventListener('load', () => {
             // Check if geolocation is supported
             if (navigator.geolocation) {
                 // Get the current location
@@ -93,7 +168,7 @@
                             lat: position.coords.latitude,
                             lng: position.coords.longitude
                         };
-                        // Perform reverse geocoding
+                        // Perform reverse geocoding and fetch nearby restaurants
                         reverseGeocode(geocoder, latLng);
                     },
                     error => {
@@ -106,38 +181,10 @@
                 alert('Geolocation not supported by this browser.');
             }
         });
-        
-        // Function to perform reverse geocoding and display the province
-        function reverseGeocode(geocoder, latLng) {
-            // Set the region to 'en' (English) for the geocode request
-            geocoder.geocode({ location: latLng, region: 'en' }, (results, status) => {
-                if (status === 'OK' && results && results.length > 0) {
-                    let province = '';
-                    // Find the province in the address components
-                    for (const component of results[0].address_components) {
-                        if (component.types.includes('administrative_area_level_1')) {
-                            province = component.long_name;
-                            break;
-                        }
-                    }
-                    // // Display the province in the province-display div
-                    document.getElementById('province-display').innerHTML = `Province: ${province}
-                    <a href = "http://localhost:3040/place/${province}">
-                        <br>
-                        <button type="button"
-                        class="mt-9 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-                        Click confirm to search</button>
-                    </a>`
-                } else {
-                    console.error(`Geocoder failed due to: ${status}`);
-                    alert('Failed to perform reverse geocoding. Please try again.');
-                }
-            });
-        }
+
     </script>
 
-    <script src="../js/navbar.js"></script>
-    <script src="../js/footer.js"></script>
+
 </body>
 
 </html>
