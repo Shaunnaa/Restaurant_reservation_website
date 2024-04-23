@@ -26,8 +26,8 @@
     
 
     <main class="grid place-items-center gap-11 px-9 pb-9 pt-32">
-        <button id="find-location-button">Find Current Location</button>
-        <div id="province-display">Province: </div>
+        <button id="find-location-button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" >Find Current Location</button>
+        <div id="province-display" class="text-lg font-bold">Province: </div>
         <!--place-items-center = Set the gird in to the center | gap-9 = 36 px| p-9 = padding all 36px-->
         <article class="Box_section bg-white  px-12 pt-6 pb-3">
             <!--Topic-->
@@ -120,13 +120,13 @@
                             break;
                         }
                     }
-                    // Display the province in the province-display div
+                    // // Display the province in the province-display div
                     document.getElementById('province-display').innerHTML = `Province: ${province}
                     <a href = "http://localhost:3040/place/${province}">
                         <br>
-                    <button type="button"
-                    class="text-white bg-blue-700 mt-6 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
-                    Search</button>
+                        <button type="button"
+                        class="mt-9 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                        Click confirm to search</button>
                     </a>`
                 } else {
                     console.error(`Geocoder failed due to: ${status}`);
