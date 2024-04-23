@@ -278,11 +278,16 @@ router.get('/api/detail', (req, res) => {
             console.log("Error!!!!!!")
             res.status(500).json({ error: 'Error fetching data' });
         } else {
-            console.log(results)
-            // currentrestaurant = results[0].RID
-            // console.log(currentrestaurant)
-            res.status(200).json(results);
-            console.log("Complete!!!!!!")
+            if (results.length > 0) {
+                console.log(results)
+                currentrestaurant = results[0].RID
+                console.log(currentrestaurant)
+                res.status(200).json(results);
+                console.log("Complete!!!!!!")
+            }
+            else {
+                res.status(200).json(results);
+            }
         }
     });
 });
@@ -389,11 +394,12 @@ router.get('/restaurants', (req, res) => {
 })
 
 
-/*------------------------ API location ------------------------*/
-
 // Endpoint to handle the request
 router.get('/api/closetoyou', (req, res) => {
-    // router.get('/api/toppicks', (req, res) => {
+        if (province === "Krung Thep Maha Nakhon"){
+            province = "Bangkok";
+        }
+    
         let sql = `SELECT Restaurant_name, Province, Restaurant_image
                    FROM Account_Restaurant
                    WHERE Province = "${province}"`;
@@ -411,15 +417,9 @@ router.get('/api/closetoyou', (req, res) => {
 
 });
 
-
-
 router.get('/status-check', (req, res) => {
     res.status(200).json(status)
 });
-
-
-
-
 
 router.get('/admin-accounts', (req, res) => {
     const sql = 'SELECT Account_Admin.AID, Account_Admin.username ,Account.Email, Account.Passwords, Account.Phone_num FROM Account JOIN Account_Admin ON Account.ID = Account_Admin.AID;';
@@ -753,6 +753,7 @@ router.delete('/delete-admin/:AID', (req, res) => {
         });
     });
 });
+
 
 router.get('/api/about_location', (req, res) => {
     console.log("about_location work");
