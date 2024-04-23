@@ -131,6 +131,7 @@ router.get('/About', (req, res) => {
     res.status(200)
     res.sendFile(path.join(__dirname, '/html/About.html'))
 })
+
 /* -------------------- Restaurant pages -------------------- */
 router.get('/:name/Profile', (req, res) => {
     console.log('Requested at', req.url)
@@ -138,12 +139,14 @@ router.get('/:name/Profile', (req, res) => {
     res.status(200)
     res.sendFile(path.join(__dirname, '/html/RestaurantProfile.html'))
 })
+
 router.get('/:name/schedule', (req, res) => {
     console.log('Requested at', req.url)
     console.log('Retrieve a form')
     res.status(200)
     res.sendFile(path.join(__dirname, '/html/RestaurantSchedule.html'))
 })
+
 /* -------------------- Search page -------------------- */
 router.get('/search', (req, res) => {
     res.status(200)
@@ -153,12 +156,6 @@ router.get('/search', (req, res) => {
 router.get('/adv-search', (req, res) => {
     res.status(200)
     res.sendFile(path.join(`${__dirname}/html/Adv_Search.html`))
-})
-
-router.get('/:name', (req, res) => {
-    console.log(req.params.name)
-    res.status(200)
-    res.sendFile(path.join(`${__dirname}/html/RestaurantDetailPage.html`))
 })
 
 router.get('/:name/reservation', (req, res) => {
@@ -173,11 +170,23 @@ router.get('/:name/reserve-success', (req, res) => {
     res.sendFile(path.join(`${__dirname}/html/ReservationSuccessfulPage.html`))
 })
 
+router.get('/error', (req, res) => {
+    console.log(req.params.name)
+    res.status(200)
+    res.sendFile(path.join(`${__dirname}/html/Error.html`))
+})
+
+router.get('/:name', (req, res) => {
+    console.log(req.params.name)
+    res.status(200)
+    res.sendFile(path.join(`${__dirname}/html/RestaurantDetailPage.html`))
+})
+
 router.use((req, res, next) => {
     console.log(req.url);
     console.log(__dirname);
     console.log('404: Invalid access!!!!!');
-    res.status(404).sendFile(path.join(`${__dirname}/html/index.html`));
+    res.status(404).sendFile(path.join(`${__dirname}/html/Error.html`));
 });
 
 app.listen(port, () => {
