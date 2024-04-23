@@ -25,7 +25,7 @@
     <main class="grid place-items-center gap-11 px-9 pb-9 pt-32">
         <!--place-items-center = Set the gird in to the center | gap-9 = 36 px| p-9 = padding all 36px-->
         <div>
-            <h1 class="text-4xl">ADMIN</h1>
+            <h1 class="text-4xl">RESTAURANT</h1>
         </div>
         <div class="flex space-x-10">
             <button class=" text-black rounded-md p-2">Admin Accounts</button>
@@ -37,8 +37,8 @@
                 <h1 class="text-2xl text-left">Administration Accounts</h1>
             </div> -->
         <div style="left: 0;">
-            <h1 class="text-2xl text-left">Add New Admin</h1>
-            <form action="http://localhost:3040/add-admin" method="post" class="flex flex-col mb-2">
+            <h1 class="text-2xl text-left">Add New Restaurant</h1>
+            <form action="http://localhost:3040/add-restaurant" method="post" class="flex flex-col mb-2">
                 <div class="flex justify-between space-x-10 item-left">
                     <div>
                         <label for="ID">ID:</label><br>
@@ -73,20 +73,21 @@
             <thead>
                 <tr class="bg-gray-100">
                     <th class="border border-gray-300 p-2">ID</th>
-                    <th class="border border-gray-300 p-2">Username</th>
+                    <th class="border border-gray-300 p-2">Restaurant Name</th>
                     <th class="border border-gray-300 p-2">Email</th>
                     <th class="border border-gray-300 p-2">Password</th>
-                    <th class="border border-gray-300 p-2">Note</th>
+                    <th class="border border-gray-300 p-2">More Detail</th>
                     <th class="border border-gray-300 p-2">Action</th>
                 </tr>
             </thead>
-            <tbody id="adminAccounts">
+            <tbody id="restaurantAccounts">
                 <!-- Admin accounts will be listed here dynamically -->
             </tbody>
         </table>
 
     </main>
     <script>
+        // Function to delete admin by AID
         function deleteAdmin(AID) {
             fetch(`http://localhost:3040/delete-admin/${AID}`, {
                 method: 'DELETE'
@@ -99,6 +100,8 @@
             })
             .then(data => {
                 console.log('Admin deleted successfully:', data);
+                // Optionally, you can remove the deleted admin from the UI
+                // For example, you can reload the admin accounts after deletion
                 fetchAdminAccounts();
             })
             .catch(error => {
@@ -106,34 +109,38 @@
             });
         }
     
+        // Fetch admin accounts from server and display them
         function fetchAdminAccounts() {
-            fetch('http://localhost:3040/admin-accounts')
+            fetch('http://localhost:3040/restaurant-accounts')
                 .then(response => response.json())
-                .then(adminAccounts => {
-                    const adminAccountsTable = document.getElementById('adminAccounts');
-                    adminAccountsTable.innerHTML = '';
-                    adminAccounts.forEach(admin => {
+                .then(restaurantAccounts => {
+                    const restaurantAccountsTable = document.getElementById('restaurantAccounts');
+                    restaurantAccountsTable.innerHTML = '';
+                    restaurantAccounts.forEach(restaurant => {
                         const row = document.createElement('tr');
                         row.innerHTML = `
                             <tr class="text-center">
-                                <td class="border border-gray-300 p-2">${admin.AID}</td>
-                                <td class="border border-gray-300 p-2">${admin.username}</td>
-                                <td class="border border-gray-300 p-2">${admin.Email}</td>
-                                <td class="border border-gray-300 p-2">${admin.Passwords}</td>
-                                <td class="border border-gray-300 p-2"></td>
+                                <td class="border border-gray-300 p-2">${restaurant.RID}</td>
+                                <td class="border border-gray-300 p-2">${restaurant.Restaurant_name}</td>
+                                <td class="border border-gray-300 p-2">${restaurant.Email}</td>
+                                <td class="border border-gray-300 p-2">${restaurant.Passwords}</td>
                                 <td class="border border-gray-300 p-2">
-                                    <button class="bg-red-500 text-white rounded-md p-2">See</button>
-                                    <a href="http://localhost:3040/modify-admin/${admin.AID}">
+                                    <a>
+                                        <button class="bg-green-500 text-white rounded-md p-2">See More</button>
+                                    </a>
+                                </td>
+                                <td class="border border-gray-300 p-2">
+                                    <a href="http://localhost:3040/modify-restaurant/${restaurant.RID}">
                                         <button class="bg-red-500 text-white rounded-md p-2">Edit</button>
                                     </a>
-                                    <button class="bg-red-500 text-white rounded-md p-2" onclick="deleteAdmin(${admin.AID})">Delete</button>
+                                    <button class="bg-red-500 text-white rounded-md p-2" onclick="deleteAdmin(${restaurant.RID})">Delete</button>
                                 </td>
                             </tr>
                             `;
                         adminAccountsTable.appendChild(row);
                     });
                 })
-                .catch(error => console.error('Error fetching admin accounts:', error));
+                .catch(error => console.error('Error fetching restaurant accounts:', error));
         }
     
         // Fetch admin accounts when the page loads

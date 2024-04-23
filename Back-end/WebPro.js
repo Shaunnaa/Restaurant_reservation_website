@@ -23,6 +23,8 @@ let restuarantdetail = ""
 let Adv = ["", "", "", ""]
 let province = '"'
 let currentAdmin = ""
+let currentRestaurant = ""
+let currentrestaurant = 9007
 /*------------------------ Connect to database ------------------------*/
 const mysql = require('mysql2');
 var connection = mysql.createConnection
@@ -51,6 +53,9 @@ connection.query(sql, function (error, results) {
 
         for (let i = 0; i < results.length; i++) {
             let str = results[i].Restaurant_name;
+            if (str == null) {
+                continue;
+            }
             let newStr = str.replace(/\s+/g, '_');
             RestaurantList.push(newStr);
         }
@@ -212,6 +217,20 @@ router.post('/sign-in-summit', (req, res) => {
                         }
                     })
                 }
+                else if (results[0].ID >= 2000 && results[0].ID < 3000) {
+                    let sql2 = `select * from Account_Admin where AID = "${results[0].ID}";`;
+                    connection.query(sql2, function (error, result3) {
+                        if (error) {
+                            res.status(500).json({ error: 'Error fetching data' });
+                        }
+                        else {
+                            console.log("Complete!!!!!!")
+                            currentAdmin = result3[0].AID
+                            console.log(currentAdmin)
+                            res.redirect(`http://localhost:3030/AdminProfile/${currentAdmin}`);
+                        }
+                    })
+                }
             }
             else {
                 res.redirect(`http://localhost:3030/Login-Error`);
@@ -236,6 +255,7 @@ router.get('/api/detail', (req, res) => {
             res.status(500).json({ error: 'Error fetching data' });
         } else {
             console.log(results)
+            currentrestaurant = results[0].RID
             res.status(200).json(results);
             console.log("Complete!!!!!!")
         }
@@ -250,6 +270,30 @@ router.get('/reservation-status', (req, res) => {
         res.redirect(`http://localhost:3030/login`);
     }
     res.status(200).json(RestaurantList);
+});
+
+router.post('/sign-in-summit', (req, res) => {
+    const email = req.body.email;
+    const password = req.body.password;
+
+    // Use parameterized queries to prevent SQL injection
+    const sql = `SELECT * FROM Account WHERE Email = ? AND Passwords = ?;`;
+    connection.query(sql, [email, password], function (error, results) {
+        if (error) {
+            console.error('Error fetching data:', error);
+            return res.status(500).json({ error: 'Error fetching data' });
+        }
+
+        if (results.length === 0) {
+            // Handle the case where no account is found
+            return res.status(401).json({ error: 'Invalid email or password' });
+        }
+
+        // Redirect user if authentication is successful
+        const searchword = req.body.searchdropdown;
+        // Pass `searchword` as a query parameter in the redirect URL
+        res.redirect(`http://localhost:3030/search?query=${encodeURIComponent(searchword)}`);
+    });
 });
 
 router.post('/adv-search-summit', (req, res) => {
@@ -296,9 +340,13 @@ router.get('/status-check', (req, res) => {
     res.status(200).json(status)
 });
 
-router.get('/admin-accounts', (req, res) => {
-    const sql = 'SELECT Account_Admin.AID, Account_Admin.username ,Account.Email, Account.Passwords FROM Account JOIN Account_Admin ON Account.ID = Account_Admin.AID;';
 
+
+
+
+router.get('/admin-accounts', (req, res) => {
+    const sql = 'SELECT Account_Admin.AID, Account_Admin.username ,Account.Email, Account.Passwords, Account.Phone_num FROM Account JOIN Account_Admin ON Account.ID = Account_Admin.AID;';
+    console.log('check')
     connection.query(sql, (err, results) => {
         if (err) {
             console.error('Error fetching admin accounts:', err);
@@ -311,38 +359,151 @@ router.get('/admin-accounts', (req, res) => {
     });
 });
 
-router.get('/modify-admin/:id', (req, res) => {
+
+router.get('/modify-admin/:id', (req, res) => {//Retreive ADMIN ID
     currentAdmin = req.params.id
-    res.redirect(`http://localhost:3030/modify_admin/${currentAdmin}`)
+    res.redirect(`http://localhost:3030/modify-admin/${currentAdmin}`)
 });
 
 router.get('/Apo/modify-admin', (req, res) => {
-    // console.log(currentAdmin)
     res.status(200).json(currentAdmin)
 });
 
-router.put('/modify-admin', (req, res) => {
-    const { fname, lname, mname, username, DOB, Email, Phone_num, Passwords } = req.body;
-    console.log(fname, lname, mname, username, DOB, Email, Phone_num, Passwords)
-    // console.log(lname)
-    if (!fname && !lname && !mname && !username && !DOB && !Email && !Phone_num && !Passwords) {
-        console.log("No input from the user");
-    } else {
-        console.log("Input from the user detected");
-        if (fname) {
+router.get('/AdminProfile/:id', (req, res) => {//Retreive ADMIN ID
+    currentAdmin = req.params.id
+    res.redirect(`http://localhost:3030/AdminProfile/${currentAdmin}`)
+});
 
+router.get('/Apo/AdminProfile', (req, res) => {
+    console.log('/Apo/AdminProfile');
+    console.log('Current Admin:', currentAdmin);
+
+    const sql = `SELECT Account_Admin.fname, Account_Admin.lname, Account_Admin.mname, Account_Admin.DOB, Account_Admin.AID, Account_Admin.username, Account.Email, Account.Passwords, Account.Phone_num FROM Account JOIN Account_Admin ON Account.ID = Account_Admin.AID WHERE Account_Admin.AID = ${currentAdmin};`;
+
+    connection.query(sql, (err, results) => {
+        if (err) {
+            console.error('Error fetching admin profile:', err);
+            res.status(500).json({ error: 'Error fetching admin profile' });
+            return;
+        } else {
+            console.log('Admin profile retrieved successfully:', results);
+            res.json(results);
+        }
+    });
+});
+
+
+//Modify Admin
+router.put('/modify-admin', (req, res) => {
+    const { AID, fname, lname, mname, username, DOB, Email, Phone_num, Passwords } = req.body;
+    if (!fname && !lname && !mname && !username && !DOB && !Email && !Phone_num && !Passwords) {
+        console.log('No input from user')
+    } else {
+        if (!AID) {
+            return res.status(400).json({ error: 'AID is required' });
+        }
+        let updateAdminQuery = 'UPDATE Account_Admin SET ';
+        let adminValues = [];
+        let isFirstAdminSet = true;
+
+        if (fname) {
+            updateAdminQuery += `fname = ?, `;
+            adminValues.push(fname);
+            isFirstAdminSet = false;
         }
         if (lname) {
-
+            updateAdminQuery += `lname = ?, `;
+            adminValues.push(lname);
+            isFirstAdminSet = false;
         }
+        if (mname) {
+            updateAdminQuery += `mname = ?, `;
+            adminValues.push(mname);
+            isFirstAdminSet = false;
+        }
+        if (username) {
+            updateAdminQuery += `username = ?, `;
+            adminValues.push(username);
+            isFirstAdminSet = false;
+        }
+        if (DOB) {
+            updateAdminQuery += `DOB = ?, `;
+            adminValues.push(DOB);
+            isFirstAdminSet = false;
+        }
+        updateAdminQuery = updateAdminQuery.slice(0, -2);
+        updateAdminQuery += ` WHERE AID = ?`;
+        adminValues.push(AID);
+
+        let updateAccountQuery = 'UPDATE Account SET ';
+        let accountValues = [];
+        let isFirstAccountSet = true;
+
+        if (Email) {
+            updateAccountQuery += `Email = ?, `;
+            accountValues.push(Email);
+            isFirstAccountSet = false;
+        }
+        if (Phone_num) {
+            updateAccountQuery += `Phone_num = ?, `;
+            accountValues.push(Phone_num);
+            isFirstAccountSet = false;
+        }
+        if (Passwords) {
+            updateAccountQuery += `Passwords = ?, `;
+            accountValues.push(Passwords);
+            isFirstAccountSet = false;
+        }
+        updateAccountQuery = updateAccountQuery.slice(0, -2);
+        updateAccountQuery += ` WHERE ID = ?`;
+        accountValues.push(AID);
+
+        connection.beginTransaction((err) => {
+            if (err) {
+                console.error('Error beginning transaction:', err);
+                return res.status(500).json({ error: 'An error occurred while updating admin and account' });
+            }
+
+            connection.query(updateAdminQuery, adminValues, (error, adminResults) => {
+                if (error) {
+                    console.error('Error updating admin:', error);
+                    return connection.rollback(() => {
+                        res.status(500).json({ error: 'An error occurred while updating admin' });
+                    });
+
+
+                }
+
+                connection.query(updateAccountQuery, accountValues, (error, accountResults) => {
+                    if (error) {
+                        console.error('Error updating account:', error);
+                        return connection.rollback(() => {
+                            res.status(500).json({ error: 'An error occurred while updating account' });
+                        });
+                    }
+
+                    connection.commit((err) => {
+                        if (err) {
+                            console.error('Error committing transaction:', err);
+                            return connection.rollback(() => {
+                                res.status(500).json({ error: 'An error occurred while committing transaction' });
+                            });
+                        }
+                        console.log('Admin and Account updated successfully');
+                        return res.status(200).json({ message: 'Admin and Account updated successfully' });
+                    });
+                });
+            });
+        });
     }
-})
+});
 
-
-
+//Add Admin
 router.post('/add-admin', (req, res) => {
     const { Email, Phone_num, Passwords, ID } = req.body;
     const registedDate = new Date().toISOString().split('T')[0];
+
+    console.log(Email, Phone_num, Passwords, ID)
 
     const sql_account = 'INSERT INTO Account (Email, Registed_date, Phone_num, Passwords, ID) VALUES (?, ?, ?, ?, ?)';
 
@@ -354,7 +515,6 @@ router.post('/add-admin', (req, res) => {
         }
         console.log('Account added successfully');
 
-        // Now, execute the second query for Account_Admin
         const sql_admin = 'INSERT INTO Account_Admin (AID) VALUES (?)';
         connection.query(sql_admin, [ID], (error, results) => {
             if (error) {
@@ -363,7 +523,28 @@ router.post('/add-admin', (req, res) => {
                 return;
             }
             console.log('Admin added successfully');
-            // res.sendStatus(200);
+            res.sendStatus(200);
+        });
+    });
+});
+
+//Delete Admin
+router.delete('/delete-admin/:AID', (req, res) => {
+    const AID = req.params.AID;
+
+    connection.query('DELETE FROM Account_Admin WHERE AID = ?', [AID], (error, adminResults) => {
+        if (error) {
+            console.error('Error deleting admin:', error);
+            return res.status(500).json({ error: 'An error occurred while deleting admin' });
+        }
+
+        connection.query('DELETE FROM Account WHERE ID = ?', [AID], (error, accountResults) => {
+            if (error) {
+                console.error('Error deleting admin:', error);
+                return res.status(500).json({ error: 'An error occurred while deleting admin' });
+            }
+            console.log('Admin deleted successfully');
+            return res.status(200).json({ message: 'Admin deleted successfully' });
         });
     });
 });
@@ -432,6 +613,198 @@ router.get('/api/:name', (req, res) => {
 })
 
 
+//Restaurant management
+//Get Restaurant Info
+router.get('/restaurant-accounts', (req, res) => {
+    const sql = 'SELECT Account_Restaurant.RID, Account_Restaurant.Restaurant_name ,Account.Email, Account.Passwords FROM Account JOIN Account_Restaurant ON Account.ID = Account_Restaurant.RID;';
+
+    connection.query(sql, (err, results) => {
+        if (err) {
+            console.error('Error fetching restaurant accounts:', err);
+            res.status(500).json({ error: 'Error fetching restaurant accounts' });
+            return;
+        }
+        else {
+            res.json(results);
+        }
+    });
+});
+
+router.get('/modify-restaurant/:id', (req, res) => {//Retreive RESTAURANT ID
+    currentRestaurant = req.params.id
+    res.redirect(`http://localhost:3030/modify-restaurant/${currentRestaurant}`)
+});
+
+router.get('/Apo/modify-restaurant', (req, res) => {
+    res.status(200).json(currentRestaurant)
+});
+
+//Add Restaurant
+router.post('/add-restaurant', (req, res) => {
+    const { Email, Phone_num, Passwords, ID } = req.body;
+    const registedDate = new Date().toISOString().split('T')[0];
+
+    console.log(Email, Phone_num, Passwords, ID)
+
+    const sql_account = 'INSERT INTO Account (Email, Registed_date, Phone_num, Passwords, ID) VALUES (?, ?, ?, ?, ?)';
+
+    connection.query(sql_account, [Email, registedDate, Phone_num, Passwords, ID], (error, results) => {
+        if (error) {
+            console.error('Error adding Account:', error);
+            res.status(500).send('Error adding Account');
+            return;
+        }
+        console.log('Account added successfully');
+
+        const sql_admin = 'INSERT INTO Account_Restaurant (RID) VALUES (?)';
+        connection.query(sql_admin, [ID], (error, results) => {
+            if (error) {
+                console.error('Error adding admin:', error);
+                res.status(500).send('Error adding admin');
+                return;
+            }
+            console.log('Restaurant added successfully');
+            // res.sendStatus(200);
+            res.redirect('http://localhost:3030/restaurant_management');
+        });
+    });
+});
+
+//Modify Restaurant
+router.put('/modify-restaurant', (req, res) => {
+    const { RID, Restaurant_name, Category, Descriptions, Location, Province, District, Subdistrict, Email, Passwords, Phone_num } = req.body;
+    console.log(RID, Restaurant_name, Category, Descriptions, Location, Province, District, Subdistrict, Email, Phone_num, Passwords)
+    if (!Restaurant_name && !Category && !Descriptions && !Location && !Province && !District && !Subdistrict && !Email && !Phone_num && !Passwords) {
+        console.log('No input from user')
+    } else {
+        if (!RID) {
+            return res.status(400).json({ error: 'RID is required' });
+        }
+        let updateAdminQuery = 'UPDATE Account_Restaurant SET ';
+        let adminValues = [];
+        let isFirstAdminSet = true;
+
+        if (Restaurant_name) {
+            updateAdminQuery += `Restaurant_name = ?, `;
+            adminValues.push(Restaurant_name);
+            isFirstAdminSet = false;
+        }
+        if (Category) {
+            updateAdminQuery += `Category = ?, `;
+            adminValues.push(Category);
+            isFirstAdminSet = false;
+        }
+        if (Descriptions) {
+            updateAdminQuery += `Descriptions = ?, `;
+            adminValues.push(Descriptions);
+            isFirstAdminSet = false;
+        }
+        if (Location) {
+            updateAdminQuery += `Location = ?, `;
+            adminValues.push(Location);
+            isFirstAdminSet = false;
+        }
+        if (Province) {
+            updateAdminQuery += `Province = ?, `;
+            adminValues.push(Province);
+            isFirstAdminSet = false;
+        }
+        if (District) {
+            updateAdminQuery += `District = ?, `;
+            adminValues.push(District);
+            isFirstAdminSet = false;
+        }
+        if (Subdistrict) {
+            updateAdminQuery += `Subdistrict = ?, `;
+            adminValues.push(Subdistrict);
+            isFirstAdminSet = false;
+        }
+        updateAdminQuery = updateAdminQuery.slice(0, -2);
+        updateAdminQuery += ` WHERE RID = ?`;
+        adminValues.push(RID);
+
+        let updateAccountQuery = 'UPDATE Account SET ';
+        let accountValues = [];
+        let isFirstAccountSet = true;
+
+        if (Email) {
+            updateAccountQuery += `Email = ?, `;
+            accountValues.push(Email);
+            isFirstAccountSet = false;
+        }
+        if (Phone_num) {
+            updateAccountQuery += `Phone_num = ?, `;
+            accountValues.push(Phone_num);
+            isFirstAccountSet = false;
+        }
+        if (Passwords) {
+            updateAccountQuery += `Passwords = ?, `;
+            accountValues.push(Passwords);
+            isFirstAccountSet = false;
+        }
+        updateAccountQuery = updateAccountQuery.slice(0, -2);
+        updateAccountQuery += ` WHERE ID = ?`;
+        accountValues.push(RID);
+
+        connection.beginTransaction((err) => {
+            if (err) {
+                console.error('Error beginning transaction:', err);
+                return res.status(500).json({ error: 'An error occurred while updating admin and account' });
+            }
+
+            connection.query(updateAdminQuery, adminValues, (error, adminResults) => {
+                if (error) {
+                    console.error('Error updating admin:', error);
+                    return connection.rollback(() => {
+                        res.status(500).json({ error: 'An error occurred while updating admin' });
+                    });
+
+                }
+
+                connection.query(updateAccountQuery, accountValues, (error, accountResults) => {
+                    if (error) {
+                        console.error('Error updating account:', error);
+                        return connection.rollback(() => {
+                            res.status(500).json({ error: 'An error occurred while updating account' });
+                        });
+                    }
+
+                    connection.commit((err) => {
+                        if (err) {
+                            console.error('Error committing transaction:', err);
+                            return connection.rollback(() => {
+                                res.status(500).json({ error: 'An error occurred while committing transaction' });
+                            });
+                        }
+                        console.log('Restaurant and Account updated successfully');
+                        return res.status(200).json({ message: 'Restaurant and Account updated successfully' });
+                    });
+                });
+            });
+        });
+    }
+});
+
+//Delete Restaurant
+router.delete('/delete-restaurant/:RID', (req, res) => {
+    const AID = req.params.AID;
+
+    connection.query('DELETE FROM Account_Admin WHERE RID = ?', [RID], (error, adminResults) => {
+        if (error) {
+            console.error('Error deleting admin:', error);
+            return res.status(500).json({ error: 'An error occurred while deleting admin' });
+        }
+
+        connection.query('DELETE FROM Account WHERE ID = ?', [RID], (error, accountResults) => {
+            if (error) {
+                console.error('Error deleting admin:', error);
+                return res.status(500).json({ error: 'An error occurred while deleting admin' });
+            }
+            console.log('Admin deleted successfully');
+            return res.status(200).json({ message: 'Admin deleted successfully' });
+        });
+    });
+});
 
 
 router.use((req, res, next) => {
@@ -442,6 +815,10 @@ router.use((req, res, next) => {
     res.status(404)
     res.sendFile(path.join(`${__dirname}/reference/error.html`));
 })
+
+
+
+
 
 
 

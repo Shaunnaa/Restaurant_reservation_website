@@ -25,8 +25,8 @@
     <main class="grid place-items-center gap-11 px-9 pb-9 pt-32">
         <!--place-items-center = Set the gird in to the center | gap-9 = 36 px| p-9 = padding all 36px-->
         <div style="padding-left: 500px;">
-            <h1 class="text-4xl">EDIT ADMINISTRATION ACCOUNT</h1>
-            <h1 id="Admin" class="text-2xl"></h1>
+            <h1 class="text-4xl">EDIT RESTTAURANT ACCOUNT</h1>
+            <h1 id="Restaurant" class="text-2xl"></h1>
         </div>
         <div class="flex justify-between items-center flex">
             <div class="w-60 h-60 rounded-full bg-gray-300 border-2 border-white shadow-md"
@@ -37,75 +37,84 @@
                 <form id="updateForm" class="flex flex-col items-center mb-2">
                     <div class="flex justify-between items-center flex space-x-20 mt-0">
                         <div>
-                            <label for="fname">First Name:</label><br>
+                            <label for="Restaurant_name">Restaurant_name:</label><br>
                             <div class="rounded-lg border border-gray-300">
-                                <input type="text" id="fname" name="fname" class="w-full rounded-md border-gray-300">
+                                <input type="text" id="Restaurant_name" name="Restaurant_name" class="w-full rounded-md border-gray-300">
                             </div>
-                            <label for="mname">Middle Name:</label><br>
+                            <label for="Category">Category:</label><br>
                             <div class="rounded-lg border border-gray-300">
-                                <input type="text" id="mname" name="mname" class="w-full rounded-md border-gray-300">
+                                <input type="text" id="Category" name="Category" class="w-full rounded-md border-gray-300">
+                            </div>
+                            <label for="Descriptions">Descriptions:</label><br>
+                            <div class="rounded-lg border border-gray-300">
+                                <input type="text" id="Descriptions" name="Descriptions" class="w-full rounded-md border-gray-300">
+                            </div>
+                            <label for="Location">Location:</label><br>
+                            <div class="rounded-lg border border-gray-300">
+                                <input type="text" id="Location" name="Location" class="w-full rounded-md border-gray-300">
+                            </div>
+                            <label for="Passwords">Passwords:</label><br>
+                            <div class="rounded-lg border border-gray-300">
+                                <input type="text" id="Passwords" name="Passwords" class="w-full rounded-md border-gray-300">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="Province">Province:</label><br>
+                            <div class="rounded-lg border border-gray-300">
+                                <input type="text" id="Province" name="Province" class="w-full rounded-md border-gray-300">
+                            </div>
+                            <label for="District">District:</label><br>
+                            <div class="rounded-lg border border-gray-300">
+                                <input type="text" id="District" name="District" class="w-full rounded-md border-gray-300">
+                            </div>
+                            <label for="Subdistrict">Subdistrict:</label><br>
+                            <div class="rounded-lg border border-gray-300">
+                                <input type="text" id="Subdistrict" name="Subdistrict" class="w-full rounded-md border-gray-300">
                             </div>
                             <label for="Email">Email:</label><br>
                             <div class="rounded-lg border border-gray-300">
                                 <input type="text" id="Email" name="Email" class="w-full rounded-md border-gray-300">
                             </div>
-                            <label for="username">Username:</label><br>
+                            <label for="Phone_num">Phone_num:</label><br>
                             <div class="rounded-lg border border-gray-300">
-                                <input type="text" id="username" name="username"
-                                    class="w-full rounded-md border-gray-300">
-                            </div>
-                        </div>
-                        <div>
-                            <label for="lname">Last Name:</label><br>
-                            <div class="rounded-lg border border-gray-300">
-                                <input type="text" id="lname" name="lname" class="w-full rounded-md border-gray-300">
-                            </div>
-                            <label for="Phone_num">Phone Number:</label><br>
-                            <div class="rounded-lg border border-gray-300">
-                                <input type="text" id="Phone_num" name="Phone_num"
-                                    class="w-full rounded-md border-gray-300">
-                            </div>
-                            <label for="Passwords">Password:</label><br>
-                            <div class="rounded-lg border border-gray-300">
-                                <input type="text" id="Passwords" name="Passwords"
-                                    class="w-full rounded-md border-gray-300">
-                            </div>
-                            <label for="DOB">Date of Birth:</label><br>
-                            <div class="rounded-lg border border-gray-300">
-                                <input type="text" id="DOB" name="DOB" class="w-full rounded-md border-gray-300">
+                                <input type="text" id="Phone_num" name="Phone_num" class="w-full rounded-md border-gray-300">
                             </div>
                         </div>
                     </div>
-                    <div id="AID" data-aid=""></div>
+                    <div id="RID" data-rid=""></div>
                     <div class="mt-10">
-                        <button type="button" onclick="updateResource()" class="w-full text-white bg-red-500 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">SAVE</button>
+                        <button type="button" onclick="updateResource()"
+                            class="w-full text-white bg-red-500 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">SAVE</button>
                     </div>
                 </form>
             </div>
 
         </div>
     </main>
+    <!-- Modify Restaurant -->
     <script>
         function updateResource() {
             console.log('clicked')
 
-            let AID = document.getElementById('AID').dataset.aid;
+            let RID = document.getElementById('RID').dataset.rid;
 
-            console.log(AID)
+            console.log(RID)
 
             let data = {
-                AID: AID,
-                fname: document.getElementById('fname').value,
-                lname: document.getElementById('lname').value,
-                mname: document.getElementById('mname').value,
-                username: document.getElementById('username').value,
+                RID: RID,
+                Restaurant_name: document.getElementById('Restaurant_name').value,
+                Category: document.getElementById('Category').value,
+                Descriptions: document.getElementById('Descriptions').value,
+                Location: document.getElementById('Location').value,
+                Province: document.getElementById('Province').value,
+                District: document.getElementById('District').value,
+                Subdistrict: document.getElementById('Subdistrict').value,
                 Email: document.getElementById('Email').value,
                 Passwords: document.getElementById('Passwords').value,
-                Phone_num: document.getElementById('Phone_num').value,
-                DOB: document.getElementById('DOB').value
+                Phone_num: document.getElementById('Phone_num').value
             };
 
-            fetch('http://localhost:3040/modify-admin', {
+            fetch('http://localhost:3040/modify-restaurant', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -127,22 +136,22 @@
         }  
     </script>
     <script>
-        fetch('http://localhost:3040/Apo/modify-admin')
+        fetch('http://localhost:3040/Apo/modify-restaurant')
             .then(response => response.json())
-            .then(AID => {
-                const ADMINNAME = document.getElementById('Admin');
+            .then(RID => {
+                const ADMINNAME = document.getElementById('Restaurant');
                 const a = document.createElement('h1');
                 a.innerHTML = `
                     <br>
-                                EDITING ID: ${AID}
+                                Modify Restaurant ID: ${RID}
                             `;
                 ADMINNAME.appendChild(a);
 
-                document.getElementById('AID').dataset.aid = AID;
+                document.getElementById('RID').dataset.rid = RID;
 
             })
             .catch(error => {
-                console.error('There was a problem with fetching AID:', error);
+                console.error('There was a problem with fetching RID:', error);
             });
     </script>
     <footer>

@@ -122,19 +122,137 @@
                 <!-- Section Title -->
                 <h2 class="text-3xl font-bold mb-2">Restaurant Profile</h2>
                 <h3 class="text-gray-500 mb-4 font-semibold">Welcome back! This is your details.</h3>
-                <form action="#">
+                <form id='detail'>
 
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/navbar.js"></script>
+    <script>
+        // const form = document.getElementById('Edit').closest('form');
+        // const nameInput = form.querySelector('input[id="name"]');
+        // function updateResource() {
+        //     console.log('clicked')
+
+        //     let RID = document.getElementById('RID').dataset.rid;
+
+        //     console.log(RID)
+
+        //     let data = {
+        //         RID: RID,
+        //         Restaurant_name: nameInput.value,
+        //         // Category: document.getElementById('Category').value,
+        //         // Descriptions: document.getElementById('Descriptions').value,
+        //         // Location: document.getElementById('Location').value,
+        //         // Province: document.getElementById('Province').value,
+        //         // District: document.getElementById('District').value,
+        //         // Subdistrict: document.getElementById('Subdistrict').value,
+        //         // Email: document.getElementById('Email').value,
+        //         // Passwords: document.getElementById('Passwords').value,
+        //         // Phone_num: document.getElementById('Phone_num').value
+        //     };
+
+        //     fetch('http://localhost:3040/modify-restaurant', {
+        //         method: 'PUT',
+        //         headers: {
+        //             'Content-Type': 'application/json'
+        //         },
+        //         body: JSON.stringify(data)
+        //     })
+        //         .then(response => {
+        //             if (!response.ok) {
+        //                 throw new Error('Network response was not ok');
+        //             }
+        //             return response.text();
+        //         })
+        //         .then(data => {
+        //             console.log(data);
+        //         })
+        //         .catch(error => {
+        //             console.error('There was a problem with your fetch operation:', error);
+        //         });
+        // }  
+    </script>
+    <script>
+        function updateResource() {
+            console.log('clicked')
+
+            let RID = document.getElementById('RID').dataset.rid;
+            const form = event.target.closest('form')
+            const nameInputValue = form.querySelector('input[name="name"]').value;
+            const PhoneInputValue = form.querySelector('input[name="phone"]').value;
+            const EmailInputValue = form.querySelector('input[name="email"]').value;
+            const PasswordInputValue = form.querySelector('input[name="password"]').value;
+            const DescriptionInputValue = form.querySelector('input[name="description"]').value;
+            console.log(RID)
+
+            let data = {
+                RID: RID,
+                Restaurant_name: nameInputValue,
+                PhoneInputValue: PhoneInputValue,
+                Email: EmailInputValue,
+                Password: PasswordInputValue,
+                Description: DescriptionInputValue,
+                // Province: document.getElementById('Province').value,
+                // District: document.getElementById('District').value,
+                // Subdistrict: document.getElementById('Subdistrict').value,
+                // Email: document.getElementById('Email').value,
+                // Passwords: document.getElementById('Passwords').value,
+                // Phone_num: document.getElementById('Phone_num').value
+            };
+
+            fetch('http://localhost:3040/modify-restaurant', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error('There was a problem with your fetch operation:', error);
+                });
+        }
+        fetch('http://localhost:3040/api/all-detail')
+            .then(response => response.json())
+            .then(data => {
+                console.log("data")
+                // Update HTML content dynamically with fetched data
+                const Detail = document.getElementById('detail');
+                function handleClick(event) {
+                    // Check if the clicked element is the button
+                    if (event.target.id === "Edit") {
+                        // Update paragraph content only if it's the button
+                        console.log("clicked")
+                        updateResource();
+                    }
+                }
+                // Detail.addEventListener("click", handleClick);
+                // const Schedule = document.getElementById('schedule');
+                data.forEach(item => {
+                    // const detail = document.createElement('form');
+                    Detail.innerHTML = `
                     <!-- Restaurant Name & Phone Number-->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label for="name" class="block mb-2 font-semibold">Restaurant Name</label>
-                            <input type="text" id="name" class="border border-gray-300 rounded-md p-2 w-full"
-                                placeholder="Enter Your Restaurant Name">
+                            <input type="text" name = "name" id="name" class="border border-gray-300 rounded-md p-2 w-full"
+                                placeholder="${item.Restaurant_name}">
                         </div>
                         <div>
                             <label for="phone" class="block mb-2 font-semibold">Phone Number</label>
-                            <input type="tel" id="phone" class="shadow-sm border border-gray-300 rounded-md p-2 w-full"
-                                placeholder="Your Phone Number">
+                            <input type="tel" name = "phone" id="phone" class="shadow-sm border border-gray-300 rounded-md p-2 w-full"
+                                placeholder="${item.Phone_num}">
                         </div>
                     </div>
 
@@ -142,12 +260,12 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                         <div>
                             <label for="email" class="block mb-2 font-semibold">Email</label>
-                            <input type="email" id="email"
-                                class="shadow-sm border border-gray-300 rounded-md p-2 w-full" placeholder="Your Email">
+                            <input type="email" name = "email" id="email"
+                                class="shadow-sm border border-gray-300 rounded-md p-2 w-full" placeholder="${item.Email}">
                         </div>
                         <div>
                             <label for="password" class="block mb-2 font-semibold">Password</label>
-                            <input type="password" id="password"
+                            <input type="password" name = "password" id="password"
                                 class="shadow-sm border border-gray-300 rounded-md p-2 w-full" placeholder="**********">
                         </div>
                     </div>
@@ -155,9 +273,9 @@
                     <!-- Description -->
                     <div class="mt-4">
                         <label for="description" class="block mb-2 font-semibold">Description</label>
-                        <textarea id="description" rows="1"
+                        <input type ="textarea" name = "description" id="description" rows="1"
                             class="shadow-sm border border-gray-300 rounded-md p-2 w-full"
-                            placeholder="Your description"></textarea>
+                            placeholder="${item.Descriptions}"></textarea>
                     </div>
 
                     <!-- Address -->
@@ -187,7 +305,7 @@
                         <div>
                             <label for="subdistrict" class="block mb-2 font-semibold">Subdistrict</label>
                             <select id="subdistrict" class="shadow-sm border border-gray-300 rounded-md p-2 w-full">
-
+                                <option>${item.Restaurant_name}</option>
                                 <!-- Add more options -->
                             </select>
                         </div>
@@ -204,35 +322,22 @@
                     </div>
 
                     <!-- button -->
-                    <div class="mt-4 grid grid-cols-2 gap-4">
-                        <button class="bg-red-500 text-white py-2 px-4 rounded-md">Edit</button>
-                        <!-- <a id='schedule'>
-                            
-                        </a> -->
-                        <a id='schedule'>
-
+                    <div id="RID" data-rid="${item.RID}"></div>
+                    <div class="mt-4 grid grid-cols-2 gap-4 justify-center">
+                        <button id = 'Edit' type="button" onclick = "updateResource()" class="bg-red-500 text-white py-2 px-4 rounded-md">Edit</button>
+                        <a href = "./schedule" class="bg-green-500 text-white py-2 px-4 rounded-md item-center">
+                            <button type = "button" ">Schedule</button>
                         </a>
                     </div>
-                </form>
-            </div>
-        </section>
-    </main>
+                    `
+                    // const schedule = document.createElement('a');
+                    // schedule.href = `./schedule`
+                    // schedule.innerHTML = `
+                    // <button type = "button" class="bg-green-500 text-white py-2 px-4 rounded-md">Schedule</button>
+                    //         `;
+                    // Schedule.appendChild(schedule);
+                    // Detail.appendChild(detail);
 
-    <script src="../js/navbar.js"></script>
-    <script>
-        fetch('http://localhost:3040/api/detail')
-            .then(response => response.json())
-            .then(data => {
-                console.log("data")
-                // Update HTML content dynamically with fetched data
-                const Schedule = document.getElementById('schedule');
-                data.forEach(item => {
-                    const schedule = document.createElement('a');
-                    schedule.href = `./schedule`
-                    schedule.innerHTML = `
-                    <button type = "button" class="bg-green-500 text-white py-2 px-4 rounded-md">Schedule</button>
-                            `;
-                    Schedule.appendChild(schedule);
                 })
             })
             .catch(error => {
@@ -240,6 +345,7 @@
                 // Handle error
             });
     </script>
+
     <script src="../js/footer.js"></script>
 </body>
 

@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title></title>
+    <title>Restaurant Schedule</title>
 
     <!-- Tailwind css-->
     <meta charset="UTF-8">
@@ -22,8 +22,10 @@
     </header>
 
     <!-- Main Content -->
-    <main class="grid place-items-center gap-11 px-9 pb-9 pt-32 mx-20">
-        <h1 class="text-3xl font-bold my-6 text-center">SCHEDULE</h1>
+    <main class="grid place-items-center gap-11 px-9 pb-9 pt-32">
+
+        <h1 class="text-6xl"> SCHEDULE </h1>
+
         <!-- table -->
         <table class="border-collapse border border-gray-300 w-full">
             <thead>
@@ -40,17 +42,12 @@
             <tbody id='check'>
             </tbody>
         </table>
-        <button class="absolute left-10 bottom-5 mb-8 ml-8 bg-red-500 text-white font-semibold py-2 px-4 rounded">
-            Back
-        </button>
     </main>
+    
+    <!-- <div class="ml-10">
+        <button class="left-0 bottom-5 mb-8 bg-red-500 text-white font-semibold py-2 px-4 rounded">Back</button>
+    </div> -->
 
-    <footer>
-        <footer-component></footer-component>
-    </footer>
-
-
-    <script src="../js/navbar.js"></script>
     <script>// Fetch data from the API endpoint
         fetch('http://localhost:3040/api/schedule')
             .then(response => response.json())
@@ -79,6 +76,13 @@
                 // Handle error
             });
     </script>
+
+
+    <footer>
+        <footer-component></footer-component>
+    </footer>
+
+    <script src="../js/navbar.js"></script>
     <script src="../js/footer.js"></script>
 </body>
 
