@@ -59,7 +59,7 @@ router.get('/modify-admin/:id', (req, res) => {
     res.sendFile(path.join(`${__dirname}/html/modify_admin.html`))
 })
 
-router.get('/AdminProfile/:id', (req, res) => {
+router.get('/AdminProfile/:id', (req, res) => { //RestaurantProfile
     res.status(200)
     res.sendFile(path.join(`${__dirname}/html/AdminProfile.html`))
 })
