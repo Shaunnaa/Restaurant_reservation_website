@@ -49,6 +49,23 @@
             </div>
         </article>
 
+        <!--Close to you (Third box)-->
+        <article class="Box_section bg-white border border-black rounded-3xl shadow px-12 pt-6 pb-3">
+            <!--Topic-->
+            <div class="p-2">
+                <a href="./Close-to-you">
+                    <h5 class="mb-6 text-5xl font-bold tracking-tight text-gray-900">Close to you</h5>
+                </a>
+            </div>
+
+            <!--Restaurant group of 5-->
+            <div id="Close-to-you-group" class="grid grid-cols-5 gap-12">
+                <!--Restaurant No.1-->
+
+
+            </div>
+        </article>
+
     </main>
 
     <footer>
@@ -62,6 +79,35 @@
             .then(data => {
                 // Update HTML content dynamically with fetched data
                 const container = document.getElementById('toppicks-group');
+                for (let i = 0; i < 5; i++) {
+                    const item = data[i]
+                    const section = document.createElement('section');
+                    section.className = 'max-w-64 bg-white';
+                    section.innerHTML = `
+                    <section class="">
+                        <a href="http://localhost:3040/api/${item.Restaurant_name.split(' ').join('_')}">
+                            <img class="rounded-3xl w-full h-auto" src="https://lh3.googleusercontent.com/d/${item.Restaurant_image}" alt="" />
+                            <div class="p-5">
+                                <h5 class="mb-2 text-2xl text-center font-bold tracking-tight text-gray-900">${item.Restaurant_name}</h5>
+                            </div>
+                        </a>
+                    `;
+                    container.appendChild(section);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+                // Handle error
+            });
+    </script>
+
+    <script>
+        // Fetch data from the API endpoint
+        fetch('http://localhost:3040/api/closetoyou')
+            .then(response => response.json())
+            .then(data => {
+                // Update HTML content dynamically with fetched data
+                const container = document.getElementById('Close-to-you-group');
                 for (let i = 0; i < 5; i++) {
                     const item = data[i]
                     const section = document.createElement('section');

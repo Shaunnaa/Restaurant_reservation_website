@@ -124,6 +124,9 @@
         fetch('http://localhost:3040/api/detail')
             .then(response => response.json())
             .then(data => {
+                if (data.length === 0) {
+                    window.location.href = 'http://localhost:3030/error'
+                }
                 // Update HTML content dynamically with fetched data
                 const Image = document.getElementById('image');
                 data.forEach(item => {

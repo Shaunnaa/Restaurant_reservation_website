@@ -21,7 +21,7 @@ let searchword = "";
 let RestaurantList = []
 let restuarantdetail = ""
 let Adv = ["", "", "", ""]
-let province = '"'
+let province = ''
 let currentAdmin = ""
 let currentRestaurant = 0
 let currentcustomer = 0
@@ -123,11 +123,30 @@ router.get('/api/search', (req, res) => {
     });
 })
 
+/* -------------------- search category-------------------- */
+router.get('/api/search-category', (req, res) => {
+    let sql = `SELECT Restaurant_name, Restaurant_image,Province 
+               FROM Account_Restaurant 
+               WHERE Category = "%${searchword}%";`;
+    connection.query(sql, function (error, results) {
+        if (error) {
+            console.error('Error from search');
+            console.error('Error fetching data:', error);
+            console.log("Error!!!!!!")
+            res.status(500).json({ error: 'Error fetching data' });
+        } else {
+            res.status(200).json(results);
+            console.log("Complete!!!!!!")
+        }
+    });
+})
+
 router.post('/search-summit', (req, res) => {
     console.log(req.body.searchdropdown)
     searchword = req.body.searchdropdown
     res.redirect(`http://localhost:3030/search`);
 })
+
 router.get('/place/:province', (req, res) => {
     // console.log(req.params.province)
     // searchword = req.body.searchdropdown
@@ -396,6 +415,7 @@ router.get('/restaurants', (req, res) => {
 
 // Endpoint to handle the request
 router.get('/api/closetoyou', (req, res) => {
+        console.log(province)
         if (province === "Krung Thep Maha Nakhon"){
             province = "Bangkok";
         }
@@ -405,7 +425,7 @@ router.get('/api/closetoyou', (req, res) => {
                    WHERE Province = "${province}"`;
         connection.query(sql, function (error, results) {
             if (error) {
-                console.error('Error from Toppick');
+                console.error('Error from closetoyou');
                 console.error('Error fetching data:', error);
                 res.status(500).json({ error: 'Error fetching data' });
             } else {
@@ -413,8 +433,6 @@ router.get('/api/closetoyou', (req, res) => {
                 res.status(200).json(results);
             }
         });
-    // });
-
 });
 
 router.get('/status-check', (req, res) => {
