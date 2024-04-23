@@ -48,23 +48,39 @@ router.get('/Login-Error', (req, res) => {
     res.status(200)
     res.sendFile(path.join(`${__dirname}/html/LoginError.html`))
 })
-
+// Admin and restaurant management---------------------------
 router.get('/Admin_management', (req, res) => {
     res.status(200)
     res.sendFile(path.join(`${__dirname}/html/Admin_Management_For_Admin.html`))
 })
 
-
-
-router.get('/modify_admin/:id', (req, res) => {
+router.get('/modify-admin/:id', (req, res) => {
     res.status(200)
     res.sendFile(path.join(`${__dirname}/html/modify_admin.html`))
 })
 
+router.get('/AdminProfile/:id', (req, res) => {
+    res.status(200)
+    res.sendFile(path.join(`${__dirname}/html/AdminProfile.html`))
+})
+
 router.get('/restaurant_management', (req, res) => {
     res.status(200)
-    res.sendFile(path.join(`${__dirname}/html/Restaurnt_Management_For_Admin.html`))
+    res.sendFile(path.join(`${__dirname}/html/Restaurant_Management.html`))
 })
+
+router.get('/modify-restaurant/:id', (req, res) => {
+    res.status(200)
+    res.sendFile(path.join(`${__dirname}/html/modify_restaurant.html`))
+})
+
+router.get('/modify-schedule', (req, res) => {
+    console.log('Requested at', req.url)
+    console.log('Retrieve a form')
+    res.status(200)
+    res.sendFile(path.join(__dirname, '/html/modify_schedule.html'))
+})
+//------------------------------------------------------------
 
 // router.get('/sign-up', (req, res) => {
 //     res.status(200)
