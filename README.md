@@ -39,4 +39,4 @@
         After that
         >>> npm start <<<
 
-
+4) Open the website: http://localhost:3030/
